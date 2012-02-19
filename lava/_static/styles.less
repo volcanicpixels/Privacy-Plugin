@@ -1,0 +1,1352 @@
+/*  This file is NOT covered by the GPL license that covers the PHP files within this plugin. You may not distribute this file (except as part of an un-modified plugin) without consent from the author. */
+
+//simpless:!minify
+.invisible {
+    position:absolute;
+    opacity:0;
+    height:0px;
+    width:0px;
+    left:-2000px;
+    top:-2000px;
+}
+.wrap {
+	min-width: 800px;
+}
+.clearfix {
+    display: block;
+    
+    &::after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+}
+.js-only {
+    display: none !important;
+}
+
+::-moz-selection {
+    color: #fff;
+    color: rgba(255,255,255,.85);
+    background: #ce4c2d;
+}
+::selection {
+    color: #fff;
+    color: rgba(255,255,255,.85);
+    background: #ce4c2d;
+}
+
+/* Navigation */
+
+.lava-nav {
+    position: relative;
+    display: block;
+    z-index: 100;
+    height: 45px;
+    background: #CE3D2B;
+    margin-left: -25px !important;
+	margin-bottom: -55px;
+
+	&.sticky {
+		position: fixed;
+		right: 0px;
+		margin-left: -6px !important;
+	}
+	
+    .left-grad {
+        position: absolute;
+        left: 0px;
+        bottom: -6px;
+        border: 3px solid transparent;
+		border-top-color: #76251b;
+		border-right-color: #76251b;
+    }
+
+    .sticky-toggle {
+		display: none;
+        cursor: pointer;
+        position: absolute;
+        right:0px;
+        top:0px;
+        bottom: 0px;
+        width: 70px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-image: url(images/pin.png);
+        opacity: 0.6;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    &.lava-sticky {
+        .sticky-toggle {
+            opacity: 1;
+
+            &:hover {
+                opacity: 0.6;
+            }
+        }
+    }
+}
+
+ul.nav {
+    display:block;
+    float:left;
+    margin:0px;
+    width:auto;
+
+    li {
+        float:left;
+        position:relative;
+        margin:0px;
+        padding:0px;
+
+        a {
+            display:inline-block;
+            color:#efc6bc;
+            text-decoration:none;
+            line-height:45px;
+            font-size:15px;
+            text-shadow: 0px -1px 0px black;
+            padding:0px 15px;
+        }
+
+        &:hover , &.active {
+            a {
+                color:#ffffff;
+            }
+
+            
+        }
+    }
+
+    &:hover {
+        li {
+            &.active {
+                a {
+                    color:#efc6bc;
+                }
+
+
+                &:hover {
+                    a {
+                        color:#ffffff;
+                    }
+
+                }
+            }
+        }
+    }
+} 
+
+.lava-message {
+    padding: 7px 20px 7px 20px;
+    margin: 10px;
+    background: #feefab; /* Old browsers */
+    background: -moz-linear-gradient(top, #feefab 0%, #fceba0 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#feefab), color-stop(100%,#fceba0)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #feefab 0%,#fceba0 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #feefab 0%,#fceba0 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #feefab 0%,#fceba0 100%); /* IE10+ */
+    background: linear-gradient(top, #feefab 0%,#fceba0 100%); /* W3C */
+    filter: ~"progid:DXImageTransform.Microsoft.gradient( startColorstr='#feefab', endColorstr='#fceba0',GradientType=0 )"; /* IE6-9 */
+    border: 1px solid #c7c8c9;
+    .border-radius( 3px );
+}
+
+
+
+/* Page Construction */
+
+.lava-content-cntr {
+	overflow: hidden;
+	position: relative;
+    padding-bottom: 70px;
+	margin-top:55px;
+
+    &.no-toolbar {
+        padding-bottom: 10px;
+
+        .lava-toolbar {
+            display: none;
+        }
+    }
+    
+	.lava-underground {
+        padding-bottom: 30px;
+        padding-top:20px;
+		overflow:hidden;
+
+		&.underground-hidden {
+			display: none;
+		}
+	}
+
+	.lava-overground {
+		background: url(images/bg.png) repeat;
+		position: relative;
+		overflow: visible;
+
+		&.sticky {
+			position: fixed;
+			right: 0px;
+			bottom:0px;
+			left: 146px;
+			z-index: 10;
+			padding: 0px 20px;
+			z-index: 15;
+
+			.torn-paper {
+				margin-left: 0px;
+				z-index: 15;
+			}
+		}
+
+		&.overground-hidden {
+			display: none;
+		}
+
+		.torn-paper {
+			position: absolute;
+			top: -30px;
+			left: 0px;
+			right: 0px;
+			height: 30px;
+			background-image: url(images/torn-paper.png);
+			background-position: bottom left;
+			background-repeat: repeat-x;
+			z-index: 20;
+		}
+	}
+}
+
+/* Toolbar */
+
+.lava-toolbar {
+	position: absolute;
+	left:0px;
+	right: 0px;
+	bottom: 5px;
+	padding: 5px 0px;
+	background: url(images/toolbar-repeat.png);
+	box-shadow: 0px 0px 3px rgba(0,0,0,0.5);
+
+	&.sticky {
+		position: fixed;
+		bottom: -5px;
+		left: 146px;
+	}
+
+	.inner {
+        height: 45px;
+		padding: 0px 20px;
+		
+		.toolbar-block {
+			line-height: 45px;
+		}
+	}
+}
+
+
+/* Textures */
+.texture {
+    background-repeat: repeat;
+    background-position: top center; 
+
+    &.texture-lt-red {
+        background-image: url(images/texture-lt-red.png);
+        background-color: #ce4c2d;
+    }
+
+    &.texture-drk-red {
+        background-image: url(images/texture-drk-red.png);
+        background-color: #a93d22;
+    }
+
+    &.texture-red-woven {
+        background-image: url(images/red-woven-texture.png);
+        background-color: #d1593c;
+    }
+
+    &.texture-woven {
+		background-color: #f3f3f3;
+        background-image: url(images/texture-woven.png)
+    }
+}
+
+
+
+/* Quirks */
+
+.bleed-left {
+    margin-left:-19px;
+
+	&.with-padding {
+		padding-left: 19px;
+	}
+
+	&.bleed-abs {
+		left: -19px;
+	}
+}
+.bleed-right {
+    margin-right:-15px;
+
+	&.with-padding {
+		padding-right: 15px;
+	}
+
+	&.bleed-abs {
+		right: -15px;
+	}
+}
+
+.flex-1 {
+    .flex-order(1);
+}
+.flex-2 {
+    .flex-order(2);
+}
+.flex-3 {
+    .flex-order(3);
+}
+.flex-4 {
+    .flex-order(4);
+}
+.flex-5 {
+    .flex-order(5);
+}
+
+#adminmenushadow, #adminmenuback {
+    z-index:0;
+}
+
+
+
+
+
+/* Buttons */
+
+
+
+.lava-btn {
+    cursor: pointer;
+    -webkit-user-select: none;
+    display: inline;
+
+	&.lava-btn-disabled {
+		opacity: 0.5;
+	}
+
+	&.lava-btn-margin-bottom {
+		margin-bottom: 10px;
+	}
+
+	&.lava-btn-inline {
+		display: inline !important;
+		display: inline-block !important;
+	}
+
+	&.lava-btn-action {
+		display: block;
+		text-align: center;
+		text-shadow: 0 -1px 0 black;
+		font-size: 14px;
+		text-decoration: none;
+		padding: 7px 10px;
+		border: 1px solid transparent;
+		.border-radius(3px);
+		color: white;
+
+		&.lava-btn-action-large {
+			padding: 20px 0px;
+			font-size: 23px;
+		}
+
+		
+
+		.lava-btn-action-color(@color) {
+			background: @color;
+
+			&.lava-btn-disabled {
+				&:hover {
+					border-color: transparent;
+					background: @color;
+				}
+
+				&:active {
+					.box-shadow(none);
+				}
+			}
+
+			&:hover {
+				border-color: darken(@color, 20%);
+				#gradient > .vertical(@color,darken(@color,10%));
+			}
+
+			&:active {
+				.box-shadow(~"inset 0 1px 15px rgba(0,0,0,.7)");
+			}
+
+		}
+		&.lava-btn-action-blue {
+			.lava-btn-action-color(#498cf5);
+		}
+		&.lava-btn-action-red {
+			.lava-btn-action-color(#CE3D2B);
+		}
+		&.lava-btn-action-green {
+			.lava-btn-action-color(#418e04);
+		}
+		&.lava-btn-action-white {
+			background: white;
+			#gradient > .vertical(#ffffff,#fafafa);
+			color: #888888;
+			text-shadow: 0px 1px 0px white;
+			border-color: #cccccc;
+			.box-shadow( 0 1px 1px #EFEFEF );
+
+			&.lava-btn-disabled {
+				.box-shadow(none);
+				&:hover {
+					color: #888888;
+					border-color: #cccccc;
+					.box-shadow(none);
+				}
+
+				&:active {
+					.box-shadow(none);
+				}
+			}
+
+			&:hover {
+				color: #5E6066;
+				border-color: #aeaeae;
+				.box-shadow( 0 1px 1px #dbdbdb );
+			}
+
+			&:active {
+				.box-shadow(~"inset 0 1px 5px rgba(0,0,0,.2)");
+			}
+		}
+	}
+
+	
+
+	&.lava-btn-block {
+		display: block;
+		clear: both;
+		text-align: center;
+		padding: 20px 0px;
+		background: #FAFAFA;
+		font-size: 23px;
+
+		&:hover {
+			background-color: whiteSmoke;
+			background-image: -khtml-gradient(linear,left top,left bottom,from( #fafafa),to( #f5f5f5));
+			background-image: -moz-linear-gradient( #fafafa, #f5f5f5);
+			background-image: -ms-linear-gradient( #fafafa, #f5f5f5);
+			background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%, #fafafa),color-stop(100%, #f5f5f5));
+			background-image: -webkit-linear-gradient( #fafafa, #f5f5f5);
+			background-image: -o-linear-gradient( #fafafa, #f5f5f5);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#f5f5f5', GradientType=0);
+			-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#f5f5f5', GradientType=0)";
+			background-image: linear-gradient( #fafafa, #f5f5f5);
+		}
+
+		&:active {
+			-webkit-box-shadow: inset 0 1px 15px rgba(0,0,0,.08);
+			-moz-box-shadow: inset 0 1px 15px rgba(0,0,0,.08);
+			box-shadow: inset 0 1px 15px rgba(0,0,0,.08);
+		}
+	}
+}
+
+
+
+/* WordPress elements */
+
+#wpwrap {
+    background: url(images/bg.png) repeat !important;
+}
+
+
+
+
+
+/* Settings */
+
+.settings-wrap {
+    padding-top:20px;
+}
+
+.setting {
+    padding: 5px 0px 5px 25px;
+    margin-bottom:10px;
+    position:relative;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    &.tag-setting-hidden {
+        display: none;
+    }
+
+    &:hover     {
+        background:rgba( 253, 237, 168, 0.15);
+
+        .status-indicator {
+            opacity:1;
+        }
+
+        .setting-inner {
+            .setting-actions {
+                .action {
+                    opacity:0.3;
+                }
+            }
+        }
+    }
+
+
+    .status-indicator {
+        opacity: 0.5;
+        position:absolute;
+        left: 5px;
+        top:0px;
+        bottom:0px;
+        width:5px;
+        background: rgb( 230, 230, 230);
+    }
+
+    .pre-setting {
+        line-height:25px;
+        .setting-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .help {
+            -webkit-user-select: none;
+            text-decoration: none;
+            display: inline-block;
+            background: #40454D;
+            padding: 1px 5px;
+            text-align: center;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: white;
+            margin: 0 2px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 2px;
+            border-radius: 8px;
+            opacity: 0.2;
+            -webkit-transition: all 250ms ease-in-out;
+            -moz-transition: all 250ms ease-in-out;
+            -o-transition: all 250ms ease-in-out;
+            transition: all 250ms ease-in-out;
+            cursor: default;
+            line-height: 15px;
+            margin-left: 10px;
+        }
+    }
+
+    .setting-inner {
+        padding-bottom: 5px;
+        min-height:30px;
+
+        .setting-control {
+            float:left;
+            line-height:30px;
+
+            .input-cntr {
+                width: 215px;
+                float:left;
+                height:30px;
+                background: white;
+                border: 1px solid #CDCDCE;
+                -moz-box-shadow: inset 0 1px 1px #f2f2f2;
+                -webkit-box-shadow: inset 0 1px 1px #f2f2f2;
+                box-shadow: inset 0 1px 1px #f2f2f2;
+                position:relative;
+                overflow:hidden;
+
+                &:hover, &.focus {
+                    border-color: #A4A4A4;
+                    color: #5E6066;
+                }
+
+                &.focus {
+                    border-color: #4D90F0;
+                }
+
+                &[data-show="password"] {
+                    
+                    .password-show, .hide-password-handle {
+                        display:none;
+                    }
+                }
+
+                &[data-show="text"], .show-password-handle {
+                    input[type="password"] {
+                        display:none;
+                    }
+                }
+
+                input {
+                    font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+                    color: #888;
+                    padding: 7px;
+                    background: transparent;
+                    outline: none;
+                    border: none;
+                    position: absolute;
+                    top: 0px;
+                    bottom: 0px;
+                    left: 0px;
+                    right: 0px;
+                    width: auto;
+                    width:215px;
+                }
+            }
+        }
+
+        .setting-actions {
+            -webkit-user-select:none;
+            float:left;
+            margin-left:10px;
+            height:20px;
+            padding: 5px 0px;
+            display: box;
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-box;
+            display: -o-box;
+
+            .action {
+                -webkit-user-select: none;
+                text-decoration: none;
+                display: inline-block;
+                background: #40454D;
+                padding: 1px 5px;
+                text-align: center;
+                font-size: 10px;
+                text-transform: uppercase;
+                color: white;
+                margin: 0 2px;
+                opacity: 0.2;
+                -webkit-transition: all 250ms ease-in-out;
+                -moz-transition: all 250ms ease-in-out;
+                -o-transition: all 250ms ease-in-out;
+                transition: all 250ms ease-in-out;
+                cursor:pointer;
+
+                &:hover {
+                    opacity: 1.0;
+                }
+            }
+        }
+    }
+
+
+    /* types */
+
+    &[data-type="checkbox"] {
+        .setting-inner {
+            .setting-control {
+                .checkbox-ux {
+                    width: 52px;
+                    height: 30px;
+                    background-image: url("images/settings-checkbox.png");
+                    background-position: -26px 2px;
+                    background-repeat: no-repeat;
+                    cursor: pointer;
+                    -webkit-user-select:none;
+
+                    &.checked {
+                        background-position: 0px 2px;
+                    }
+
+                    &.unchecked {
+                        background-position: -52px 2px;
+                    }
+                }
+            }
+        }
+    }
+
+    &[data-type="timeperiod"] {
+        .setting-inner {
+            .setting-control {
+                .input-cntr {
+                    width: 80px;
+                }
+            }
+        }
+    }
+
+	&[data-type="skin"] {
+		.setting-inner {
+			.setting-control {
+				.skin-thumb {
+					img {
+						float: left;
+						margin-right: 30px;
+						position: relative;
+
+					}
+					.actions {
+						float: left;
+						width: 300px;
+						margin-top: 10px;
+					}
+				}
+			}
+		}
+	}
+
+    /* statuses */
+
+    &[data-status="refresh-blink"] {
+        .status-indicator {
+            background: rgba( 253, 238, 171, 1);
+        }
+
+        .setting-inner {
+            .setting-control {
+                .show-status {
+                    background: rgba( 253, 238, 171, 1);
+                }
+            }
+        }
+    }   
+
+
+    
+    /* Tags */
+    &.tag-hidden {
+        display: none;
+    }
+
+	&.tag-no-margin {
+		margin-top: -10px;
+	}
+}
+/* Skins page */
+
+.skin-selector {
+
+	.skin {
+		width: 45%;
+		border: 1px solid #c3c3c3;
+		.box-shadow( 1px 1px 2px rgba(0,0,0,0.1) );
+		float: left;
+		background: #f3f3f3;
+		padding: 4px;
+		.border-radius( 4px );
+		margin-right: 30px;
+		margin-bottom: 30px;
+		position: relative;
+
+
+		&:hover {
+			border-color:#989898;
+			.box-shadow( 1px 1px 2px rgba(0,0,0,0.2) );
+		}
+
+		&.active {
+			.ribbon-active {
+				display: block;
+			}
+			.content {
+				.actions {
+					button {
+					}
+				}
+			}
+		}
+		
+		.ribbon-active {
+			display: none;
+		}
+
+		.content {
+			background: white;
+			padding: 5px;
+			padding-right: 200px;
+			padding-bottom: 30px;
+			position: relative;
+
+			img {
+				width: 100%;
+				height: auto;
+			}
+
+			.actions {
+				position: absolute;
+				top: 0px;
+				right: 0px;
+				width:170px;
+				padding: 10px;
+				text-align: center;
+
+				button {
+					width: 170px;
+
+					&.lava-btn-skin-cancel {
+						display: none;
+					}
+				}
+			}
+
+			.name {
+				position: absolute;
+				left: 0px;
+				right: 200px;
+				bottom: 0px;
+				height: 30px;
+				line-height: 30px;
+				text-align:center;
+				font-weight: bold;
+				font-size: 15px;
+				overflow: hidden;
+
+				&::after {
+					content: "";
+					position: absolute;
+					top: 0px;
+					right: 0px;
+					bottom: 0px;
+					width: 20px;
+
+					background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+					background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+					background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+					background: -o-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+					background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+					background: linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C */
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+				}
+
+				.author {
+					font-style: italic;
+					font-weight: normal;
+				}
+			}
+		}
+	}
+}
+
+/* Ribbons */
+
+.ribbons {
+	display: none;
+}
+
+.csstransforms .ribbons {
+	display: block;
+	position: absolute;
+	top:0px;
+	left:0px;
+	z-index: 12;
+	width:0px;
+	height: 0px;
+	.transform( rotate(-45deg) );
+
+	.ribbon {
+		text-align: center;
+		height: 30px;
+		line-height: 30px;
+		background: white;
+		position: absolute;
+		
+		&:nth-child(1) {
+			width: 100px;
+			left: -50px;
+			top: 40px;
+		}
+
+		&.ribbon-green {
+			.ribbon-color( #7ccb36 );
+		}
+
+		.ribbon-color( @color ) {
+			background: @color;
+			color: white;
+			font-size: 15px;
+			text-shadow: 0px -1px 0px black;
+
+			.ribbon-fold {
+				border-bottom-color: @color;
+
+				&.ribbon-fold-left {
+					border-right-color: @color;
+				}
+
+				&.ribbon-fold-right {
+					border-left-color: @color;
+				}
+
+				&::before {
+					border-top-color: darken(@color, 10%);
+				}
+			}
+		}
+
+		.ribbon-fold {
+			position: absolute;
+			border: 15px solid transparent;
+			border-bottom-color: white;
+
+			&::before{
+				content: "";
+				border: 4px solid transparent;
+				border-top-color: #b5b5b5;
+				position: absolute;
+				bottom: -23px;
+			}
+
+			&.ribbon-fold-left {
+				left: -29px;
+				border-right-color: white;
+
+				&::before {
+					left: -15px;
+				}
+			}
+
+			&.ribbon-fold-right {
+				right: -29px;
+				border-left-color: white;
+				
+				&::before {
+					right: -15px;
+				}
+			}
+		}
+	}
+}
+
+
+
+/* Animations */
+
+
+
+
+@-webkit-keyframes refresh-blink {
+    from {background: rgba( 253, 238, 171, 1);}
+    to {background: rgba( 255, 255, 255, 1);}
+}
+
+
+
+
+
+
+/* MIXINS */
+.flex-order(@order: 2) {
+    flex-order: @order;
+    -webkit-flex-order: @order;
+    -moz-flex-order: @order;
+}
+
+.animation( @animationName: none, @animationLength: 0s, @animationIterations: 0 ) {
+    animation:@animationName @animationLength @animationIterations;
+    -moz-animation:@animationName @animationLength @animationIterations; /* Firefox */
+    -webkit-animation:@animationName @animationLength @animationIterations; /* Safari and Chrome */
+}
+
+.border-radius( @radius )
+{
+    border-radius: @radius;
+    -moz-border-radius: @radius;
+    -ms-border-radius: @radius;
+    -o-border-radius: @radius;
+}
+
+.transform( @transform )
+{
+	transform: @transform;
+	-ms-transform: @transform;
+	-o-transform: @transform;
+	-webkit-transform: @transform;
+	-moz-transform: @transform;
+}
+
+
+/* Selectivizr */
+
+
+
+
+/*######################## -   TipTip -################################################*/
+/* TipTip CSS - Version 1.2 */
+
+#tiptip_holder {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 99999;
+}
+
+#tiptip_holder.tip_top {
+	padding-bottom: 5px;
+}
+
+#tiptip_holder.tip_bottom {
+	padding-top: 5px;
+}
+
+#tiptip_holder.tip_right {
+	padding-left: 5px;
+}
+
+#tiptip_holder.tip_left {
+	padding-right: 5px;
+}
+
+#tiptip_content {
+	font-size: 11px;
+	color: #fff;
+	padding: 4px 8px;
+	background-color: black;
+}
+
+#tiptip_arrow, #tiptip_arrow_inner {
+	position: absolute;
+	border-color: transparent;
+	border-style: solid;
+	border-width: 6px;
+	height: 0;
+	width: 0;
+}
+
+
+#tiptip_holder.tip_top #tiptip_arrow_inner {
+	margin-top: -7px;
+	margin-left: -6px;
+	border-top-color: rgb(25,25,25);
+	border-top-color: rgba(25,25,25,0.92);
+}
+
+#tiptip_holder.tip_bottom #tiptip_arrow_inner {
+	margin-top: -5px;
+	margin-left: -6px;
+	border-bottom-color: rgb(25,25,25);
+	border-bottom-color: rgba(25,25,25,0.92);
+}
+
+#tiptip_holder.tip_right #tiptip_arrow_inner {
+	margin-top: -6px;
+	margin-left: -5px;
+	border-right-color: rgb(25,25,25);
+	border-right-color: rgba(25,25,25,0.92);
+}
+
+#tiptip_holder.tip_left #tiptip_arrow_inner {
+	margin-top: -6px;
+	margin-left: -7px;
+	border-left-color: rgb(25,25,25);
+	border-left-color: rgba(25,25,25,0.92);
+}
+
+/* Webkit Hacks  */
+@media screen and (-webkit-min-device-pixel-ratio:0) {	
+	#tiptip_content {
+		padding: 4px 8px 5px 8px;
+		background-color: black;
+	}
+	#tiptip_holder.tip_bottom #tiptip_arrow_inner { 
+		border-bottom-color: black;
+	}
+	#tiptip_holder.tip_top #tiptip_arrow_inner { 
+		border-top-color: black;
+	}
+}
+
+
+/*
+  Bootstrap v1.1
+  Variables and mixins to bootstrap any new web development project.
+*/
+
+
+/* Variables
+-------------------------------------------------- */
+
+// Links
+@linkColor:         #8b59c2;
+@linkColorHover:    darken(@linkColor, 10);
+
+// Grays
+@white:             #fff;
+@grayLighter:       #ccc;
+@grayLight:         #777;
+@gray:              #555;
+@grayDark:          #333;
+@black:             #000;
+
+// Accent Colors
+@blue:              #08b5fb;
+@green:             #46a546;
+@red:               #9d261d;
+@yellow:            #ffc40d;
+@orange:            #f89406;
+@pink:              #c3325f;
+@purple:            #7a43b6;
+
+// Baseline grid
+@baseline:          20px;
+
+// Griditude
+@gridColumns:       16;
+@gridColumnWidth:   40px;
+@gridGutterWidth:   20px;
+@siteWidth:         (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1));
+
+
+/* Mixins
+-------------------------------------------------- */
+
+// Clearfix for clearing floats like a boss
+
+// Center-align a block level element
+.center-block { 
+	display: block;
+  margin: 0 auto;
+}
+
+// Sizing shortcuts
+.size(@height: 5px, @width: 5px) {
+	height: @height;
+	width: @width;
+}
+.square(@size: 5px) {
+	.size(@size, @size);
+}
+
+// Input placeholder text
+.placeholder(@color: @grayLight) {
+  :-moz-placeholder {
+    color: @color;
+  }
+  ::-webkit-input-placeholder {
+    color: @color;
+  }
+}
+
+// Font Stacks
+#font {
+  .shorthand(@weight: normal, @size: 14px, @lineHeight: 20px) {
+    font-size: @size;
+    font-weight: @weight;
+    line-height: @lineHeight;
+  }
+  .sans-serif(@weight: normal, @size: 14px, @lineHeight: 20px) {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: @size;
+    font-weight: @weight;
+    line-height: @lineHeight;
+  }
+  .serif(@weight: normal, @size: 14px, @lineHeight: 20px) {
+    font-family: "Georgia", Times New Roman, Times, sans-serif;
+    font-size: @size;
+    font-weight: @weight;
+    line-height: @lineHeight;
+  }
+  .monospace(@weight: normal, @size: 12px, @lineHeight: 20px) {
+    font-family: "Monaco", Courier New, monospace;
+    font-size: @size;
+    font-weight: @weight;
+    line-height: @lineHeight;
+  }
+}
+
+// Grid System
+.container {
+  width: @siteWidth;
+  margin: 0 auto;
+  .clearfix();
+}
+.columns(@columnSpan: 1) {
+  display: inline;
+  float: left;
+  width: (@gridColumnWidth * @columnSpan) + (@gridGutterWidth * (@columnSpan - 1));
+  margin-left: @gridGutterWidth;
+  &:first-child {
+    margin-left: 0;
+  }
+}
+.offset(@columnOffset: 1) {
+  margin-left: (@gridColumnWidth * @columnOffset) + (@gridGutterWidth * (@columnOffset - 1)) !important;
+}
+
+// Border Radius
+.border-radius(@radius: 5px) {
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+
+// Drop shadows
+.box-shadow(@shadow: 0 1px 3px rgba(0,0,0,.25)) {
+  -webkit-box-shadow: @shadow;
+  -moz-box-shadow: @shadow;
+  box-shadow: @shadow;
+}
+
+// Transitions
+.transition(@transition) {
+	-webkit-transition: @transition;
+	-moz-transition: @transition;
+	transition: @transition;
+}
+
+// CSS3 Content Columns
+.content-columns(@columnCount, @columnGap: 20px) {
+	-webkit-column-count: @columnCount;
+	-webkit-column-gap: @columnGap;
+	-moz-column-count: @columnCount;
+	-moz-column-gap: @columnGap;
+	column-count: @columnCount;
+	column-gap: @columnGap;
+}
+
+// Buttons
+.button(@color: #f5f5f5, @textColor: #333, @textShadow: 0 1px 1px rgba(255,255,255,.75), @fontSize: 13px, @padding: 9px 15px 10px, @borderRadius: 6px) {
+  display: inline-block;
+  #gradient > .vertical(@color,darken(saturate(@color,10),10));
+  padding: @padding;
+  text-shadow: @textShadow;
+  color: @textColor;
+  font-size: @fontSize;
+  line-height: 20px;
+  .border-radius(@borderRadius);
+  @shadow: inset 0 1px 0 rgba(255,255,255,.2), inset 0 -1px 0 rgba(0,0,0,.2), 0 1px 2px rgba(0,0,0,.25);
+  .box-shadow(@shadow);
+  &:hover {
+    background-position: 0 -15px;
+    color: @textColor;
+    text-decoration: none;
+  }
+}
+
+// Add an alphatransparency value to any background or border color (via Elyse Holladay)
+#translucent {
+  .background(@color: @white, @alpha: 1) {
+    background-color: hsla(hue(@color), saturation(@color), lightness(@color), @alpha);
+	}
+	.border(@color: @white, @alpha: 1) {
+		border-color: hsla(hue(@color), saturation(@color), lightness(@color), @alpha);
+		background-clip: padding-box;
+	}
+}
+
+// Gradients
+#gradient {
+  .horizontal (@startColor: #555, @endColor: #333) {
+    background-color: @endColor;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, right top, from(@startColor), to(@endColor)); /* Konqueror */
+    background-image: -moz-linear-gradient(left, @startColor, @endColor); /* FF 3.6+ */
+    background-image: -ms-linear-gradient(left, @startColor, @endColor); /* IE10 */
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, @startColor), color-stop(100%, @endColor)); /* Safari 4+, Chrome 2+ */
+    background-image: -webkit-linear-gradient(left, @startColor, @endColor); /* Safari 5.1+, Chrome 10+ */
+    background-image: -o-linear-gradient(left, @startColor, @endColor); /* Opera 11.10 */
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",@startColor,@endColor)); /* IE6 & IE7 */
+    -ms-filter: %("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",@startColor,@endColor); /* IE8+ */
+    background-image: linear-gradient(left, @startColor, @endColor); /* the standard */
+  }
+  .vertical (@startColor: #555, @endColor: #333) {
+    background-color: @endColor;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(@startColor), to(@endColor)); /* Konqueror */
+    background-image: -moz-linear-gradient(@startColor, @endColor); /* FF 3.6+ */
+    background-image: -ms-linear-gradient(@startColor, @endColor); /* IE10 */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @startColor), color-stop(100%, @endColor)); /* Safari 4+, Chrome 2+ */
+    background-image: -webkit-linear-gradient(@startColor, @endColor); /* Safari 5.1+, Chrome 10+ */
+    background-image: -o-linear-gradient(@startColor, @endColor); /* Opera 11.10 */
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",@startColor,@endColor)); /* IE6 & IE7 */
+    -ms-filter: %("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",@startColor,@endColor); /* IE8+ */
+    background-image: linear-gradient(@startColor, @endColor); /* the standard */
+  }
+  .directional (@startColor: #555, @endColor: #333, @deg: 45deg) {
+    background-color: @endColor;
+    background-repeat: repeat-x;
+    background-image: -moz-linear-gradient(@deg, @startColor, @endColor); /* FF 3.6+ */
+    background-image: -ms-linear-gradient(@deg, @startColor, @endColor); /* IE10 */
+    background-image: -webkit-linear-gradient(@deg, @startColor, @endColor); /* Safari 5.1+, Chrome 10+ */
+    background-image: -o-linear-gradient(@deg, @startColor, @endColor); /* Opera 11.10 */
+    background-image: linear-gradient(@deg, @startColor, @endColor); /* the standard */
+  }
+  .vertical-three-colors(@startColor: #00b3ee, @midColor: #7a43b6, @colorStop: 0.5, @endColor: #c3325f) {
+    background-color: @endColor;
+    background-repeat: no-repeat;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), color-stop(@colorStop, @midColor), to(@endColor));
+    background-image: -webkit-linear-gradient(@startColor, color-stop(@colorStop, @midColor), @endColor);
+    background-image: -moz-linear-gradient(@startColor, color-stop(@midColor, @colorStop), @endColor);
+  }
+}
+
+
+// Opacity
+.opacity(@opacity: 100) {
+	filter: e(%("alpha(opacity=%d)", @opacity));
+	-khtml-opacity: @op / 100;
+	-moz-opacity: @op / 100;
+	opacity: @op / 100;
+}
+
+// CSS3 Flexible Box Module
+#flexbox {
+  // #flexbox > .display-box; must be used along with other flexbox mixins
+  .display-box { 
+    display: -moz-box;
+    display: -webkit-box;
+    display: box;
+  }
+  // Box align [ start | end | center | baseline | stretch ]
+  .box-align(@alignment: stretch) {
+    -moz-box-align: @alignment;
+    -webkit-box-align: @alignment;
+    box-align: @alignment;
+  }
+  // Box direction [ normal | reverse | inherit ]
+  .box-direction(@direction: normal) {
+    -moz-box-direction: @direction;
+    -webkit-box-direction: @direction;
+    box-direction: @direction;
+  }
+  // Box flex [ integer ]
+  .box-flex(@flex: 0) {
+    -moz-box-flex: @flex;
+    -webkit-box-flex: @flex;
+    box-flex: @flex;
+  }
+  // Box flex group [ integer ]
+  .box-flex-group(@group: 1) {
+    -moz-box-flex-group: @group;
+    -webkit-box-flex-group: @group;
+    box-flex-group: @group;
+  }
+  // Box orientation [ horizontal | vertical | inline-axis | block-axis | inherit ]
+  .box-orient(@orientation: horizontal) {
+    -moz-box-orient: @orientation;
+    -webkit-box-orient: @orientation;
+    box-orient: @orientation;
+  }
+  // Box ordinal group [ integer ]
+  .box-ordinal-group(@group: 1) {
+    -moz-box-ordinal-group: @group;
+    -webkit-box-ordinal-group:@group;
+    box-flex-ordinal-group: @group;
+  }
+  // Box pack  [ start | end | center | justify ]
+  .box-pack(@pack: start) {
+    -moz-box-pack: @pack;
+    -webkit-box-pack: @pack;
+    box-pack: @pack;
+  }
+}
