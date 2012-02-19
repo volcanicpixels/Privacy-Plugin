@@ -109,7 +109,7 @@ $thePlugin->_settings()
 		->setName( __( "Make RSS Feeds public", $pluginSlug ) )
 		->setType( "checkbox" )
 		->setDefault( "off" )
-		->setHelp( __( "When enabled, the RSS feed will be publicly available", $pluginSlug ) )
+		->setHelp( __( "When enabled, the RSS feed (which contains post content) will be publicly available", $pluginSlug ) )
 ;
 
 /*
