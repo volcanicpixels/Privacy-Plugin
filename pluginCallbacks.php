@@ -1,11 +1,11 @@
 <?php
 class private_blog_callbacks extends lavaBase
 {
-    function lavaConstruct()
-    {
+	function lavaConstruct()
+	{
 		$this->translation();
-    }
-
+	}
+	
 	function init() {
 		$hookTag = "settingInnerPre";
 		$this->addFilter( "{$hookTag}-tag/password-label", "addLabelHtml" );
@@ -59,7 +59,11 @@ class private_blog_callbacks extends lavaBase
 			$this->addWPAction( $hookTags, "disableRssFeed", 1, true );
 		}
 
-		$this->addLogoutLink();
+		$is_enabled = $this->_settings()->fetchSetting( "enabled" )->getValue();
+
+		if( $is_enabled == "on" ) {
+			$this->addLogoutLink();
+		}
 	}
 
 

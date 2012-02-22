@@ -86,6 +86,7 @@ background: #fff url('images/dk_arrows.png') 213px center no-repeat;
   border-radius: 0 0 5px 5px;
   -moz-border-radius: 0 0 5px 5px;
   -webkit-border-radius: 0 0 5px 5px;
+  z-index: 20;
 }
   .dk_options a {
     background-color: #fff;

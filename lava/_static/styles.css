@@ -318,6 +318,7 @@ ul.nav:hover li.active:hover a {
   -moz-border-radius: 3px;
   border-radius: 3px;
   color: white;
+  line-height: 14px;
 }
 .lava-btn.lava-btn-action.lava-btn-action-large {
   padding: 20px 0px;
@@ -732,10 +733,25 @@ ul.nav:hover li.active:hover a {
 .setting[data-type="timeperiod"] .setting-inner .setting-control .input-cntr {
   width: 80px;
 }
+.setting[data-type="skin"] .setting-inner .setting-control .skin-thumb {
+  position: relative;
+}
 .setting[data-type="skin"] .setting-inner .setting-control .skin-thumb img {
   float: left;
   margin-right: 30px;
   position: relative;
+  width: 600px;
+  height: 300px;
+}
+.setting[data-type="skin"] .setting-inner .setting-control .skin-thumb .shadow {
+  -webkit-box-shadow: inset 0px 0px 9px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: inset 0px 0px 9px rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0px 0px 9px rgba(0, 0, 0, 0.6);
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 300px;
+  width: 600px;
 }
 .setting[data-type="skin"] .setting-inner .setting-control .skin-thumb .actions {
   float: left;

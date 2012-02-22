@@ -58,7 +58,7 @@ class lavaSkinsCallback extends lavaSettingsCallback
 	function addSkinsUx( $settingControl, $theSetting )
     {
         $settingControl = '<div class="js-fallback">' . $settingControl . ' </div>';
-		$settingControl .= '<div class="skin-thumb"><img alt="Skin Thumbnail" /><div class="actions"><div class="lava-btn lava-btn-action-large lava-btn-action lava-btn-action-blue lava-btn-show-underground">' . __( "Change Skin", $this->_framework() ) . '</div></div></div>';
+		$settingControl .= '<div class="skin-thumb"><img alt="Skin Thumbnail" /><div class="shadow"></div><div class="actions"><div class="lava-btn lava-btn-action-large lava-btn-action lava-btn-action-blue lava-btn-show-underground">' . __( "Change Skin", $this->_framework() ) . '</div></div></div>';
         
         //add ux cntr, put in the labels, js will handle the rest
         

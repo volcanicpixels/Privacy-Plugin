@@ -272,7 +272,7 @@ function restartStickyTop()
 	var topPosition = jQuery('#wpbody').offset();//work out how far from top it should be positioned so it doesn't cover the admin bar
 	topPosition = topPosition.top;
 
-	jQuery('.lava-sticky-top').each(function(){
+	jQuery('html.cssanimations .lava-sticky-top').each(function(){
 		var offset = jQuery(this).removeClass('sticky').offset();
 		jQuery(this).attr( 'data-sticky-offset', offset.top - topPosition );
 		jQuery(this).attr( 'data-sticky-leftposition', leftPosition );
@@ -284,7 +284,7 @@ function restartStickyTop()
 
 function refreshStickyTop()
 {
-	jQuery('.lava-sticky-top').each(function(){
+	jQuery('html.cssanimations .lava-sticky-top').each(function(){
 		var offset = jQuery(this).attr('data-sticky-offset');//distance between object and top of document
 		var targetOffset = jQuery(document).scrollTop();
 		var leftPosition = jQuery(this).attr('data-sticky-leftposition');
@@ -303,7 +303,7 @@ function refreshStickyTop()
 function restartStickyBottom()
 {
 	var leftPosition = jQuery('#adminmenuback').outerWidth();
-	jQuery('.lava-sticky-bottom').each(function(){
+	jQuery('html.cssanimations .lava-sticky-bottom').each(function(){
 		var offset = jQuery(this).removeClass('sticky').offset();
 		var targetOffset = jQuery('body').height() - jQuery(this).outerHeight() + 5;
 
@@ -317,7 +317,7 @@ function restartStickyBottom()
 
 function refreshStickyBottom()
 {
-	jQuery('.lava-sticky-bottom').each(function(){
+	jQuery('html.cssanimations .lava-sticky-bottom').each(function(){
 		var offset = jQuery(this).attr('data-sticky-offset');
 		var targetOffset = jQuery(document).scrollTop() + parseInt(jQuery(this).attr('data-sticky-target'));
 		var leftMargin = jQuery(this).attr('data-sticky-leftposition');

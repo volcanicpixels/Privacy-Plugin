@@ -361,6 +361,7 @@ ul.nav {
 		border: 1px solid transparent;
 		.border-radius(3px);
 		color: white;
+		line-height: 14px;
 
 		&.lava-btn-action-large {
 			padding: 20px 0px;
@@ -690,12 +691,25 @@ ul.nav {
 		.setting-inner {
 			.setting-control {
 				.skin-thumb {
+					position: relative;
 					img {
 						float: left;
 						margin-right: 30px;
 						position: relative;
+						width: 600px;
+						height: 300px;
 
 					}
+
+					.shadow {
+						.box-shadow( inset 0px 0px 9px rgba(0,0,0,0.6) );
+						position: absolute;
+						left: 0px;
+						top:0px;
+						height: 300px;
+						width: 600px;
+					}
+
 					.actions {
 						float: left;
 						width: 300px;
