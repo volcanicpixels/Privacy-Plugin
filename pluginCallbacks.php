@@ -60,8 +60,9 @@ class private_blog_callbacks extends lavaBase
 		}
 
 		$is_enabled = $this->_settings()->fetchSetting( "enabled" )->getValue();
+		$add_logout = $this->_settings()->fetchSetting( "logout_link" )->getValue();
 
-		if( $is_enabled == "on" ) {
+		if( $is_enabled == "on" and $add_logout == "on" ) {
 			$this->addLogoutLink();
 		}
 	}
@@ -342,7 +343,7 @@ class private_blog_callbacks extends lavaBase
 			foreach ( $menus as $menu_maybe ) {
 				if ( $menu_items = wp_get_nav_menu_items($menu_maybe->term_id) ) {
 					$menu = $menu_maybe;
-					$this->_settings()->fetchSetting( "logout_link_menu" )->addSettingOption( $menu->slug, $menu->name )->removeTag( "options-available" );
+					$this->_settings()->fetchSetting( "logout_link_menu" )->addSettingOption( $menu->slug, $menu->name )->removeTag( "options-available" )->addTag("hidden");
 					$valueArray[] = $menu->slug;
 					$defaultValue = $menu->slug;
 					break;
@@ -350,7 +351,7 @@ class private_blog_callbacks extends lavaBase
 			}
 		} else if( $counter == 1 ) {
 			//if there is only one then no need to give option
-			$this->_settings()->fetchSetting( "logout_link_menu" )->removeTag( "options-available" );
+			$this->_settings()->fetchSetting( "logout_link_menu" )->removeTag( "options-available" )->addTag("hidden");
 		}
 		$currentValue = $this->_settings()->fetchSetting( "logout_link_menu" )->setDefault( $defaultValue )->getValue();
 		if( !in_array( $currentValue, $valueArray ) ) {

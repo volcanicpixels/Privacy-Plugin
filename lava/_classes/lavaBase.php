@@ -299,7 +299,7 @@ class lavaBase
 	}
 
 
-	function addFilter( $hookTags, $methodNames = "", $priority = 10 ) {
+	function addFilter( $hookTags, $methodNames = "", $priority = 10, $args = 1 ) {
 
 		if( !is_array( $hookTags ) ) {
 			$hookTags = array( $hookTags );
@@ -314,7 +314,7 @@ class lavaBase
 				if( empty( $_methodName) ) {
 					$_methodName = $hookTag;
 				}
-				add_filter( $this->_slug( $hookTag ), array( $this, $_methodName ), $priority );
+				add_filter( $this->_slug( $hookTag ), array( $this, $_methodName ), $priority, $args );
 			}
 		}
 	}

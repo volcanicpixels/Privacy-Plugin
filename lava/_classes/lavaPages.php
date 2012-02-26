@@ -25,7 +25,7 @@ class lavaPages extends lavaBase
 {
     protected $adminPages = array();
     protected $defaultPage;
-    public $styles = array(), $scripts = array(), $externalStyles = array(), $externalScripts = array();
+    public $styles = array(), $scripts = array();
     
     /**
     * lavaPages::lavaConstruct()
@@ -39,14 +39,15 @@ class lavaPages extends lavaBase
         $this->addStyle( $this->_slug( "lavaStyles" ), "lava/_static/styles.css" );
         $this->addStyle( $this->_slug( "dropkick" ), "lava/_static/dropkick.css" );
 
-        $this->addScript( $this->_slug( "lavaScripts" ), "lava/_static/scripts.js" );
-        $this->addScript( $this->_slug( "dropkick" ), "lava/_static/dropkick.js" );
+        $this->addScript( $this->_slug( "lavaScripts" ), "lava/_static/scripts.js", array( "jquery" ) );
+        $this->addScript( $this->_slug( "dropkick" ), "lava/_static/dropkick.js", array( "jquery" ) );
         $this->addScript( $this->_slug( "modernizr" ), "lava/_static/modernizr.js" );
-        $this->addScript( $this->_slug( "tiptip" ), "lava/_static/tiptip.js" );
-        $this->addScript( $this->_slug( "jquery-color" ), "lava/_static/jquery.color.js" );
-        $this->addScript( $this->_slug( "jquery-color" ), "lava/_static/jquery.resize.js" );
+        $this->addScript( $this->_slug( "tiptip" ), "lava/_static/tiptip.js", array( "jquery" ) );
+        $this->addScript( $this->_slug( "jquery-color" ), "lava/_static/jquery.color.js", array( "jquery" ) );
+        $this->addScript( $this->_slug( "jquery-resize" ), "lava/_static/jquery.resize.js", array( "jquery" ) );
+        $this->addScript( $this->_slug( "jquery-fileupload") , "lava/_static/jquery.fileupload.js", array( "jquery", "jquery-ui-core", "jquery-ui-widget", $this->_slug( "jquery-iframe-transport" ) ) );
+        $this->addScript( $this->_slug( "jquery-iframe-transport" ), "lava/_static/jquery.iframe-transport.js", array( "jquery" ) );
 
-        $this->addStyle( "lobster", "http://fonts.googleapis.com/css?family=Lobster", true );
         
         add_action( "admin_enqueue_scripts", array( $this, "registerIncludes" ) );
 
@@ -289,80 +290,60 @@ class lavaPages extends lavaBase
 
 
 
-    function addStyle( $name, $path = "", $external = false )
-    {
-        if( true == $external)
-        {
-            $this->externalStyles[ $name ] = $path;
-        }
-        else
-        {
-            $this->styles[ $name ] = $path;
-        }
-        return $this;
-    }
+	function addStyle( $name, $path = "" )
+	{
+		$include = array(
+			'path' => $path
+		);
 
-    function addScript( $name, $path = "", $external = false )
-    {
-        if( true == $external)
-        {
-            $this->externalScripts[ $name ] = $path;
-        }
-        else
-        {
-            $this->scripts[ $name ] = $path;
-        }
-        return $this;
-    }
+		$this->styles[ $name ] = $include;
+		return $this;
+	}
 
-    //@deprecated
+	function addScript( $name, $path = "", $dependencies = array() )
+	{
+		$include = array(
+			'path' => $path,
+			'dependencies' => $dependencies
+		);
+
+		$this->scripts[ $name ] = $include;
+		return $this;
+	}
+
     /**
-     * lavaPages::registerScripts()
+     * lavaPages::registerIncludes()
      * 
      * @return void
      */
     function registerIncludes()
     {
-        if( $this->_settings()->config( "CUSTOM_STYLES" == true ) )
-        {
-            $this->addStyle( $this->_slug( "custom-styles" ), "includes/style.css" );
-        }
-        if( $this->_settings()->config( "CUSTOM_SCRIPTS" == true ) )
-        {
-            $this->addScript( $this->_slug( "custom-scripts" ), "includes/scripts.js" );
-        }
-        foreach( $this->scripts as $name => $path )
-        {
-            if( !empty( $path ) )
-            {
-                wp_register_script( $name, plugins_url( $path, $this->_file() ) );
-            }
-        }
-        foreach( $this->styles as $name => $path )
-        {
-            if( !empty( $path ) )
-            {
-                wp_register_style( $name, plugins_url( $path, $this->_file() ) );
-            }
-        }
-        //exit;
-        
-        //do external includes
-        foreach( $this->externalScripts as $name => $path )
-        {
-            if( !empty( $path ) )
-            {
-                wp_register_script( $name, $path );
-            }
-        }
-        foreach( $this->externalStyles as $name => $path )
-        {
-            if( !empty( $path ) )
-            {
-                wp_register_style( $name, $path );
-            }
-        }
-    }
+		foreach( $this->scripts as $name => $include )
+		{
+			$path         = $include['path'];
+			$dependencies = $include['dependencies'];
+
+			if( !empty( $path ) )
+			{
+				if( strpos( $path, 'http' ) === false ) {
+					$path = plugins_url( $path, $this->_file() );
+				}
+				wp_register_script( $name, $path, $dependencies );
+			}
+		}
+		foreach( $this->styles as $name => $include )
+		{
+			$path = $include['path'];
+
+			if( !empty( $path ) )
+			{
+				if( strpos( $path, "http" ) === false ) {
+					$path = plugins_url( $path, $this->_file() );
+				}
+				wp_register_style( $name, $path );
+			}
+		}
+	}
 
 
 

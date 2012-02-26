@@ -46,6 +46,10 @@ class lavaSkins extends lavaBase
 				->setDefault( 'default' );
     }
 
+    function init() {
+    	$this->parseSkins();
+    }
+
 
     function parseSkins()
     {
@@ -153,6 +157,7 @@ class lavaSkins extends lavaBase
 		{
 			return $this->skins[$dir];
 		}
+		return $this;
 	}
 
     function fetchSkins()

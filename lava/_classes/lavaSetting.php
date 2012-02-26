@@ -265,9 +265,12 @@ class lavaSetting extends lavaBase
      */
     function removeTag( $tag )
     {
-        unset( $this->tags[ $tag ] );
+        if( !empty( $tag ) ) {
+            unset( $this->tags[ $tag ] );
 
-        return $this->_settings( false )->_removeTag( $tag, $this->key, $this->who );
+            $this->_settings( false )->_removeTag( $tag, $this->key, $this->who );
+        }
+        return $this->_settings( false );
     }
     
 
@@ -628,7 +631,7 @@ class lavaSetting extends lavaBase
 
             $postSettingStart = '<div class="post-setting clearfix">';
             $postSettingEnd ='</div>';
-        $settingEnd = '</div>';
+        $settingEnd = '<div style="clear:both;"></div></div>';
         
         $settingFull = 
             "

@@ -39,6 +39,7 @@ class lavaPlugin
         $this->pluginName = $pluginName;
         $this->pluginVersion = $pluginVersion;
         $this->pluginSlug = strtolower( str_replace( " ", "_", $pluginName ) );
+        $this->pluginCallbacks = null;
         
         spl_autoload_register( array( $this, "__autoload" ) );
         $filename = dirname( $pluginFile ).'/pluginCallbacks.php';
@@ -47,27 +48,9 @@ class lavaPlugin
             include( $filename );
             $className = $this->_slug( "callbacks" );
             $this->pluginCallbacks = $this->_new( $className );
-
-			$autoHooks = array(
-				"init" => "init",
-				"admin_init" => "adminInit"
-			);
-
-			foreach( $autoHooks as $hookTag => $actions ) {
-				if( !is_array( $actions ) ) {
-					$actions = array( $actions );
-				}
-				foreach( $actions as $action ) {
-					if( method_exists( $this->pluginCallbacks, $action ) ) {
-						$callback = array( $this->pluginCallbacks, $action ); 
-						add_action( $hookTag, $callback );
-					}
-				}
-			}
         }
 
-		$callback = array( $this->_skins(), "parseSkins" );
-		add_action( 'init', $callback );
+        $this->_misc();//initialise this class
     }
     
     /**
@@ -240,6 +223,18 @@ class lavaPlugin
         {
             return $this->$pointer;
         }
+    }
+
+    /**
+     * _ajax function.
+     * 
+     * @return lavaAjaxHandlers
+     * 
+     * @since 1.0.0
+     */
+    function _ajax( $reset = true )
+    {
+        return $this->_handle( "AjaxHandlers", $reset );
     }
     
     /**

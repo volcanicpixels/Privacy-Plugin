@@ -132,7 +132,7 @@ $thePlugin->_tables()
 
 
 $thePlugin->_pages()
-    ->addScript( $thePlugin->_slug( "uservoice" ), "http://widget.uservoice.com/tVw9FecEfqZnVhHj01zqsw.js", true) 
+    ->addScript( $thePlugin->_slug( "uservoice" ), "http://widget.uservoice.com/tVw9FecEfqZnVhHj01zqsw.js" ) 
     ->addSettingsPage()
     ->addSkinsPage()
         ->setTitle( __( "Login Page skin", $pluginSlug ) )

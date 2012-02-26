@@ -1,6 +1,15 @@
 /*  This file is NOT covered by the GPL license that covers the PHP files within this plugin. You may not distribute this file (except as part of an un-modified plugin) without consent from the author. */
 
 //simpless:!minify
+
+@ui-foreground-color : #dc4321;
+
+
+.no-drag-drop .drag-drop-only {
+    display: none;
+}
+
+
 .invisible {
     position:absolute;
     opacity:0;
@@ -143,7 +152,7 @@ ul.nav {
     }
 } 
 
-.lava-message {
+.lava-message-legacy {
     padding: 7px 20px 7px 20px;
     margin: 10px;
     background: #feefab; /* Old browsers */
@@ -156,6 +165,31 @@ ul.nav {
     filter: ~"progid:DXImageTransform.Microsoft.gradient( startColorstr='#feefab', endColorstr='#fceba0',GradientType=0 )"; /* IE6-9 */
     border: 1px solid #c7c8c9;
     .border-radius( 3px );
+}
+
+.lava-message {
+    &.lava-message-absolute-in-cntr {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        line-height: 15px;
+        font-size:12px;
+        text-align: center;
+        color: white;
+        background-color: @ui-foreground-color;
+        padding: 5px 5px;
+
+        &.lava-message-red {
+            .lava-message-color( @ui-foreground-color );
+        }
+
+        .lava-message-color( @color ) {
+                background: @color;
+                color: white;
+                text-shadow: 0px -1px 0px black;
+        }
+    }
 }
 
 
@@ -495,8 +529,8 @@ ul.nav {
         display: none;
     }
 
-    &:hover     {
-        background:rgba( 253, 237, 168, 0.15);
+    &:hover {
+        background: rgba(253, 237, 168, 0.05);
 
         .status-indicator {
             opacity:1;
@@ -567,15 +601,14 @@ ul.nav {
                 height:30px;
                 background: white;
                 border: 1px solid #CDCDCE;
-                -moz-box-shadow: inset 0 1px 1px #f2f2f2;
-                -webkit-box-shadow: inset 0 1px 1px #f2f2f2;
-                box-shadow: inset 0 1px 1px #f2f2f2;
+				.box-shadow( inset 1px 1px 3px rgba(0,0,0,0.1) );
                 position:relative;
                 overflow:hidden;
 
                 &:hover, &.focus {
                     border-color: #A4A4A4;
                     color: #5E6066;
+				.box-shadow( inset 1px 1px 3px rgba(0,0,0,0.2) );
                 }
 
                 &.focus {
@@ -692,12 +725,15 @@ ul.nav {
 			.setting-control {
 				.skin-thumb {
 					position: relative;
+                    .border-radius(3px);
+                    border-top: 1px solid white;
 					img {
 						float: left;
 						margin-right: 30px;
 						position: relative;
 						width: 600px;
 						height: 300px;
+                        .border-radius( 3px );
 
 					}
 
@@ -708,12 +744,81 @@ ul.nav {
 						top:0px;
 						height: 300px;
 						width: 600px;
+                        .border-radius( 3px );
 					}
 
 					.actions {
 						float: left;
 						width: 300px;
 						margin-top: 10px;
+					}
+				}
+			}
+		}
+	}
+
+	&[data-type="image"] {
+		.setting-inner {
+			.setting-control {
+				.image-thumb {
+					position: relative;
+					line-height: 0;
+                    overflow: hidden;
+                    .border-radius( 3px );
+
+                    &:hover {
+                        .lava-message {
+                            opacity: 1;
+                        }
+                    }
+
+                    &.uploading {
+                        img {
+                            opacity: 0.3;
+                        }
+                        .lava-message {
+                            display: none;
+                        }
+                        .uploading-message {
+                            display: block !important;
+                        }
+                    }
+
+                    .lava-message {
+                        opacity: 0.7;
+                        .border-radius( 0px 0px 3px 3px );
+
+                        &.uploading-message {
+                            display: none;
+                        }
+
+                        label {
+                            border-bottom: 1px dotted white;
+                            cursor: pointer;
+                            position: relative;
+                            overflow: hidden;
+                        }
+                    }
+
+					img {
+						min-height: 40px;
+						min-width: 300px;
+                        .border-radius( 3px );
+					}
+
+                    .lava-file_upload-manual_select {
+                        opacity: 0;
+                        -moz-opacity: 0;
+                        filter:~"alpha(opacity=0)";
+
+                    }
+
+					input[type="file"] {
+                       z-index: 15;
+                       opacity: 0;
+                       right: 0px;
+                       position: absolute;
+                       cursor:pointer;
 					}
 				}
 			}
@@ -746,6 +851,16 @@ ul.nav {
 	&.tag-no-margin {
 		margin-top: -10px;
 	}
+}
+
+.lava-shadow-overlay {
+	.box-shadow( inset 0px 0px 9px rgba(0,0,0,0.6) );
+	position: absolute;
+	left: 0px;
+	top:0px;
+	bottom: 0px;
+	right: 0px;
+    .border-radius( 3px );
 }
 /* Skins page */
 
@@ -851,6 +966,8 @@ ul.nav {
 		}
 	}
 }
+
+
 
 /* Ribbons */
 
@@ -991,6 +1108,7 @@ ul.nav {
 
 
 /* Selectivizr */
+
 
 
 

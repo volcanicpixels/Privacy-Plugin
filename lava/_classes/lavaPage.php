@@ -23,8 +23,8 @@
  */
 class lavaPage extends lavaBase
 {
-    public $multisiteSupport = false;//Whether the page should appear in the network page
-    
+    public $multisiteSupport = false;//Whether the page should appear in the network sidebar
+    public $styles = array(), $scripts = array();
     
     /**
     * lavaPage::lavaConstruct()
@@ -55,23 +55,23 @@ class lavaPage extends lavaBase
             add_action( "load-{$pageHook}", array( $this, "loadPage" ) );
         }
     }
-    
-    function get( $what )
-    {
-        return $this->$what;
-    }
 
-    
-    function getUrl()
-    {
-        $slug = $this->get( "slug" );
-        if( defined( 'WP_NETWORK_ADMIN' ) and WP_NETWORK_ADMIN == true )
-        {
-            //if we are in the network admin then make sure it is a network link
-            return network_admin_url( "admin.php?page={$slug}");
-        }
-        return admin_url( "admin.php?page={$slug}");
-    }
+	function get( $what )
+	{
+		return $this->$what;
+	}
+
+	
+	function getUrl()
+	{
+		$slug = $this->get( "slug" );
+		if( defined( 'WP_NETWORK_ADMIN' ) and WP_NETWORK_ADMIN == true )
+		{
+			//if we are in the network admin then make sure it is a network link
+			return network_admin_url( "admin.php?page={$slug}");
+		}
+		return admin_url( "admin.php?page={$slug}");
+	}
     
     function setCapability( $capability )
     {
@@ -119,14 +119,6 @@ class lavaPage extends lavaBase
             wp_enqueue_style( $name );
         }
         foreach( $this->_pages()->scripts as $name => $notNeeded )
-        {
-            wp_enqueue_script( $name );
-        }
-        foreach( $this->_pages()->externalStyles as $name => $notNeeded )
-        {
-            wp_enqueue_style( $name );
-        }
-        foreach( $this->_pages()->externalScripts as $name => $notNeeded )
         {
             wp_enqueue_script( $name );
         }

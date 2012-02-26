@@ -4,9 +4,12 @@ jQuery(document).ready(function(){
     jQuery('.js-only').removeClass('js-only');
 	jQuery('.js-fallback').hide();
     jQuery('select').dropkick();
+    dragAndDrop();
 
 	bindSticky();
 	bindButtons();
+    bindImageUpload();
+    bindImageChange();
 
     prettifyCheckboxes();
     prettifyPasswords();
@@ -19,6 +22,22 @@ jQuery(document).ready(function(){
 	jQuery( '.tiptip' ).tipTip({'delay':0});
     jQuery( '.tiptip-right' ).tipTip({'defaultPosition':'right','delay':0});
 });
+
+function dragAndDrop() {
+    jQuery('html').addClass("no-drag-drop");
+    if( typeof(DataTransfer) != 'undefined' ) {//stupid opera
+        if( typeof(DataTransfer) != undefined ) {
+            if ("files" in DataTransfer.prototype) {
+               jQuery('html').addClass("drag-drop").removeClass("no-drag-drop");
+            }
+        }
+    } else {//WebKit
+        if(RegExp(" AppleWebKit/").test(navigator.userAgent)) {
+            jQuery('html').addClass("drag-drop").removeClass("no-drag-drop");
+        }
+    }
+        
+}
 
 
 function prettifyCheckboxes()
@@ -137,6 +156,13 @@ function prettifyTimePeriods()
             jQuery(this).parents('.setting-control').find('input[data-actual="true"]').val( quantity * multiplier );
             
         });
+    });
+}
+
+function bindImageChange() {
+    jQuery('.setting.type-image input[data-actual="true"]').change(function(){
+        var url = jQuery(this).val();
+        jQuery(this).parents('.image-thumb').find('img').attr('src', url);
     });
 }
 
@@ -264,6 +290,12 @@ function bindSticky()
 	});
 	setTimeout( "restartStickyBottom()", 1000);
 	setTimeout( "restartStickyTop()", 1000);
+}
+
+function bindImageUpload() {
+    jQuery('.setting.type-image .lava-file_upload-manual_select').bind('fileuploaddone', function (e, data) {
+        alert('bob');
+    });
 }
 
 function restartStickyTop()
