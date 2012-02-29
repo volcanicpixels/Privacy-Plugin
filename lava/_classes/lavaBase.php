@@ -147,7 +147,11 @@ class lavaBase
         {
             $this->chain[ $handle ] = $context;
         }
-        return $this->chain[ $handle ];
+        if( array_key_exists($handle, $this->chain) ) {
+            return $this->chain[ $handle ];
+        } else {
+            return $this;
+        }
     }
 
     /**

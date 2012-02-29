@@ -46,7 +46,7 @@ class lavaSettings extends lavaBase
         $default = array(
             "use_globals" => false
         );
-        $networkOptions = get_site_option( "config", $default , $use_cache );
+        $networkOptions = get_site_option( "config", $default );
 
         if( $networkOptions['use_globals'] == true)
         {

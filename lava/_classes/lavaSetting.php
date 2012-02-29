@@ -55,6 +55,10 @@ class lavaSetting extends lavaBase
         $this->dataTags = array();
     }
 
+    function addPresetSkinSetting( $slug ) {
+        die('asasas');
+    }
+
     /**
      * lavaSetting::setType( $type )
      *  Sets the type of the setting (text, password, timeperiod etc.)

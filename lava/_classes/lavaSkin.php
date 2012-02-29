@@ -105,8 +105,11 @@ class lavaSkin extends lavaBase
 
     function addPresetSkinSetting( $slug ) {
         $theSetting = "";
-        switch( $slug){
-
+        switch( $slug ){
+            case "custom_css":
+                die('asd');
+                $theSetting = $this->addSkinSetting( "custom_css" )->type('code')->bindData( "syntax-highlighting", "css" );
+            break;
         }
         return $theSetting;
     }

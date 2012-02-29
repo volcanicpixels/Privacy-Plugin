@@ -15,6 +15,5 @@ $thePlugin->_skins()
         ->setName( __( "Background Colour", $thePlugin->_slug() ) )
         ->setType( "color" )
         ->setDefault( "#F9F9F9" )
-    ->addPresetSkinSetting( "custom_css" )
 ;
 ?>
