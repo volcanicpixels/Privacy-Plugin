@@ -236,7 +236,7 @@ class lavaPage extends lavaBase
                 }
             }
         }
-
+        $page_hook = $this->pageHook;
         $notifications = apply_filters( "lava_notifications-{$page_hook}", $notifications );
         
         foreach( $notifications as $notification )

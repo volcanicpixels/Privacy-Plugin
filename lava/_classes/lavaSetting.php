@@ -30,7 +30,9 @@ class lavaSetting extends lavaBase
      * @property $properties - an array of properties that may be type specific (like: maxsize for uploads)
      * @property $validation - an array of key=>value pairs where the key is the name of the validation (e.g. email) and the value is a callback that will process the validation upon submission
      * 
-     */ 
+     */
+
+    public $name, $help;
     
     /**
      * lavaSetting::lavaConstruct( $name, $who )
@@ -726,16 +728,17 @@ class lavaSetting extends lavaBase
                 $settingControl = "<input class='js-fallback' data-actual='true' id='{$settingInputID}' type='text' name='{$settingInputName}' value='{$settingValue}' />";
             break;
             case "checkbox":
+                $checked = "";
                 if( "on" == $settingValue )
                 {
                     $checked = 'checked="checked"';
                 }
-                $settingControl .= "<input id='{$settingInputID}-backup' type='hidden' name='{$settingInputName}' value='off' />";
+                $settingControl = "<input id='{$settingInputID}-backup' type='hidden' name='{$settingInputName}' value='off' />";
                 $settingControl .= "<input data-actual='true' {$checked} id='{$settingInputID}' type='checkbox' name='{$settingInputName}' value='on' />";
             break;
 
             case "password":
-                $settingControl .= "<input placeholder='{$settingPlaceholder}' data-actual='true' id='{$settingInputID}' type='password' name='{$settingInputName}' value='{$settingValue}' />";
+                $settingControl = "<input placeholder='{$settingPlaceholder}' data-actual='true' id='{$settingInputID}' type='password' name='{$settingInputName}' value='{$settingValue}' />";
             break;
 
             case "timeperiod":

@@ -152,7 +152,7 @@ class lavaSettingsCallback extends lavaBase
      */
     function addPasswordWrapper( $settingControl, $theSetting )
     {
-        $placeholder = 'placeholder="'. $theSetting->properties['placeholder'] .'"';
+        $placeholder = 'placeholder="'. $theSetting->getProperty( "placeholder" ) .'"';
         $settingControl =  '<div class="input-cntr show-status clearfix" data-show="password">'.
                                 '<div class="validation" data-state="not-invoked"></div>'.
                                 '<input '.$placeholder.' type="text" class="password-show" value="' . $theSetting->getValue( true ) . '"/>'.
@@ -178,7 +178,7 @@ class lavaSettingsCallback extends lavaBase
         $settingInputName = "{$pluginSlug}[{$settingWho}/{$settingKey}]";
         $settingInputID = "{$pluginSlug}-{$settingWho}-{$settingKey}";
 
-        $placeholder = 'placeholder="'. $theSetting->properties['placeholder'] .'"';
+        $placeholder = 'placeholder="'. $theSetting->getProperty( "placeholder" ) .'"';
         $settingControl =  '<div class="input-cntr show-status clearfix">'.
                                 '<div class="validation" data-state="not-invoked"></div>'.
                                 '<input id="' . $settingInputID . '" name="' . $settingInputName . '"  '.$placeholder.' type="text" value="' . $theSetting->getValue( true ) . '"/>'.
@@ -225,7 +225,7 @@ class lavaSettingsCallback extends lavaBase
         $theInput = '<input data-file_input_class="' . $fileInputClass . '" data-form_data=\'' . $formData . '\' class="' . $fileInputClass . ' lava-file_upload-manual_select" id="' . $settingUploadInputID . '" type="file" name="' . $settingUploadInputName . '" />';
         $theLabel = '</span><label for="' . $settingUploadInputID . '">' . $theInput;
 
-        $placeholder = 'placeholder="'. $theSetting->properties['placeholder'] .'"';
+        $placeholder = 'placeholder="'. $theSetting->getProperty( "placeholder" ) .'"';
         $settingControl =  '<label for="' . $settingUploadInputID . '" ><div class="image-thumb lava-file_upload lava-file_upload-dropzone show-status clearfix">'.
 								'<img src="' . $settingValue . '" />'.
                                 '<div class="lava-message lava-message-absolute-in-cntr lava-message-red lava-message-html5"><span class="drag-drop-only">' .
