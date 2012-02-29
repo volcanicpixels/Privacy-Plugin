@@ -105,6 +105,7 @@ class lavaSettings extends lavaBase
         return $this;
     }
 
+
     /**
      * lavaSettings::returnSetting()
      * 
@@ -137,6 +138,13 @@ class lavaSettings extends lavaBase
             return array();
         }
         return $this->settings[ $who ];
+    }
+
+    function fetchSettingsWithTag( $tag, $who = "settings" ) {
+        if(array_key_exists($who, $this->settingsIndexes) and array_key_exists("tags", $this->settingsIndexes[ $who ]) and array_key_exists($tag, $this->settingsIndexes[ $who ][ "tags" ]) ) {
+            return $this->settingsIndexes[ $who ][ "tags" ][ $tag ];
+        }
+        return array();
     }
 
     /**

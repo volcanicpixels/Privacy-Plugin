@@ -717,7 +717,10 @@ class lavaSetting extends lavaBase
                     $settingControl .= "<input type='radio' name='{$settingInputName}' value='{$option}' />";
                 }
             break;
-
+            case "color"://Bloody American spelling
+            case "colour":
+                $settingControl = "<input class='js-fallback' data-actual='true' id='{$settingInputID}' type='text' name='{$settingInputName}' value='{$settingValue}' />";
+            break;
             case "checkbox":
                 if( "on" == $settingValue )
                 {

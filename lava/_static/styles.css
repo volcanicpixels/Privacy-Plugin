@@ -159,6 +159,14 @@ ul.nav:hover li.active:hover a {
   background-color: #dc4321;
   padding: 5px 5px;
 }
+.lava-message.lava-message-absolute-in-cntr.bottom-rounded {
+  border-radius: 0px 0px 3px 3px;
+  -moz-border-radius: 0px 0px 3px 3px;
+  -ms-border-radius: 0px 0px 3px 3px;
+  -o-border-radius: 0px 0px 3px 3px;
+  -moz-border-radius: 0px 0px 3px 3px;
+  border-radius: 0px 0px 3px 3px;
+}
 .lava-message.lava-message-absolute-in-cntr.lava-message-red {
   background: #dc4321;
   color: white;
@@ -840,6 +848,8 @@ ul.nav:hover li.active:hover a {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  position: relative;
+  top: -2px;
 }
 .setting[data-type="image"] .setting-inner .setting-control .image-thumb img {
   min-height: 40px;
@@ -862,6 +872,34 @@ ul.nav:hover li.active:hover a {
   right: 0px;
   position: absolute;
   cursor: pointer;
+}
+.setting[data-type="color"] .setting-inner .setting-control .color-preview {
+  position: relative;
+  width: 400px;
+  height: 100px;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: white;
+}
+.setting[data-type="color"] .setting-inner .setting-control .color-preview .lava-shadow-overlay {
+  cursor: pointer;
+}
+.setting[data-type="color"] .setting-inner .setting-control .color-preview .color-hex {
+  position: absolute;
+  left: 150px;
+  right: 150px;
+  top: 25px;
+  bottom: 45px;
+  line-height: 30px;
+  text-align: center;
+  color: white;
+  text-shadow: 0px 0px 3px black;
+  font-size: 23px;
+  font-family: Courier;
 }
 .setting[data-status="refresh-blink"] .status-indicator {
   background: #fdeeab;
@@ -890,6 +928,14 @@ ul.nav:hover li.active:hover a {
   -o-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+}
+.lava-shadow-overlay.bottom-rounded {
+  border-radius: 0px 0px 3px 3px;
+  -moz-border-radius: 0px 0px 3px 3px;
+  -ms-border-radius: 0px 0px 3px 3px;
+  -o-border-radius: 0px 0px 3px 3px;
+  -moz-border-radius: 0px 0px 3px 3px;
+  border-radius: 0px 0px 3px 3px;
 }
 /* Skins page */
 .skin-selector .skin {

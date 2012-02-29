@@ -6,7 +6,8 @@
         <meta charset="utf-8" />
         <title>{{ environment.blog_name }} | Login</title>
 		<link rel="stylesheet" type="text/css" href="{{ environment.static_url }}/styles.css" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>		{{ skin_actions.head }}
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		{{ skin_actions.head }}
     </head>
     <body class="{{ body_class }}" >
 		<div class="notice logout-message">
@@ -20,7 +21,7 @@
 			</div>
 		</div>
 		{{ skin_actions.notices }}
-        <div class="logo"></div>
+        <div class="logo" style="background-image:url({{ settings.logo }})"></div>
 		<div class="login-form">
 			<form method="post" action="">
 				{% for input in plugin_vars.form_inputs %}

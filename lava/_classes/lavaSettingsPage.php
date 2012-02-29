@@ -9,6 +9,7 @@ class lavaSettingsPage extends lavaPage
         $this->saveSettings();
         $this->resetSettings();
 		add_action( $this->_slug( "toolbar" ), array($this, "toolbarButtons") );
+        $this->addAction( "toolbarButtons" );
         //queue notifications
         //do redirect
     }
@@ -27,10 +28,19 @@ class lavaSettingsPage extends lavaPage
         foreach( $hiddenForms as $form )
         {
             ?>
-            <form id="<?php echo $form['id'] ?>" class="invisible">
-                <?php foreach( $form['fields'] as $field ): ?>
-                    <input type="hidden" name="<?php echo $field['name'] ?>" value="<?php echo $field['value'] ?>" />
+            <form id="<?php echo $form['id'] ?>" class="invisible" method="post">
+                <?php foreach( $form['fields'] as $name => $value ): ?>
+                    <input class="lava-<?php echo $name ?>" type="hidden" name="<?php echo $name ?>" value="<?php echo $value ?>" />
                 <?php endforeach; ?>
+                <?php
+                     wp_nonce_field();
+                    foreach( $form['capabilities'] as $capability => $name): 
+                    if( current_user_can( $capability ) )
+                    {
+                        $action = $this->_slug( $name );
+                        wp_nonce_field( $action, $name, false );
+                    }
+                endforeach; ?>
             </form>
             <?php
         }
@@ -162,8 +172,8 @@ class lavaSettingsPage extends lavaPage
 	{
 		?>
 		<div class="toolbar-block toolbar-overground js-only">
-			<button class="lava-btn lava-btn-action lava-btn-inline lava-btn-action-red		lava-btn-form-submit" data-form="lava-settings-form"><?php _e( "Save Settings", $this->_framework() ) ?></button>
-			<button class="lava-btn lava-btn-action lava-btn-inline lava-btn-action-white	lava-btn-form-submit lava-btn-confirmation not-implemented " data-form="lava-settings-reset"><?php _e( "Reset Settings", $this->_framework() ) ?></button>
+			<button class="lava-btn lava-btn-action lava-btn-inline lava-btn-action-red		lava-btn-form-submit" data-form="lava-settings-form" data-clicked-text="<?php _e( "Saving", $this->_framework() ) ?>"><?php _e( "Save Settings", $this->_framework() ) ?></button>
+			<button class="lava-btn lava-btn-action lava-btn-inline lava-btn-action-white	lava-btn-form-submit lava-btn-confirmation" data-form="lava-settings-reset" data-clicked-text="<?php _e( "Resetting", $this->_framework() ) ?>"><?php _e( "Reset Settings", $this->_framework() ) ?></button>
 		</div>
 		<?php
 	}

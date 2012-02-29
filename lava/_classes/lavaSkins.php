@@ -137,6 +137,10 @@ class lavaSkins extends lavaBase
         return $theSkin;
     }
 
+    function fetchSkin( $handle ) {
+    	return $this->getSkin( $handle );
+    }
+
 	function getSkin( $handle )
 	{
 		if( array_key_exists( $handle, $this->skins ) )
@@ -167,6 +171,11 @@ class lavaSkins extends lavaBase
 
 	function currentSkin() {
 		return $this->_settings()->fetchSetting( "skin", "skins" )->getValue();
+	}
+
+	function fetchCurrentSkin() {
+		$currentSkin = $this->currentSkin();
+		return $this->fetchSkin( $currentSkin );
 	}
 
 	function renderTemplate( $templateName ) {

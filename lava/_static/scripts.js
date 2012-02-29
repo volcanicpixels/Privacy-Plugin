@@ -15,6 +15,7 @@ jQuery(document).ready(function(){
     prettifyPasswords();
     prettifyTexts();
     prettifyTimePeriods();
+    prettifyColors();
 
     addResetSettings();
 	parseSkin();
@@ -24,6 +25,7 @@ jQuery(document).ready(function(){
 });
 
 function dragAndDrop() {
+    //works out whether there is drag and drop support
     jQuery('html').addClass("no-drag-drop");
     if( typeof(DataTransfer) != 'undefined' ) {//stupid opera
         if( typeof(DataTransfer) != undefined ) {
@@ -159,6 +161,15 @@ function prettifyTimePeriods()
     });
 }
 
+function prettifyColors() {
+    jQuery('.setting.type-color').each(function(){
+        jQuery(this).find('input[data-actual="true"]').change(function(){
+            var value = jQuery(this).val();
+            jQuery(this).parent().find('.color-preview').css("backgroundColor", value ).find('.color-hex').html( value );
+        }).change();//load current colour
+    });
+}
+
 function bindImageChange() {
     jQuery('.setting.type-image input[data-actual="true"]').change(function(){
         var url = jQuery(this).val();
@@ -256,6 +267,10 @@ function changeSettingValue(settingSelector, settingValue)
 function bindButtons() {
     //the save buttons
     jQuery(".lava-btn.lava-btn-form-submit").click(function(){
+        if( jQuery(this).hasAttr('data-clicked-text') ) {
+            var text = jQuery(this).attr('data-clicked-text');
+            jQuery(this).html( text );
+        }
         var formID = jQuery(this).attr( "data-form" );
 		jQuery("#" + formID).submit();
     });

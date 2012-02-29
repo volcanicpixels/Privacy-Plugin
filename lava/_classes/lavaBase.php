@@ -338,8 +338,9 @@ class lavaBase
         {
             foreach( $hooks as $hook )
             {
-                if( !empty($hook) )
-                {
+                if( $hook == " " ) {
+                    $hook = "";
+                } else {
                     $hook = "-".$hook;
                 }
 				if( $debug )
@@ -371,13 +372,9 @@ class lavaBase
         {
             foreach( $hooks as $hook )
             {
-                if( $hook == " " )
-                {
+                if( $hook == " " ) {
                     $hook = "";
-                    
-                }
-                else
-                {
+                } else {
                     $hook = "-".$hook;
                 }
                 //echo( $this->_slug( "{$hookTag}{$hook}{$suffix}" ). "<br/>" );

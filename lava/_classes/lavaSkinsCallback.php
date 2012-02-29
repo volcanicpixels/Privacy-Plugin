@@ -80,6 +80,7 @@ class lavaSkinsCallback extends lavaSettingsCallback
 		$envVars = apply_filters( $this->_slug( "_templateVars_env" ), array() );
 		$bodyClass = apply_filters( $this->_slug( "_templateVars_bodyClass" ), "" );
 		$pluginVars = apply_filters( $this->_slug( "_templateVars_pluginVars" ), array() );
+		$skinSettings = $this->_templateVars_skinSettings();
 		$pluginTranslation = $this->_skins()->getTranslations();
 
 
@@ -87,7 +88,8 @@ class lavaSkinsCallback extends lavaSettingsCallback
 			"environment" => $envVars,
 			"body_class" => $bodyClass,
 			"plugin_vars" => $pluginVars,
-			"plugin_translation" => $pluginTranslation
+			"plugin_translation" => $pluginTranslation,
+			"settings" => $skinSettings,
 		);
 
 		return $templateVars;
@@ -114,5 +116,18 @@ class lavaSkinsCallback extends lavaSettingsCallback
 		return $current;
 	}
 
+	function _templateVars_skinSettings() {
+		$settings = $this->_skins()->fetchCurrentSkin()->fetchSettings();
+		$currentSkinSlug = $this->_skins()->currentSkin();
+		$truncateLength = strlen($currentSkinSlug) + 1;
+		$settingsArray = array();
+		foreach( $settings as $setting ) {
+			$key = $setting->getKey();
+			$key = substr($key, $truncateLength);
+			$value = $setting->getValue();
+			$settingsArray[$key] = $value;
+		}
+		return $settingsArray;
+	}
 }
 ?>

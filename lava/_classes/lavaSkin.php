@@ -98,9 +98,17 @@ class lavaSkin extends lavaBase
     function addSkinSetting( $slug )
     {
         $slug = $this->slug . "-" . $slug;
-        $theSetting = $this->_settings()->withinContext( $this )->addSetting( $slug, "skins" )->bindData( "skin", $this->slug )->bindData( "setting-visibility", "visible" )->addTag( "setting-hidden" )->addTag( "skin-setting" );
+        $theSetting = $this->_settings()->withinContext( $this )->addSetting( $slug, "skins" )->bindData( "skin", $this->slug )->addTag( "skin-" . $this->slug )->bindData( "setting-visibility", "visible" )->addTag( "setting-hidden" )->addTag( "skin-setting" );
 
         return $theSetting;//put it in context of lavaSettings with lavaSetting as child and lavaSkin as parent
+    }
+
+    function addPresetSkinSetting( $slug ) {
+        $theSetting = "";
+        switch( $slug){
+
+        }
+        return $theSetting;
     }
 
     function skinPath( $append = "" )
@@ -128,5 +136,9 @@ class lavaSkin extends lavaBase
 	{
 		return $this->author;
 	}
+
+    function fetchSettings() {
+        return $this->_settings()->fetchSettingsWithTag( "skin-" . $this->slug, "skins" );
+    }
 }
 ?>

@@ -180,6 +180,10 @@ ul.nav {
         background-color: @ui-foreground-color;
         padding: 5px 5px;
 
+        &.bottom-rounded {
+            .border-radius( 0px 0px 3px 3px );
+        }
+
         &.lava-message-red {
             .lava-message-color( @ui-foreground-color );
         }
@@ -797,6 +801,8 @@ ul.nav {
                             cursor: pointer;
                             position: relative;
                             overflow: hidden;
+                            position: relative;
+                            top: -2px;
                         }
                     }
 
@@ -824,6 +830,38 @@ ul.nav {
 			}
 		}
 	}
+
+    &[data-type="color"] {
+        .setting-inner {
+            .setting-control {
+                .color-preview {
+                    position: relative;
+                    width: 400px;
+                    height: 100px;
+                    .border-radius(3px);
+                    background: white;
+
+                    .lava-shadow-overlay {
+                        cursor: pointer;
+                    }
+
+                    .color-hex {
+                        position: absolute;
+                        left: 150px;
+                        right: 150px;
+                        top: 25px;
+                        bottom: 45px;
+                        line-height:30px;
+                        text-align: center;
+                        color: white;
+                        text-shadow: 0px 0px 3px black;
+                        font-size: 23px;
+                        font-family: Courier;
+                    }
+                }
+            }
+        }
+    }
 
     /* statuses */
 
@@ -861,6 +899,10 @@ ul.nav {
 	bottom: 0px;
 	right: 0px;
     .border-radius( 3px );
+
+    &.bottom-rounded {
+        .border-radius(0px 0px 3px 3px);
+    }
 }
 /* Skins page */
 

@@ -259,7 +259,7 @@ class lavaPage extends lavaBase
 		?>
 		<div class="lava-toolbar lava-sticky-bottom <?php echo $this->runFilters( "toolbarClass" ) ?>">
 			<div class="inner">
-				<?php $this->runActions( "toolbar" ) ?>
+				<?php $this->runActions( "toolbarButtons" ) ?>
 			</div>
 		</div>
 		<?php
@@ -273,7 +273,7 @@ class lavaPage extends lavaBase
     function hookTags()
     {
         $hooks = array(
-            "",
+            " ",
             "slug/{$this->slug}",
             "multisiteSupport/{$this->multisiteSupport}"
         );
