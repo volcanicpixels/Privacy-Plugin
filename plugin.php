@@ -10,7 +10,7 @@ License: GPLv2
 */
 ?>
 <?php
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 include( dirname( __FILE__ ) ."/lava/lava.php" );
 
 $pluginName = "Private Blog";
