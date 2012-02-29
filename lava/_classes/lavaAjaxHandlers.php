@@ -21,8 +21,8 @@ class lavaAjaxHandlers extends lavaBase
 
     function addAdminAjaxHandlers() {
         $handlers = array(
-            "fileUpload",
-            "imageUpload"
+            "FileUpload",
+            "ImageUpload"
         );
 
         foreach( $handlers as $handler ) {
