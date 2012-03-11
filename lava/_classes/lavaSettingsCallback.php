@@ -48,6 +48,8 @@ class lavaSettingsCallback extends lavaBase
         add_filter( $this->_slug( "{$hookTag}-type/select" ), array( $this, "addSelectUx" ), 10, 2 );
 		$this->addFilter( "{$hookTag}-type/image", "addImageUx", 10, 2 );
         $this->addFilter( "{$hookTag}-type/color", "addColorUx", 10, 2 );
+        $this->addFilter( "{$hookTag}-type/code", "addCodeUx", 10, 2 );
+        $this->addFilter( "{$hookTag}-type/textarea", "addTextareaUx", 10, 2 );
 
         //settingsHiddenInputs
         $hookTag = "settingsHiddenInputs";
@@ -127,9 +129,9 @@ class lavaSettingsCallback extends lavaBase
             $minutesSelected = $selectedAttr;
             $theValue = round( $seconds / 60 );
         }
-        $settingControl .=  '<div class="input-cntr show-status clearfix js-only">'.
+        $settingControl .=  '<div class="input-cntr show-status clearfix js-only lava-focus-outer">'.
                                 '<div class="validation" data-state="not-invoked"></div>'.
-                                '<input class="time-period-ux" type="text" value="' . $theValue . '"/>'.
+                                '<input class="time-period-ux lava-focus-inner" type="text" value="' . $theValue . '"/>'.
                             '</div>'.
                             
                             '<select class="scale-selector js-only">'.
@@ -153,9 +155,9 @@ class lavaSettingsCallback extends lavaBase
     function addPasswordWrapper( $settingControl, $theSetting )
     {
         $placeholder = 'placeholder="'. $theSetting->getProperty( "placeholder" ) .'"';
-        $settingControl =  '<div class="input-cntr show-status clearfix" data-show="password">'.
+        $settingControl =  '<div class="input-cntr lava-focus-outer show-status clearfix" data-show="password">'.
                                 '<div class="validation" data-state="not-invoked"></div>'.
-                                '<input '.$placeholder.' type="text" class="password-show" value="' . $theSetting->getValue( true ) . '"/>'.
+                                '<input '.$placeholder.' type="text" class="password-show lava-focus-inner" value="' . $theSetting->getValue( true ) . '"/>'.
                                 $settingControl.
                             '</div>';
         return $settingControl;
@@ -179,9 +181,9 @@ class lavaSettingsCallback extends lavaBase
         $settingInputID = "{$pluginSlug}-{$settingWho}-{$settingKey}";
 
         $placeholder = 'placeholder="'. $theSetting->getProperty( "placeholder" ) .'"';
-        $settingControl =  '<div class="input-cntr show-status clearfix">'.
+        $settingControl =  '<div class="input-cntr show-status clearfix lava-focus-outer">'.
                                 '<div class="validation" data-state="not-invoked"></div>'.
-                                '<input id="' . $settingInputID . '" name="' . $settingInputName . '"  '.$placeholder.' type="text" value="' . $theSetting->getValue( true ) . '"/>'.
+                                '<input id="' . $settingInputID . '" class="lava-focus-inner" name="' . $settingInputName . '"  '.$placeholder.' type="text" value="' . $theSetting->getValue( true ) . '"/>'.
                             '</div>';
         return $settingControl;
     }
@@ -241,7 +243,8 @@ class lavaSettingsCallback extends lavaBase
     }
 
     function addColorUx( $settingControl, $theSetting ) {
-        $settingControl .= '<div class="color-preview">'.
+        $settingControl = '<div class="color-preview">'.
+                                $settingControl .
                                 '<div class="lava-message lava-message-absolute-in-cntr lava-message-red bottom-rounded">Click to change</div>' .
                                 '<div class="lava-shadow-overlay"></div>' .
                                 '<span class="color-hex"></span>' .
@@ -297,6 +300,29 @@ class lavaSettingsCallback extends lavaBase
 									$settingControl .= '<option ' . $selected . ' value="' . $option['value'] . '" >' . $option['name'] . '</option>';
 								}
 		$settingControl .='</select>';
+        return $settingControl;
+    }
+
+    function addCodeUx( $settingControl, $theSetting ) {
+        $settingVars = $theSetting->getVars();
+        extract( $settingVars );
+
+        $settingControl =   '<div class="lava-code-box lava-focus-outer show-status">'.
+                                '<div class="code-box-top"></div>'.
+                                '<div class="code-box-mid">'.
+                                    '<textarea data-actual="true" class="lava-code-textarea" id="' . $settingInputID . '" name="' . $settingInputName . '" >' . $settingValue . '</textarea>'.
+                                '</div>'.
+                                '<div class="code-box-bot"></div>'.
+                            '</div>';
+        return $settingControl;
+    }
+
+    function addTextareaUx( $settingControl, $theSetting ) {
+        $settingVars = $theSetting->getVars();
+        extract( $settingVars );
+
+        $settingControl = '<textarea data-actual="true" name="' . $settingInputName . '" id="' .  $settingInputID . '" >' . $settingValue . '</textarea>';
+
         return $settingControl;
     }
 

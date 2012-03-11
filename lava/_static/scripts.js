@@ -1,4 +1,5 @@
 var lavaAnimations = true;
+var codeBoxes = new Array();
 
 jQuery(document).ready(function(){
     jQuery('.js-only').removeClass('js-only');
@@ -10,15 +11,19 @@ jQuery(document).ready(function(){
 	bindButtons();
     bindImageUpload();
     bindImageChange();
+    bindFocus();
+    bindSettingToggle();
+
+    addResetSettings();
+    parseSkin();
 
     prettifyCheckboxes();
     prettifyPasswords();
     prettifyTexts();
     prettifyTimePeriods();
     prettifyColors();
+    prettifyCode();
 
-    addResetSettings();
-	parseSkin();
 
 	jQuery( '.tiptip' ).tipTip({'delay':0});
     jQuery( '.tiptip-right' ).tipTip({'defaultPosition':'right','delay':0});
@@ -79,19 +84,11 @@ function prettifyPasswords()
         jQuery(this).find( 'input[type="password"]' ).blur(function(){
             var password = jQuery(this).val();
             jQuery(this).siblings(".password-show").val(password);
-            jQuery(this).parent( '.input-cntr' ).removeClass( "focus" ).click(function(){
-                jQuery(this).find('input[type="password"]').focus();
-            });
 
-        }).focus(function(){
-            jQuery(this).parent( '.input-cntr' ).addClass( "focus" );
         });
         jQuery(this).find( ".password-show" ).blur(function(){
             var password = jQuery(this).val();
             jQuery(this).siblings('input[type="password"]').val(password);
-            jQuery(this).parent( '.input-cntr' ).removeClass( "focus" );
-        }).focus(function(){
-            jQuery(this).parent( '.input-cntr' ).addClass( "focus" );
         });
 
         jQuery(this).find( ".show-password-handle" ).click(function(){
@@ -165,8 +162,24 @@ function prettifyColors() {
     jQuery('.setting.type-color').each(function(){
         jQuery(this).find('input[data-actual="true"]').change(function(){
             var value = jQuery(this).val();
-            jQuery(this).parent().find('.color-preview').css("backgroundColor", value ).find('.color-hex').html( value );
-        }).change();//load current colour
+            jQuery(this).parents('.color-preview').css("backgroundColor", value ).find('.color-hex').html( value );
+        }).change().ColorPicker({
+    onShow: function (colpkr) {
+        jQuery(colpkr).fadeIn(500);
+        return false;
+    },
+    onHide: function (colpkr) {
+        jQuery(colpkr).fadeOut(500);
+        return false;
+    },
+    onChange: function (hsb, hex, rgb) {
+        console.log('asdss');
+        console.log(this);
+    }
+});;//load current colour
+        jQuery(this).find('.lava-shadow-overlay').click(function(){
+            jQuery(this).parents('.setting').find('input[data-actual="true"]').click();
+        });
     });
 }
 
@@ -307,9 +320,29 @@ function bindSticky()
 	setTimeout( "restartStickyTop()", 1000);
 }
 
+function bindSettingToggle() {
+    jQuery( '.setting.tag-setting-toggle input[data-actual="true"]').change(function(){
+        var item_to_toggle = jQuery(this).parents('.setting').attr('data-setting-toggle');
+        if( jQuery(this).hasAttr( "checked" ) ) {
+            jQuery('.setting[data-setting-key="' + item_to_toggle + '"]').removeClass( "lava-setting-toggle-hidden" );
+        } else {
+            jQuery('.setting[data-setting-key="' + item_to_toggle + '"]').addClass( "lava-setting-toggle-hidden" );
+        }
+        codeRefresh();//hack to fix code box issues
+    });
+}
+
 function bindImageUpload() {
     jQuery('.setting.type-image .lava-file_upload-manual_select').bind('fileuploaddone', function (e, data) {
         alert('bob');
+    });
+}
+
+function bindFocus() {
+    jQuery('input.lava-focus-inner').focus(function(){
+        jQuery(this).parents('.lava-focus-outer').addClass( "focus" );
+    }).blur(function(){
+        jQuery(this).parents('.lava-focus-outer').removeClass( "focus" );
     });
 }
 
@@ -411,5 +444,29 @@ function parseSkin() {
 
 	jQuery('.setting.tag-skin-setting').addClass( 'tag-setting-hidden' );
 	jQuery('.setting[data-skin="' + currentTheme + '"]').removeClass( 'tag-setting-hidden' );
+    codeRefresh();
+}
 
+function prettifyCode() {
+    jQuery('.lava-code-textarea').each(function(){
+        var myCodeMirror = CodeMirror.fromTextArea(jQuery(this)[0], {
+                lineWrapping: true,
+                matchBrackets: true,
+                indentUnit: 4,
+                indentWithTabs: true,
+                enterMode: "keep",
+                tabMode: "shift",
+                lineNumbers: true
+        });
+        codeBoxes.push(myCodeMirror);
+    })
+}
+
+function codeRefresh() {
+    for( i in codeBoxes ) {
+        var current_value = codeBoxes[i].getValue();
+        codeBoxes[i].setValue( "  " );
+        codeBoxes[i].refresh();
+        codeBoxes[i].setValue( current_value );
+    }
 }

@@ -103,10 +103,12 @@ class lavaSettingsPage extends lavaPage
                 {
                     $value = stripslashes( $value );
                     $settingArray = explode( "/", $setting );
-                    $this->_settings()
+                    if( $this->_settings()->settingExists( $settingArray[1], $settingArray[0] ) ): 
+                        $this->_settings()
                             ->fetchSetting( $settingArray[1], $settingArray[0] )
                                 ->updateValue( $value, true, true )
                     ;
+                    endif;
                 }
                 $this->_settings()->updateCache();
             }
@@ -160,6 +162,7 @@ class lavaSettingsPage extends lavaPage
                         delete_option( $this->_slug( "settings" ) );
                         delete_option( $this->_slug( "config" ) );
                         delete_option( $this->_slug( "messages" ) );
+                        delete_option( $this->_slug( "skins" ) );
                 }
             }
         

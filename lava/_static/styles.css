@@ -194,7 +194,7 @@ ul.nav:hover li.active:hover a {
   display: none;
 }
 .lava-content-cntr .lava-overground {
-  background: url(images/bg.png) repeat;
+  background: #fafafa;
   position: relative;
   overflow: visible;
 }
@@ -593,7 +593,7 @@ ul.nav:hover li.active:hover a {
 }
 /* WordPress elements */
 #wpwrap {
-  background: url(images/bg.png) repeat !important;
+  background: #fafafa;
 }
 /* Settings */
 .settings-wrap {
@@ -612,6 +612,9 @@ ul.nav:hover li.active:hover a {
 
 }
 .setting.tag-setting-hidden {
+  display: none;
+}
+.setting.lava-setting-toggle-hidden {
   display: none;
 }
 .setting:hover {
@@ -885,6 +888,14 @@ ul.nav:hover li.active:hover a {
   border-radius: 3px;
   background: white;
 }
+.setting[data-type="color"] .setting-inner .setting-control .color-preview input {
+  opacity: 0;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
 .setting[data-type="color"] .setting-inner .setting-control .color-preview .lava-shadow-overlay {
   cursor: pointer;
 }
@@ -901,6 +912,37 @@ ul.nav:hover li.active:hover a {
   font-size: 23px;
   font-family: Courier;
 }
+.setting[data-type="textarea"] .setting-inner .setting-control textarea {
+  min-width: 400px;
+  background: white;
+  -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  padding: 7px;
+  font-size: 13px;
+  line-height: 16px;
+  color: #888;
+}
+.setting[data-type="textarea"] .setting-inner .setting-control textarea:hover {
+  border-color: #A4A4A4;
+  color: #5E6066;
+  -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+.setting[data-type="textarea"] .setting-inner .setting-control textarea:focus {
+  outline: none;
+  border: 1px solid #4d90f0;
+}
+.setting[data-type="textarea"].tag-align-center textarea {
+  text-align: center;
+}
 .setting[data-status="refresh-blink"] .status-indicator {
   background: #fdeeab;
 }
@@ -912,6 +954,42 @@ ul.nav:hover li.active:hover a {
 }
 .setting.tag-no-margin {
   margin-top: -10px;
+}
+.lava-code-box {
+  width: 700px;
+  position: relative;
+  -webkit-box-shadow: inset 0px 0px 9px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: inset 0px 0px 9px rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0px 0px 9px rgba(0, 0, 0, 0.6);
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: white;
+  background-image: url(images/paper-gutter.png);
+  background-position: 35px 0px;
+  background-repeat: repeat-y;
+  padding: 0px 2px;
+}
+.lava-code-box.focus {
+  -webkit-box-shadow: inset 0px 0px 9px rgba(77, 144, 240, 0.8);
+  -moz-box-shadow: inset 0px 0px 9px rgba(77, 144, 240, 0.8);
+  box-shadow: inset 0px 0px 9px rgba(77, 144, 240, 0.8);
+  border: 1px solid #4d90f0;
+}
+.lava-code-box .code-box-top {
+  height: 30px;
+}
+.lava-code-box .code-box-mid {
+  background: url(images/paper-line.png);
+  background-position: top left;
+  background-repeat: repeat;
+  border-top: 1px solid #d3ebf7;
+}
+.lava-code-box .code-box-bot {
+  height: 20px;
 }
 .lava-shadow-overlay {
   -webkit-box-shadow: inset 0px 0px 9px rgba(0, 0, 0, 0.6);

@@ -57,10 +57,6 @@ class lavaSetting extends lavaBase
         $this->dataTags = array();
     }
 
-    function addPresetSkinSetting( $slug ) {
-        die('asasas');
-    }
-
     /**
      * lavaSetting::setType( $type )
      *  Sets the type of the setting (text, password, timeperiod etc.)
@@ -319,6 +315,14 @@ class lavaSetting extends lavaBase
         
         return $this->_settings( false );
     }
+
+    function settingToggle( $settingToToggle ) {
+        if( $this->hasTag( "skin-setting" ) ) {
+            $skinName = $this->getData( "skin" );
+            $settingToToggle = "{$skinName}-{$settingToToggle}";
+        }
+        return $this->addTag( "setting-toggle" )->bindData( "setting-toggle", $settingToToggle );
+    }
     
     
 
@@ -341,6 +345,15 @@ class lavaSetting extends lavaBase
         $this->dataTags[ $key ] = $value;
 
         return $this->_settings( false );
+    }
+
+    function getData( $key = null ) {
+        if( $key == null ) {
+            return $this->dataTags;
+        } else if( array_key_exists($key, $this->dataTags ) ) {
+            return $this->dataTags[ $key ];
+        }
+        return "";
     }
 
     /**
@@ -373,6 +386,26 @@ class lavaSetting extends lavaBase
             $this->_settings( false )->updateCache( $this->who );
         }
         return $this->_settings( false );
+    }
+
+    function getVars() {
+        $settingKey = $this->getKey();
+        $settingWho = $this->who;
+        $pluginSlug =  $this->_slug();
+        $settingInputName = "{$pluginSlug}[{$settingWho}/{$settingKey}]";
+        $settingInputID = "{$pluginSlug}-{$settingWho}-{$settingKey}";
+        $settingOptions = $this->getProperty( "setting-options" );
+        $settingValue = $this->getValue( true );
+
+        return array(
+            "settingKey" => $settingKey,
+            "settingWho" => $settingWho,
+            "pluginSlug" => $pluginSlug,
+            "settingInputName" => $settingInputName,
+            "settingInputID" => $settingInputID,
+            "settingValue" => $settingValue,
+            "settingOptions" => $settingOptions
+        );
     }
     
     /**
@@ -486,6 +519,15 @@ class lavaSetting extends lavaBase
         }
 
         return $formatted;
+    }
+
+    function hasTag( $tag ) {
+        $tags = $this->getTags();
+
+        if( array_key_exists($tag, $tags) ) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -725,7 +767,7 @@ class lavaSetting extends lavaBase
             break;
             case "color"://Bloody American spelling
             case "colour":
-                $settingControl = "<input class='js-fallback' data-actual='true' id='{$settingInputID}' type='text' name='{$settingInputName}' value='{$settingValue}' />";
+                $settingControl = "<input class='color-input' data-actual='true' id='{$settingInputID}' type='text' name='{$settingInputName}' value='{$settingValue}' />";
             break;
             case "checkbox":
                 $checked = "";
@@ -738,7 +780,7 @@ class lavaSetting extends lavaBase
             break;
 
             case "password":
-                $settingControl = "<input placeholder='{$settingPlaceholder}' data-actual='true' id='{$settingInputID}' type='password' name='{$settingInputName}' value='{$settingValue}' />";
+                $settingControl = "<input class='lava-focus-inner' placeholder='{$settingPlaceholder}' data-actual='true' id='{$settingInputID}' type='password' name='{$settingInputName}' value='{$settingValue}' />";
             break;
 
             case "timeperiod":

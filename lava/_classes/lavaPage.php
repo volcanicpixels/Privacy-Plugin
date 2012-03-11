@@ -39,12 +39,7 @@ class lavaPage extends lavaBase
         $this->setTitle( $slug );
         $this->setCapability( "manage_options" );
         $this->lavaCallReturn = $this->_pages( false );//prevents the parent losing control
-
-        add_action( "admin_init", array($this, "_registerActions") );
-        if( method_exists( $this, "registerActions" ) )
-        {
-            add_action( "admin_init", array($this, "registerActions") );
-        }
+        
     }
 
     function _registerActions()
@@ -53,6 +48,10 @@ class lavaPage extends lavaBase
         if( is_callable( array( $this, "loadPage" ) ) )
         {
             add_action( "load-{$pageHook}", array( $this, "loadPage" ) );
+        }
+        if( method_exists( $this, "registerActions" ) )
+        {
+            $this->registerActions();
         }
     }
 
@@ -108,6 +107,7 @@ class lavaPage extends lavaBase
         );
         $hook_suffix = $this->pageHook;
         add_action( "admin_print_styles-$hook_suffix", array( $this, "enqueueIncludes" ) );
+        $this->_registerActions();
     }
 
 

@@ -190,10 +190,9 @@ class lavaSettings extends lavaBase
      * 
      * @since 1.0.0
      */
-    function settingExists( $key )
+    function settingExists( $key, $who = "settings" )
     {
-        if( isset( $this->settings[ $key] ) )
-        {
+        if( array_key_exists( $who, $this->settings ) and array_key_exists( $key, $this->settings[ $who ] ) ) {
             return true;
         }
         return false;

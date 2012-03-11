@@ -107,8 +107,8 @@ class lavaSkin extends lavaBase
         $theSetting = "";
         switch( $slug ){
             case "custom_css":
-                die('asd');
-                $theSetting = $this->addSkinSetting( "custom_css" )->type('code')->bindData( "syntax-highlighting", "css" );
+                $theSetting = $this ->addSkinSetting( "enable_custom_css" )->setType('checkbox')->setName( __( "Enable Custom CSS", $this->_framework() ) )->settingToggle( "custom_css" )->setDefault( "off" )
+                                    ->addSkinSetting( "custom_css" )->setType('code')->bindData( "syntax-highlighting", "css" )->addTag("no-margin")->setDefault( '/* ' . __("This is where your custom css goes", $this->_framework() ) . ' */' );
             break;
         }
         return $theSetting;
