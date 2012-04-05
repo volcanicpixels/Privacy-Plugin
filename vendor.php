@@ -7,9 +7,14 @@ Add licensing to bar
 
 */
 class private_blog_vendor extends lavaExtension {
+
+	public $isLocal = false;
+	public $apiVersion = 1;
+
 	function init() {
 		$this->registerLicensingSettings();
 	}
+
 	function adminInit(){
 		$this->addAction( "ajaxChecks" );
 		$this->addAction( "lavaNav" );
@@ -20,7 +25,9 @@ class private_blog_vendor extends lavaExtension {
 				->addStyle( $this->_slug( "vendor_css" ), "_static/vendor.css" )
 		;
 		$this->_ajax()->addHandler( 'lavaVolcanicPixelsLicensingAjax' );
+
 	}
+
 
 	function doLicensingHooks() {
 		if( md5( $this->privateKey() ) != $this->publicKey() ) {
@@ -45,11 +52,7 @@ class private_blog_vendor extends lavaExtension {
 	}
 
 	function ajaxChecks(){
-		?>
-		<span class="ajax-check loading type-register tiptip" title="Registering..."></span>
-		<span class="ajax-check type-update hidden tiptip" title="Checking for update..."></span>
-		<span class="ajax-check loading type-licensing tiptip"  title="Checking license..."></span>
-		<?php
+		//these are now handled client side
 	}
 
 	function lavaNav(){
@@ -68,8 +71,7 @@ class private_blog_vendor extends lavaExtension {
 		<div class="premium-notice remove-for-trial">
 			<div class="premium-notice-inner">
 				<div class="premium-line">
-					<div class="lava-btn start-trial tiptip" title="Click to enter trial. In this mode you can try out premium features but cannot permanently save your settings.">Enter trial mode</div>
-					<div class="lava-btn get-premium-link tiptip" title="Click to purchase a license to permanently unlock premium features">Get premium</div>
+					<div class="lava-btn vendor-link get-premium-link tiptip" title="Click to purchase a license to permanently unlock premium features">Get premium</div>
 				</div>
 			</div>
 		</div>';
@@ -114,12 +116,36 @@ class private_blog_vendor extends lavaExtension {
 	}
 
 	function licensingFields() {
-		?>
-		<input type="hidden" class="vendor-input license-public" value="<?php  echo $this->_settings()->fetchSetting('license_public', 'vendor' )->getValue(); ?>"/>
-		<input type="hidden" class="vendor-input license-private" value="<?php  echo $this->_settings()->fetchSetting('license_private', 'vendor' )->getValue(); ?>"/>
-		<input type="hidden" class="vendor-input ajax-action" value="<?php  echo $this->_slug('licensing') ?>"/>
-		<input type="hidden" class="vendor-input ajax-nonce" value="<?php  echo wp_create_nonce( $this->_slug( "licensing" ) ); ?>"/>
-		<?php
+		$license_status = "free";
+		if( md5( $this->privateKey() ) == $this->publicKey() ) {
+			$license_status = "premium";
+		}
+		$lava_variables = array(
+			'package_slug' => $this->_slug(),
+			'package_version' => $this->_version(),
+			'install_id' => $this->getInstallId(),
+			'install_url' => get_home_url(),
+			'install_name' => get_bloginfo( 'name' ),
+			'private_key' => $this->getPrivateKey(),
+			'public_key' => $this->getPublicKey(),
+			'license_status' => $license_status,
+			'licensing_nonce' => wp_create_nonce( $this->_slug( "licensing" ) ),
+			'ajax_action' => $this->_slug('licensing'),
+			'vendor_url' => $this->getVendorUrl( 'api/' . $this->apiVersion . '/' )
+		);
+		foreach( $lava_variables as $variable_name => $variable_key ): 
+			?>
+				<input type="hidden" class="vendor-input" data-variable-name="<?php echo $variable_name ?>" value="<?php  echo $variable_key ?>"/>
+			<?php
+		endforeach;
+	}
+
+	function getPublickey() {
+		return $this->_settings()->fetchSetting('license_public', 'vendor')->getValue();
+	}
+
+	function getPrivateKey() {
+		return $this->_settings()->fetchSetting('license_private', 'vendor')->getValue();
 	}
 
 	function publickey() {
@@ -128,6 +154,18 @@ class private_blog_vendor extends lavaExtension {
 
 	function privateKey() {
 		return $this->_settings()->fetchSetting('license_private', 'vendor')->getValue();
+	}
+
+	function getInstallId() {
+		return md5( AUTH_SALT . get_home_url() );
+	}
+
+	function getVendorUrl( $append = "" ) {
+		if( $this->isLocal ) {
+			return "http://localhost:8082/" . $append;
+		} else {
+			return 'http://www.volcanicpixels.com/' . $append;
+		}
 	}
 }
 ?>

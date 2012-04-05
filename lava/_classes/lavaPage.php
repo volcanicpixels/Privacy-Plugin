@@ -176,10 +176,8 @@ class lavaPage extends lavaBase
                 <div id="icon-options-general" class="icon32"></div>
                 <h2>
                     <?php echo $pluginName; ?> <span class="version"><?php echo $pluginVersion; ?></span>
-                    <span class="ajax-checks">
-                    <!-- When no-update is implemented wrap this in an "if" or better implement a hook -->
+                    <span class="lava-ajax-checks">
                         <?php $this->runActions( "ajaxChecks" ); ?>
-                    <!--.ajax-checks END-->
                     </span>
                 </h2>
                 

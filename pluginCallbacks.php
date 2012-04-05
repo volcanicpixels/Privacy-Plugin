@@ -110,6 +110,33 @@ class private_blog_callbacks extends lavaBase
 
 	function adminInit() {
 		$this->logoutLinkBackend();
+		$this->copyLegacySettings();
+	}
+
+	function copyLegacySettings() {
+		$hasBeenCopied = get_option( $this->_slug( 'legacy' ) );
+
+		if( $hasBeenCopied == "done" ) {
+			return;
+		}
+
+		update_option( $this->_slug( 'legacy' ), 'done' );
+
+		$legacySettings = get_option( "password_protect_options", array() );
+
+		if( array_key_exists('password', $legacySettings) ) {
+			$this->_settings()->fetchSetting( 'password1_value' )->updateValue( $legacySettings['password'] );
+		}
+
+		for( $i = 1; $i <= 10; $i++ ) {
+			if( array_key_exists('password'.$i, $legacySettings) ) {
+				if( strlen( $legacySettings['password1'] ) > 0 ){
+					$this->_settings()->fetchSetting( 'password' . $i . '_value' )->updateValue( $legacySettings['password'.$i] );
+				}
+			}
+		}
+
+
 	}
 
 	function translation() {

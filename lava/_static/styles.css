@@ -759,12 +759,12 @@ body.lava-loading .lava-full-screen-loader {
   box-shadow: inset 0 1px 15px rgba(0, 0, 0, 0.08);
 }
 /* Ajax Checks */
-.ajax-checks {
+.lava-ajax-checks {
   display: inline-block;
   padding-left: 20px;
   height: 20px;
 }
-.ajax-checks .ajax-check {
+.lava-ajax-checks .ajax-blinker {
   display: inline-block;
   float: left;
   margin-left: 8px;
@@ -779,7 +779,7 @@ body.lava-loading .lava-full-screen-loader {
   -moz-border-radius: 8px;
   border-radius: 8px;
 }
-.ajax-checks .ajax-check.loading {
+.lava-ajax-checks .ajax-blinker[data-status="loading"] {
   background: #dcdcdc;
   animation: "ajax-check-loading" 0.5s infinite;
   -moz-animation: "ajax-check-loading" 0.5s infinite;
@@ -789,7 +789,7 @@ body.lava-loading .lava-full-screen-loader {
   /* Safari and Chrome */
 
 }
-.ajax-checks .ajax-check.complete {
+.lava-ajax-checks .ajax-blinker[data-status="success"] {
   background-color: #eaf9d8;
   animation: "ajax-check-complete" 2s 1;
   -moz-animation: "ajax-check-complete" 2s 1;
@@ -799,10 +799,10 @@ body.lava-loading .lava-full-screen-loader {
   /* Safari and Chrome */
 
 }
-.ajax-checks .ajax-check.complete:hover {
+.lava-ajax-checks .ajax-blinker[data-status="success"]:hover {
   background-color: #abea61;
 }
-.ajax-checks .ajax-check.error {
+.lava-ajax-checks .ajax-blinker[data-status="error"] {
   background-color: #ffc2c2;
   animation: "ajax-check-error" 2s 1;
   -moz-animation: "ajax-check-error" 2s 1;
@@ -812,10 +812,10 @@ body.lava-loading .lava-full-screen-loader {
   /* Safari and Chrome */
 
 }
-.ajax-checks .ajax-check.error:hover {
+.lava-ajax-checks .ajax-blinker[data-status="error"]:hover {
   background-color: #ff0000;
 }
-.ajax-checks .ajax-check.hidden {
+.lava-ajax-checks .ajax-blinker.hidden {
   display: none;
 }
 @-webkit-keyframes ajax-check-loading {

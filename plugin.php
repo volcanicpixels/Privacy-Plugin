@@ -1,20 +1,20 @@
 <?php
 /*
 Plugin Name: Private Blog
-Plugin URI: http://go.volcanicpixels.com/privacy-plugin/
+Plugin URI: http://www.volcanicpixels.com/password-protect-wordpress-plugin/
 Description: Private Blog is a wordpress plugin which allows you to password protect all of your wordpress blog including all posts and feeds with a single password.
-Version: 4.0 beta
+Version: 4.0
 Author: Daniel Chatfield
 Author URI: http://www.volcanicpixels.com
 License: GPLv2
 */
 ?>
 <?php
-error_reporting(E_ALL);//used for debug only (NOT PRODUCTION)
+//error_reporting(E_ALL);//used for debug only (NOT PRODUCTION)
 include( dirname( __FILE__ ) ."/lava/lava.php" );
 
 $pluginName = "Private Blog";
-$pluginVersion = "4.0 beta";
+$pluginVersion = "4.0";
 
 $thePlugin = lava::newPlugin( __FILE__, $pluginName, $pluginVersion );
 $pluginSlug = $thePlugin->_slug();

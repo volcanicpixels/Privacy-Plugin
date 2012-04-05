@@ -1,172 +1,242 @@
-var lava_api_version = 1;
-var lava_vendor_uri = "http://www.volcanicpixels.com/api/" + lava_api_version;
-
-if( location.href.indexOf('localhost') != -1 ){
-	lava_vendor_uri = "http://localhost:8082/api/" + lava_api_version;
-}
-var install_id = "DEVELOPMENTINSTALL2";
-var install_url = encodeURIComponent('http://localhost:31786/');
-var install_name = "WordPress Beta";
-var install_version = "4.0 beta";
-var package_slug = "private_blog";
-//lava_vendor_uri = 'http://localhost:8082/api/' + lava_api_version;
-
 jQuery(document).ready(function(){
-	//do register
+	bindChangeKey();
+	bindGetKey();
+	bindPurchaseKey();
+
+	doRegister();
+	doLicenseCheck();
 	
-
-	var the_url = lava_vendor_uri + '/register/'
-				+ '?install_id=' + install_id
-				+ '&installed_version=' + install_version
-				+ '&package_slug=' + package_slug
-				+ '&install_name='+ install_name
-				+ '&install_url=' + install_url
-	;
-	jQuery.getJSON( the_url, function(data){
-		if( data.status == "complete" ) {
-			jQuery('.ajax-check.type-register').removeClass( "loading" ).addClass( "complete" ).attr("title", "Registered").tipTip({'delay':0});
-		} else {
-			jQuery('.ajax-check.type-register').removeClass( "loading" ).addClass( "error" ).attr("title", "An error occured").tipTip({'delay':0});
-		}
-	});
-
-
-
-	showPremiumUI()
 })
 
-function showPremiumUI() {
-	jQuery('.setting.tag-is-premium .premium-notice').attr("title", "This is a premium feature, either enter trial mode or purchase a license to use.").tipTip({'delay':0});
+/* accessor methods (get) */
 
-	jQuery('.start-trial').click(function(){
-		enterTrialMode();
-	})
+function getLavaVariable( variableName ) {
+	return jQuery('input.vendor-input[data-variable-name="' + variableName + '"]').val();
+}
+
+function getPublicKey() {
+	return getLavaVariable( 'public_key' );
+}
+
+function getPrivateKey() {
+	return getLavaVariable( 'private_key' );
+}
+
+function getVendorUrl() {
+	return getLavaVariable( 'vendor_url' );
+}
+
+function getInstallId() {
+	return getLavaVariable( 'install_id' );
+}
+
+function getInstallVersion() {
+	return getLavaVariable( 'package_version' );
+}
+
+function getInstallUrl() {
+	return getLavaVariable( 'install_url' );
+}
+
+function getInstallName() {
+	return getLavaVariable( 'install_name' );
+}
+
+function getPackageSlug() {
+	return getLavaVariable( 'package_slug' );
+}
+
+/* accessor methods (set) */
 
 
-	jQuery('.get-premium-link').attr("href", "#unlock").click(function(){
-		showUnderground( "get-premium" );
-		var the_url = lava_vendor_uri + '/get_license_options/'
-				+ '?package_slug=' + package_slug
-		;
-		jQuery.getJSON( the_url, function(data){
-			jQuery('.underground-context-get-premium').removeClass('loading');
+function setLavaVariable( variableName, variableValue ) {
+	return jQuery('input.vendor-input[data-variable-name="' + variableName + '"]').val( variableValue );
+}
+
+function setPublicKey( public_key ) {
+	return setLavaVariable( 'public_key', public_key );
+}
+
+function setLavaVariable( variableName, variableValue ) {
+	return jQuery('input.vendor-input[data-variable-name="' + variableName + '"]').val( variableValue );
+}
+function setPrivateKey( private_key ) {
+	return setLavaVariable( 'private_key', private_key );
+}
+
+
+/* Dom manipulation */
+
+function createAjaxBlinker( method, title ) {
+	//remove any existing blinkers
+	jQuery('.lava-ajax-checks .ajax-blinker[data-method="' + method + '"]').remove();
+
+	jQuery('<span></span>').addClass('ajax-blinker').attr( 'title', title ).attr( 'data-method', method ).attr( 'data-status', 'loading' ).appendTo( '.lava-ajax-checks' ).tipTip({'delay':0});
+}
+
+function setAjaxBlinkerStatus( method, status, title ) {
+	var blinker = jQuery('.lava-ajax-checks .ajax-blinker[data-method="' + method + '"]').attr( 'data-status', status );
+
+	if( typeof(title) != "undefined" ) {
+		jQuery( blinker ).attr( "title", title ).tipTip( {'delay': 0} );
+	}
+}
+
+function showLavaLoader() {
+	jQuery('body').addClass('lava-loading');
+}
+
+function hideLavaLoader() {
+	jQuery('body').removeClass('lava-loading');
+}
+
+/* Event binders */
+
+function bindChangeKey() {
+	jQuery('.vendor-link.redeem-code-link').attr('href', '#redeem').click(function(){
+		var current_key = getPublicKey();
+
+		var userInput = prompt( 'Enter license key:', current_key );
+
+		if (userInput != null) {
+			setPublicKey(userInput);
+			doLicensePush();
+		}
+	});
+}
+
+function bindGetKey() {
+	jQuery('.vendor-link.get-premium-link').attr('href', '#purchase').click(function(){
+		showUnderground( 'get-premium' );
+		var method = 'get_license_options';
+		var request = doApiRequest( method ).success(function(data){
 			var license_types = data.licenses;
 			jQuery('.underground-context-get-premium .license-options').html('');
 			for( license_type in license_types) {
-				the_license = license_types[license_type];
-				var the_license = '<div class="license-option " data-price="' + the_license.price + '" data-product="' + license_type + '"><h3>' + the_license.name + '</h3><div class="description">' + the_license.description + '</div></div>';
-				jQuery('.underground-context-get-premium .license-options').append(the_license)
+				var the_license = license_types[license_type];
+				the_license = '<div class="license-option " data-price="' + the_license.price + '" data-product="' + license_type + '"><h3>' + the_license.name + '</h3><div class="description">' + the_license.description + '</div></div>';
+				jQuery('.underground-context-get-premium .license-options').append(the_license);
+				jQuery('.underground-context-get-premium .license-options .license-option:first-child').addClass('selected');
+				jQuery('.license-option').click(function(){
+					jQuery('.license-option').removeClass('selected');
+					jQuery(this).addClass( 'selected');
+				});
 			}
-			jQuery('.underground-context-get-premium .license-options .license-option:first-child').addClass('selected');
-			jQuery('.license-option').click(function(){
-				jQuery('.license-option').removeClass('selected');
-				jQuery(this).addClass( 'selected');
-			});
-		});
-
+		})
 	});
-	
+}
 
-	jQuery('.redeem-code-link').attr("href", "#verify").click(function(){
-		current_key = jQuery('.vendor-input.license-public').val();
-		userInput = prompt('Enter License key', current_key );
-		if (userInput != null) {
-			jQuery('.vendor-input.license-public').val(userInput);
-			checkLicense(false);
-		}
-	})
-
-
-	checkLicense(true);
-	
-
+function bindPurchaseKey() {
 	jQuery('.lava-btn.purchase-premium-button').click(function(){
 		jQuery(this).html(jQuery(this).attr("data-clicked-text") );
 
-		the_url = lava_vendor_uri + '/setup_payment/'
-				+ '?package_slug=' + package_slug
-				+ '&purchase_id=' + jQuery('.license-option.selected').attr('data-product');
-		jQuery.getJSON( the_url, function(data){
+		var method = "setup_payment";
+		var args = {
+			'purchase_id' : jQuery('.license-option.selected').attr('data-product')
+		};
+		var request = doApiRequest( method, args ).success(function(data){
 			location.href = data.checkout_url;
-		});
+		})
 	});
 }
 
-function enterTrialMode() {
-	jQuery('.remove-for-trial').remove()
-	jQuery('.setting.tag-is-premium').removeClass( 'tag-is-premium' );
-	jQuery('.started-trial').removeClass('hidden');
-	jQuery('.lava-form-purpose').val('trial');
-}
 
-function checkLicense( routine ) {
-	var license_pub = jQuery('.vendor-input.license-public').val();
-	jQuery('.ajax-check.type-licensing').show().removeClass( "complete" ).removeClass( "error" ).addClass('loading').attr("title", "Checking License...").tipTip({'delay':0});
-	if( license_pub.length == 0 ) {
-		jQuery('.ajax-check.type-licensing').hide();
-		if( routine ) {
-			console.log('just routine')
-			return;//no license
+
+
+/* Api Request functions  */
+
+function addDefaultArgs( args ) {
+	if( typeof( args ) == "undefined" ) {
+		args = {};
+	}
+
+	var default_args = {
+		'install_version': getInstallVersion(),
+		'package_slug': getPackageSlug()
+	}
+	for( arg_name in default_args ) {
+		if( ! args.hasOwnProperty( arg_name ) ) {
+			args[arg_name] = default_args[arg_name];
 		}
 	}
-	var installation_to_unlicense = jQuery(this).attr('data-installation_to_unlicense');
-	the_url = lava_vendor_uri + '/is_licensed/'
-				+ '?install_id=' + install_id
-				+ '&license_public=' + license_pub
-				+ '&installation_to_unlicense=' + installation_to_unlicense
-	;
 
-	if(routine){
-		//this is a routine license check (no changes were made) - if the license is alive then that is fine
-		jQuery.getJSON( the_url, function(data){
-			if( data.license_status == "alive" ) {
-				jQuery('.ajax-check.type-licensing').removeClass( "loading" ).addClass( "complete" ).attr("title", "License approved").tipTip({'delay':0});
-			} else if(data.license_status == "dead") {
-				jQuery('.ajax-check.type-licensing').removeClass( "loading" ).addClass( "error" ).attr("title", "License rejected").tipTip({'delay':0});
-				var action = jQuery('.vendor-input.ajax-action').val();
-				var nonce = jQuery('.vendor-input.ajax-nonce').val();
-				var the_url = ajaxurl + '?action=' + action + '&nonce=' + nonce 
-							+ '?private_key=' + ''
-							+ '&public_key=' + jQuery('.vendor-input.license-public').val();
-				;
-				alert( data.license_error_message );
-				var private_key = jQuery('.vendor-input.license-private').val();
-
-				if( private_key.length != 0 ) {//don't need to remove it if it isn't there
-					jQuery.getJSON( the_url, function(data){
-						location.reload();
-					});
-				}
-			}
-		});
-	} else {
-		jQuery('body').addClass( 'lava-loading' );
-		jQuery.getJSON( the_url, function(data){
-			if( data.license_status == "alive" ) {
-				jQuery('.ajax-check.type-licensing').removeClass( "loading" ).addClass( "complete" ).attr("title", "License approved").tipTip({'delay':0});
-				action = jQuery('.vendor-input.ajax-action').val();
-				nonce = jQuery('.vendor-input.ajax-nonce').val();
-				the_url = ajaxurl + '?action=' + action + '&nonce=' + nonce 
-							+ '&private_key=' + data.license_private
-							+ '&public_key=' + data.license_public
-				;
-
-				jQuery.getJSON( the_url, function(data){
-					location.reload();
-				});
-			} else if(data.license_status == "dead") {
-				jQuery('.ajax-check.type-licensing').removeClass( "loading" ).addClass( "error" ).attr("title", "License rejected").tipTip({'delay':0});
-				action = jQuery('.vendor-input.ajax-action').val();
-				nonce = jQuery('.vendor-input.ajax-nonce').val();
-				the_url = ajaxurl + '?action=' + action + '&nonce=' + nonce 
-							+ '&private_key=' + ''
-							+ '&public_key=' + jQuery('.vendor-input.license-public').val();
-				;
-				alert( data.license_error_message );
-				jQuery.getJSON( the_url, function(data){
-					location.reload();
-				});
-			}
-		});
-	}
+	return args;
 }
+
+function doRegister() {
+	var method = 'register';
+	var title = 'Registering ...'
+	//show status indicator
+	createAjaxBlinker( method, title );
+
+	var args = {
+		'install_url': getInstallUrl(),
+		'install_name': getInstallName()
+	};
+
+	var request = doApiRequest( method, args ).success(function(data){
+		setAjaxBlinkerStatus( method, "success", "Registered" );
+	})
+}
+
+function doLicenseCheck() {
+	var method = 'is_licensed';
+	var title = 'Checking license status ...'
+	//show status indicator
+	createAjaxBlinker( method, title );
+
+	var args = {
+		'public_key': getPublicKey(),
+		'private_key': getPrivateKey()
+	};
+
+	var request = doApiRequest( method, args ).success(function(data){
+		if( data.license_status == 'alive' || data.license_status == 'dead' ) {
+			if( data.public_key != getPublicKey() || data.private_key != getPrivateKey() ) {
+				setPublicKey( data.public_key );
+				setPrivateKey( data.private_key );
+				if( data.license_message.length > 0) {
+					alert( data.license_message );
+				}
+				doLicensePush();
+			}
+
+			if( data.license_status == 'alive' ) {
+				setAjaxBlinkerStatus( method, 'success', 'License accepted' );
+			} else if( data.license_status == 'dead' ) {
+				setAjaxBlinkerStatus( method, 'error', 'This installation is not licensed for premium features' )
+			}
+		}
+	})
+}
+
+function doLicensePush() {
+	showLavaLoader();
+	var request_url = ajaxurl 	+ '?action='+ getLavaVariable( 'ajax_action' )
+								+ '&nonce=' + getLavaVariable( 'licensing_nonce' )
+								+ '&public_key=' + getPublicKey()
+								+ '&private_key=' + getPrivateKey();
+
+	jQuery.getJSON( request_url ).success(function(){
+		location.reload();
+	}).error(function(){
+		alert('An error occured whilst pushing license to database');
+		location.reload();
+	});
+}
+
+
+function doApiRequest( method, args ) {
+	args = addDefaultArgs( args );
+	var request_url = getVendorUrl() + method + '/?install_id=' + getInstallId();
+
+	if( typeof(args) != "undefined" ) {
+		for( arg_name in args ) {
+			request_url += '&' + arg_name + '=' + args[arg_name];
+		}
+	}
+
+	return jQuery.getJSON( request_url );
+}
+
+

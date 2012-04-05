@@ -675,12 +675,12 @@ body.lava-loading {
 
 /* Ajax Checks */
 
-.ajax-checks {
+.lava-ajax-checks {
     display:inline-block;
     padding-left: 20px;
     height: 20px;
 
-    .ajax-check {
+    .ajax-blinker {
         display: inline-block;
         float: left;
         margin-left: 8px;
@@ -690,12 +690,12 @@ body.lava-loading {
         margin-top: 5px;
         .border-radius(8px);
 
-        &.loading {
+        &[data-status="loading"] {
             background: rgb(220,220,220);
             .animation( "ajax-check-loading", 0.5s, infinite );
         }
 
-        &.complete {
+        &[data-status="success"] {
             background-color: #eaf9d8;
             .animation( "ajax-check-complete", 2s, 1 );
 
@@ -704,7 +704,7 @@ body.lava-loading {
             }
         }
 
-        &.error {
+        &[data-status="error"] {
             background-color: #ffc2c2;
             .animation( "ajax-check-error", 2s, 1 );
 
