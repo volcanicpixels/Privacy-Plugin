@@ -1,3 +1,4 @@
+/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */
 .setting.tag-multi-password {
   margin-top: -10px;
 }
@@ -75,4 +76,27 @@
   transition: all 250ms ease-in-out;
   cursor: pointer;
   min-width: 28px;
+}
+.lava-table-viewer[data-data-source="access_logs"] .cell-id,
+.lava-table-viewer[data-data-source="access_logs"] .cell-password,
+.lava-table-viewer[data-data-source="access_logs"] .cell-password_color,
+.lava-table-viewer[data-data-source="access_logs"] .cell-user_agent {
+  display: none;
+}
+.lava-table-viewer[data-data-source="access_logs"] .cell-timestamp {
+  text-align: center;
+}
+.lava-table-viewer[data-data-source="access_logs"] .cell-action.value-loginAccepted, .lava-table-viewer[data-data-source="access_logs"] .cell-action.value-doLogout, .lava-table-viewer[data-data-source="access_logs"] .cell-action.value-loginRejected {
+  text-align: center;
+  color: white;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
+}
+.lava-table-viewer[data-data-source="access_logs"] .cell-action.value-doLogout {
+  background: #69AEB4;
+}
+.lava-table-viewer[data-data-source="access_logs"] .cell-action.value-loginAccepted {
+  background-color: #7cd05b;
+}
+.lava-table-viewer[data-data-source="access_logs"] .cell-action.value-loginRejected {
+  background: red;
 }

@@ -2,6 +2,9 @@ var lavaAnimations = true;
 var codeBoxes = new Array();
 
 jQuery(document).ready(function(){
+    addResetSettings();
+    bindSkin();
+
     jQuery('.js-only').removeClass('js-only');
 	jQuery('.js-fallback').hide();
     jQuery('select').dropkick();
@@ -13,9 +16,8 @@ jQuery(document).ready(function(){
     bindImageChange();
     bindFocus();
     bindSettingToggle();
-
-    addResetSettings();
-    parseSkin();
+    bindAutoResize();
+    bindDataSource();
 
     prettifyCheckboxes();
     prettifyPasswords();
@@ -93,14 +95,14 @@ function prettifyPasswords()
 
         jQuery(this).find( ".show-password-handle" ).click(function(){
 			var currentPassword = jQuery(this).parents('.setting').find('.input-cntr').attr("data-show", "text").find( '.password-show' ).val();//hack to prevent browser from selecting text in field
-			jQuery(this).parents('.setting').find( '.password-show' ).focus().val( currentPassword );
+			jQuery(this).parents('.setting').find( '.password-show' ).change().focus().val( currentPassword );
             jQuery(this).siblings(".hide-password-handle").show();
             jQuery(this).hide();
         });
 
         jQuery(this).find( ".hide-password-handle" ).click(function(){
 			var currentPassword = jQuery(this).parents('.setting').find('.input-cntr').attr("data-show", "password").find( 'input[type="password"]' ).val();
-			jQuery(this).parents('.setting').find( 'input[type="password"]' ).focus().val( currentPassword );
+			jQuery(this).parents('.setting').find( 'input[type="password"]' ).change().focus().val( currentPassword );
             jQuery(this).siblings(".show-password-handle").show();
             jQuery(this).hide();
         });
@@ -173,8 +175,6 @@ function prettifyColors() {
         return false;
     },
     onChange: function (hsb, hex, rgb) {
-        console.log('asdss');
-        console.log(this);
     }
 });;//load current colour
         jQuery(this).find('.lava-shadow-overlay').click(function(){
@@ -294,13 +294,6 @@ function bindButtons() {
 	jQuery(".lava-btn.lava-btn-hide-underground").click(function(){
         hideUnderground();
     });
-	//the select skin button
-	jQuery(".lava-btn.lava-btn-select-skin").click(function(){
-        var skinSlug = jQuery(this).attr( "data-slug" );
-		jQuery('#private_blog-skins-skin').val( skinSlug );
-		hideUnderground();
-		parseSkin();
-    });
 	//not implemented buttons
 	jQuery(".lava-btn.not-implemented").addClass("lava-btn-disabled").addClass("tiptip-right").attr("title", "This feature hasn't been imlemented yet :(");
 }
@@ -334,8 +327,13 @@ function bindSettingToggle() {
 
 function bindImageUpload() {
     jQuery('.setting.type-image .lava-file_upload-manual_select').bind('fileuploaddone', function (e, data) {
-        alert('bob');
     });
+}
+
+function bindAutoResize() {
+    jQuery('.lava-auto-resize').autoResize({'extraSpace': 5, 'animate': false}).removeClass('lava-auto-resize').addClass('lava-auto-resize-init');
+
+    jQuery('.lava-auto-resize-init');
 }
 
 function bindFocus() {
@@ -344,6 +342,54 @@ function bindFocus() {
     }).blur(function(){
         jQuery(this).parents('.lava-focus-outer').removeClass( "focus" );
     });
+}
+
+function bindDataSource() {
+    jQuery('.lava-table-loader-refresh-button').click(function(){
+        doDataSource();
+    })
+    doDataSource();
+}
+
+function doDataSource() {
+    jQuery('.lava-full-page-loader').show();
+    jQuery('.lava-table-viewer').each(function(){
+        jQuery(this).find('table').html("<thead></thead><tbody></tbody>");
+        var dataSource = jQuery(this).attr( "data-data-source" );
+        var action = jQuery(this).attr( "data-ajax-action" );
+        var nonce = jQuery(this).attr( "data-ajax-nonce" );
+		jQuery.getJSON( ajaxurl + '?action=' + action + '&nonce=' + nonce + '&data-source=' + dataSource, function(data) {
+			jQuery('.lava-full-page-loader').hide();
+			parseTableData( dataSource, data["data"]["data"] );
+        });
+    });
+
+    jQuery('.lava-table-update-trigger').change(function(){
+    	jQuery(this).siblings('table').find('.impelements-timestamp').each(function(){
+    		var timestamp = jQuery(this).html();
+    	});
+    });
+}
+
+function parseTableData( dataSource, data ) {
+
+	var theTable = jQuery('.lava-table-viewer[data-data-source="' + dataSource + '"] table');
+	var theTableBody = jQuery(theTable).find('tbody');
+
+	for( row in data ) {
+		var theRow = jQuery("<tr></tr>").appendTo(theTableBody);
+		for( column in data[row] ) {
+			var theCol = jQuery("<td></td>").appendTo( theRow );
+			jQuery(theCol).attr('class', data[row][column]['classes']);
+			jQuery(theCol).addClass( "cell-" + column );
+			jQuery(theCol).attr( "data-value" + data[row][column] );
+			jQuery(theCol).html( data[row][column]['data'] );
+			jQuery(theCol).attr( "title", data[row][column]['title'] );
+		}
+	}
+
+	jQuery('.lava-table-update-trigger').change();
+
 }
 
 function restartStickyTop()
@@ -413,8 +459,12 @@ function refreshStickyBottom()
 }
 
 
-function showUnderground() {
+function showUnderground( context ) {
+    if( typeof(context) == undefined ) {
+        context = "page";
+    }
 	var animationDuration = 500;
+    jQuery('.lava-underground').attr( 'data-underground-context', context );
 	jQuery('.lava-underground').slideDown(animationDuration).removeClass('underground-hidden').addClass('underground-visible');
 	jQuery('.lava-overground .underground-cancel-bar').slideDown().animate({'opacity':1},animationDuration, function(){
 		jQuery('.lava-overground').addClass('lava-sticky-bottom');
@@ -433,18 +483,25 @@ function hideUnderground() {
     jQuery('.lava-content-cntr').removeClass( "no-toolbar" );
 }
 
-function parseSkin() {
-	jQuery( ".skin-selector .skin" ).removeClass( "active" );
-	var currentTheme = jQuery('#private_blog-skins-skin').val();
-	jQuery('.skin[data-slug="' + currentTheme + '"]').addClass('active');
-	var imgSrc = jQuery('.skin[data-slug="' + currentTheme + '"] img').attr('src');
-	jQuery('#setting-cntr_private_blog-skins-skin .skin-thumb img').attr({'src': imgSrc});
+function bindSkin() {
+    jQuery( ".setting.type-skin input[data-actual='true']" ).change(function(){
+        jQuery(this).parents('.setting-control').find('.skin').removeClass( "selected" );
+        var currentTheme = jQuery(this).val();
+        jQuery('.skin[data-slug="' + currentTheme + '"]').addClass('selected');
 
-    //show skin options
+        //show skin options
 
-	jQuery('.setting.tag-skin-setting').addClass( 'tag-setting-hidden' );
-	jQuery('.setting[data-skin="' + currentTheme + '"]').removeClass( 'tag-setting-hidden' );
-    codeRefresh();
+        jQuery('.setting.tag-skin-setting').addClass( 'tag-setting-hidden' );
+        jQuery('.setting[data-skin="' + currentTheme + '"]').removeClass( 'tag-setting-hidden' );
+        codeRefresh();
+        bindAutoResize();
+    }).change();
+
+    jQuery( '.skin-selector .skin .select-skin').click(function(){
+        var new_skin = jQuery(this).parents('.skin').attr('data-slug');
+        jQuery(this).parents('.setting-control').find('input[data-actual="true"]').val(new_skin).change();
+    })
+	
 }
 
 function prettifyCode() {

@@ -27,6 +27,8 @@ class lavaBase
     protected $chain = array();
     protected $memory = array();
     public $suffixes = array( "/pre", "", "/post" );
+    public $allowMethodMiss = false;
+    public $autoMethods = false;
     
     
     /**
@@ -44,15 +46,16 @@ class lavaBase
     function __construct( $pluginInstance, $arguments = array() )
     {
         $this->pluginInstance = $pluginInstance;
-        
-        
+
         if( method_exists( $this, "lavaConstruct" ) )//call the sub classes construct argument
         {
 			$callback = array( $this, "lavaConstruct" );
             call_user_func_array( $callback, $arguments );
         }
+        
+        $this->addAutoMethods();
     }
-    
+
     /**
      * __call function.
      * 
@@ -104,9 +107,12 @@ class lavaBase
             return call_user_func_array( $callback, $arguments );
         }
 
-        if( 1 == 1)
+        if( ! $this->allowMethodMiss )
         {
-            echo $methodName;
+
+            echo "<h2>LavaError thrown on line 110 of lavaBase.php</h2> <br/>";
+            echo "Could not find method '{$methodName}' on object of class '" . get_class( $this ) . "'. We also tried the current child which has class '" . get_class( $this->getContext() ) . "' and the parent which has class '" . get_class( $this->getContext() ) . "'.";
+
             exit;
         }
         //to prevent a dummy method call from returning a child parents set an "if lost return to" property on the children - we should check to see if it exists
@@ -115,6 +121,17 @@ class lavaBase
             return $this->lavaCallReturn;
         }
         return $this;//couldn't find anything to call so return this object so chaining doesn't break
+    }
+
+    function addAutoMethods() {
+        if( $this->autoMethods == true ) {
+            $this->_misc()->_addAutoMethods( $this );
+        }
+    }
+
+    //meant to be overridden - so a class can forward a request to something else
+    function getThis() {
+        return $this;
     }
     
     /**
@@ -211,7 +228,7 @@ class lavaBase
      * 
      * @since 1.0.0
      */
-    final function clearLavaContext( $handle = "current" )
+    final function clearContext( $handle = "current" )
     {
         $this->chain[ $handle ] = null;
     }
@@ -366,8 +383,11 @@ class lavaBase
      * 
      * @since 1.0.0
      */
-    function runFilters( $hookTag, $argument = "", $debug = false )
+    function runFilters( $hookTag, $argument = "", $args = null, $debug = false )
     {
+        if( is_null( $args ) ) {
+            $args = $this;
+        }
         
         $hooks = array_unique( $this->hookTags() );
         $suffixes = array_unique( $this->suffixes );
@@ -384,7 +404,7 @@ class lavaBase
                 //echo( $this->_slug( "{$hookTag}{$hook}{$suffix}" ). "<br/>" );
                 $theHook = $this->_slug( "{$hookTag}{$hook}{$suffix}" );
 				if( $debug ){ echo( "$theHook<br>" ); }
-                $argument = apply_filters( $theHook, $argument, $this );
+                $argument = apply_filters( $theHook, $argument, $args );
             }
         }
 

@@ -212,6 +212,8 @@ class lavaSettings extends lavaBase
     function putCache( $who, $cache)
     {
         $this->settingCache[ $who ] = $cache;
+
+        return $this;
     }
 
     function updateCache( $who = "*" )
@@ -228,6 +230,8 @@ class lavaSettings extends lavaBase
         {
             $this->updateOption( $this->_slug( $who ), $this->settingCache[ $who ] );
         }
+
+        return $this;
     }
     
     function config( $key, $default = null )
@@ -255,7 +259,6 @@ class lavaSettings extends lavaBase
         {
             return update_site_option( $option, $value );
         }
-        update_option( "test", "bob" );
         return update_option( $option, $value );
     }
 }

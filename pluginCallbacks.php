@@ -19,6 +19,7 @@ class private_blog_callbacks extends lavaBase
 		$hookTag = "_templateVars_pluginVars";
 		$this->addAction( $hookTag, "pluginVars");
 
+		//Adds the fields to the login form - doing it this way allows extensions to add fields without messing with custom themes
 		$hookTag = "formInputs";
 		$this->addFilter( $hookTag, "addActionField");
 		$this->addFilter( $hookTag, "addRedirectField");
@@ -35,16 +36,55 @@ class private_blog_callbacks extends lavaBase
 		$this->addFilter( $hookTag );
 		
 		$hookTag = "loginAccepted";
-		$this->addFilter( $hookTag );
+		$this->addAction( $hookTag );
 
 		$hookTag = "loginRejected";
-		$this->addFilter( $hookTag );
+		$this->addAction( $hookTag );
 
-		$hookTag = "logout";
-		$this->addFilter( $hookTag );
+		$hookTag = "doLogout";
+		$this->addAction( $hookTag );
 
 		$hookTag = "isLoggedIn";
 		$this->addFilter( $hookTag );
+
+		$hookTag = "insertRow";
+		$hookTags = array(
+			"{$hookTag}/nonce-loginAccepted",
+			"{$hookTag}/nonce-loginRejected",
+			"{$hookTag}/nonce-doLogout"
+		);
+		$callbacks = array(
+			"addUserAgentField",
+			"addIpAddressField",
+			"addBrowserField",
+			"addOperatingSystemField",
+			"addDeviceField"
+		);
+		$this->addFilter( $hookTags, $callbacks );
+
+		$dataSourceSlug = "access_logs";
+		$col = "timestamp";
+		$hookTag = "_dataSourceAjax_columnClasses/dataSource:{$dataSourceSlug}/col:$col";
+		$this->addFilter( $hookTag, "addTimestampClass" );
+
+
+		$hookTag = "_dataSourceAjax_columnTitle/dataSource:{$dataSourceSlug}/col:$col";
+		$this->addFilter( $hookTag, "addTimestampTitle", 10, 2 );
+
+		$hookTag = "_dataSourceAjax_column/dataSource:{$dataSourceSlug}/col:$col";
+		$this->addFilter( $hookTag, "formatTimestamp" );
+
+
+		$hookTags = array(
+			"_dataSourceAjax_columnClasses/dataSource:{$dataSourceSlug}/col:action",
+			"_dataSourceAjax_columnClasses/dataSource:{$dataSourceSlug}/col:browser",
+			"_dataSourceAjax_columnClasses/dataSource:{$dataSourceSlug}/col:device",
+			"_dataSourceAjax_columnClasses/dataSource:{$dataSourceSlug}/col:operating_system"
+		);
+		$this->addFilter( $hookTags, "addValueAsClass", 10, 2 );
+
+		$hookTag = "_dataSourceAjax_column/dataSource:{$dataSourceSlug}/col:action";
+		$this->addFilter( $hookTag, "formatAction" );
 
 		$rss_public = $this->_settings()->fetchSetting( "rss_feed_visible" )->getValue();
 
@@ -117,7 +157,7 @@ class private_blog_callbacks extends lavaBase
         if( true === $isLogoutRequest )
         {
 			//the user is attempting to logout
-            do_action( $this->_slug( "logout" ) );
+            do_action( $this->_slug( "doLogout" ) );
         }
 
         $isLoggedIn = apply_filters( $this->_slug( "isLoggedIn" ), false );
@@ -151,7 +191,12 @@ class private_blog_callbacks extends lavaBase
 		return $current;
 	}
 
-	function logout() {
+	function doLogout() {
+		$row = array(
+			"action" => "doLogout"
+		);
+		if( $this->recordLogs() )
+			$this->_tables()->fetchTable( "access_logs" )->insertRow( $row, "doLogout" );
 		setcookie( $this->_slug( "loggedin" ), "LOGGEDOUT", time() - 1000, COOKIEPATH, COOKIE_DOMAIN );
 		$redirect = remove_query_arg( $this->_slug( "action" ) );
 		$redirect = add_query_arg( "loggedout", "", $redirect );
@@ -160,9 +205,9 @@ class private_blog_callbacks extends lavaBase
 	}
 
 	function isLoginAccepted( $current ) {
-		global $maxPasswords;
+		global $maxPasswords;//get the maxPasswords constant (can be changed by an extension)
 		$password = $_POST[ $this->_slug( "password" ) ];
-		$password = $this->runFilters( "passwordFilter", $password );
+		$password = $this->runFilters( "passwordFilter", $password );//allows extensions to do weird stuff like hash the damn thing
 		
 		$multiplePasswords = $this->_settings()->fetchSetting( "multiple_passwords" )->getValue();
 			
@@ -175,7 +220,17 @@ class private_blog_callbacks extends lavaBase
 			
 			$passToCheck = $this->_settings()->fetchSetting( "password".$i."_value" )->getValue();
 			if( !empty( $passToCheck ) and $passToCheck == $password ) {
-				$current = true;
+				$passwordName = $this->_settings()->fetchSetting( "password{$i}_name" )->getValue();
+				$passwordColour = $this->_settings()->fetchSetting( "password{$i}_colour" )->getValue();
+				$row = array(
+					"password" => $i,
+					"password_name" => $passwordName,
+					"password_color" => $passwordColour,
+					"action" => "loginAccepted"
+				);
+				if( $this->recordLogs() )
+					$this->_tables()->fetchTable( "access_logs" )->insertRow( $row, "loginAccepted" );
+				return true; // we just logged in
 			}
 		}
 
@@ -189,6 +244,11 @@ class private_blog_callbacks extends lavaBase
 	}
 
 	function loginRejected() {
+		$row = array(
+			"action" => "loginRejected",
+		);
+		if( $this->recordLogs() )
+			$this->_tables()->fetchTable( "access_logs" )->insertRow( $row, "loginRejected" );
 		$redirect = add_query_arg( "incorrect_credentials", "" );
 		$redirect = remove_query_arg( "loggedout", $redirect );
 		wp_redirect( $redirect );
@@ -312,6 +372,16 @@ class private_blog_callbacks extends lavaBase
 		return $output;
 	}
 
+	function recordLogs() {
+		$shouldRecord = $this->_settings()->fetchSetting( "record_logs" )->getValue();
+
+		if( $shouldRecord == "on" ) {
+			return true;
+		}
+
+		return false;
+	}
+
 
 
 	/*
@@ -331,33 +401,129 @@ class private_blog_callbacks extends lavaBase
 				$menu = wp_get_nav_menu_object( $locationId );
 				$counter ++;
 				if( $counter == 1 ) {
-					$defaultValue = $menu->slug;//make sure a default is set
+					$defaultValue = $menu->slug;//make sure a default is set if any menus exist
 				}
 				$valueArray[] = $menu->slug;
-				$this->_settings()->fetchSetting( "logout_link_menu" )->addSettingOption( $menu->slug, $menu->name );
+				$this->_settings()->fetchSetting( "logout_link_menu" )->addSettingOption( $menu->slug, $menu->name );//add this WP 3 menu to the dropdown of options
 			}
 		}
 		if( $counter == 0 ) {
-			//if there is no menu that is attached to a location then we should check to see whether there is any menus at all
+			//if there is no menu that is attached to a location then we should check to see whether there is any menus at all as by default WP will display an unassigned menu
+			$this->_settings()->fetchSetting( "logout_link_menu" )->removeTag( "options-available" )->addTag("force-invisible");
 			$menus = wp_get_nav_menus();
 			foreach ( $menus as $menu_maybe ) {
 				if ( $menu_items = wp_get_nav_menu_items($menu_maybe->term_id) ) {
 					$menu = $menu_maybe;
-					$this->_settings()->fetchSetting( "logout_link_menu" )->addSettingOption( $menu->slug, $menu->name )->removeTag( "options-available" )->addTag("hidden");
+					$this->_settings()->fetchSetting( "logout_link_menu" )->addSettingOption( $menu->slug, $menu->name );
 					$valueArray[] = $menu->slug;
 					$defaultValue = $menu->slug;
 					break;
 				}
 			}
 		} else if( $counter == 1 ) {
-			//if there is only one then no need to give option
-			$this->_settings()->fetchSetting( "logout_link_menu" )->removeTag( "options-available" )->addTag("hidden");
+			//if there is only one then no need to display dropdown
+			$this->_settings()->fetchSetting( "logout_link_menu" )->removeTag( "options-available" )->addTag("force-invisible");
 		}
 		$currentValue = $this->_settings()->fetchSetting( "logout_link_menu" )->setDefault( $defaultValue )->getValue();
 		if( !in_array( $currentValue, $valueArray ) ) {
-			//something has changed and the current value no longer exists as a menu so reset it to new default (probably theme change)
+			//something has changed and the value stored no longer exists as a menu so reset it to new default (probably theme change)
 			$this->_settings()->fetchSetting( "logout_link_menu" )->updateValue( $defaultValue );
 		}
+	}
+	
+
+	/*
+		Table array Filters
+	*/
+	function addUserAgentField( $row ) {
+		$row['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+		return $row;
+	}
+
+	function addBrowserField( $row ) {
+		$info = $this->_misc()->userAgentInfo();
+		$row['browser'] = $info['browser'];
+		return $row;
+	}
+
+	function addOperatingSystemField( $row ) {
+		$info = $this->_misc()->userAgentInfo();
+		$row['operating_system'] = $info['os'];
+		return $row;
+	}
+
+	function addDeviceField( $row ) {
+		$info = $this->_misc()->userAgentInfo();
+		$row['device'] = $info['device'];
+		return $row;
+	}
+
+	function addIpAddressField( $row ) {
+		$row['ip_address'] = $_SERVER['REMOTE_ADDR'];
+		return $row;
+	}
+
+	/* Table server side filters */
+
+	function addTimestampClass( $classes ) {
+		return $classes . "implements-timestamp ";
+	}
+
+	function addValueAsClass( $classes, $args ) {
+		$value = $args['original'];
+		return $classes . "value-$value ";
+	}
+
+	function formatTimestamp( $timeString ) {
+		$timeStamp = strtotime( $timeString );
+		$now = time();
+		$today = strtotime( "Today");
+		$yesterday = strtotime( "Yesterday");
+
+		if( $now < $timeStamp ) {
+			return __( "The future (check config)", $this->_slug() );
+		} elseif( $now - $timeStamp < 60 ) {
+			//less than a minute ago
+			return __( "Less than a minute ago", $this->_slug() );
+		} elseif( $now - $timeStamp < 60 * 60 ) {
+			//less than an hour ago
+			$minutes = floor( ($now - $timeStamp) / 60 );
+			return sprintf(_n('%d minute ago', '%d minutes ago', $minutes), $minutes);
+		} elseif( $timeStamp > $today ) {
+			//it was today
+			return date( "H:i", $timeStamp );
+		} elseif( $timeStamp > $yesterday ) {
+			return __( "Yesterday", $this->_slug() );
+		} else {
+			return date( "d F", $timeStamp );
+		}
+
+
+
+		return $now - $timeStamp;
+		//return $timeStamp;
+		return $timeStamp;
+	}
+
+	function formatAction( $value ) {
+		switch( $value ) {
+			case "doLogout":
+				return __( "Logout", $this->_slug() );
+			case "loginAccepted":
+				return __( "Login accepted", $this->_slug() );
+			case "loginRejected":
+				return __( "Login rejected", $this->_slug() );
+				break;
+		}
+
+		return $value;
+	}
+
+	function addTimestampTitle( $title, $args ) {
+
+		$timeStamp = strtotime( $args['original'] );
+		return date( "D, d F Y H:i", $timeStamp );
+
 	}
 	
 }

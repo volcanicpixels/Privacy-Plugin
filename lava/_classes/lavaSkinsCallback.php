@@ -57,10 +57,27 @@ class lavaSkinsCallback extends lavaSettingsCallback
 
 	function addSkinsUx( $settingControl, $theSetting )
     {
+        extract( $theSetting->getVars() );
         $settingControl = '<div class="js-fallback">' . $settingControl . ' </div>';
-		$settingControl .= '<div class="skin-thumb"><img alt="Skin Thumbnail" /><div class="shadow"></div><div class="actions"><div class="lava-btn lava-btn-action-large lava-btn-action lava-btn-action-blue lava-btn-show-underground">' . __( "Change Skin", $this->_framework() ) . '</div></div></div>';
         
-        //add ux cntr, put in the labels, js will handle the rest
+        $settingControl .= '<div class="js-only skin-selector">';
+
+        $skins = $this->_skins()->fetchSkins();
+
+        foreach( $skins as $skin ){
+        	$settingControl .= '
+        	<figure class="skin"  data-slug="' . $skin->getSlug() . '">  
+				<a class="select-skin tiptip clearfix" title="Click to select this skin" href="#select">
+					<img class="preview-img" width="400" height="200" src="' . $skin->skinUrl( "thumbnail.png" ) .'" alt="Skin Thumbnail" />
+					<span class="skin-overlay">Select Skin</span>
+				    <div class="skin-meta">
+					    <h3 class="skin-name">' . $skin->getName() . '</h3> 
+					</div>
+				</a>			    				    
+			</figure>';
+        }
+
+        $settingControl .= "</div>";
         
         return $settingControl;
     }

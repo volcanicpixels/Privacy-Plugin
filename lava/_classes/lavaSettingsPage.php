@@ -8,7 +8,6 @@ class lavaSettingsPage extends lavaPage
     {
         $this->saveSettings();
         $this->resetSettings();
-		add_action( $this->_slug( "toolbar" ), array($this, "toolbarButtons") );
         $this->addAction( "toolbarButtons" );
         //queue notifications
         //do redirect

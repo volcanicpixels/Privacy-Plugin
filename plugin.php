@@ -10,7 +10,7 @@ License: GPLv2
 */
 ?>
 <?php
-//error_reporting(E_ALL);
+error_reporting(E_ALL);//used for debug only (NOT PRODUCTION)
 include( dirname( __FILE__ ) ."/lava/lava.php" );
 
 $pluginName = "Private Blog";
@@ -42,6 +42,7 @@ $thePlugin->_settings()
         ->setType( "checkbox" )
         ->setDefault( "off" )
         ->setHelp( sprintf( __( "When enabled, upto %s different passwords can be set.", $pluginSlug ), 10 ) )
+        ->addTag( "is-premium" )
 ;
 
 
@@ -97,12 +98,14 @@ $thePlugin->_settings()
         ->setType( "timeperiod" )
         ->setHelp( __( "The length of inactivity before the user must login again. Set to 0 to timeout when browser closes.", $pluginSlug ) )
         ->setDefault( $defaultTimeout )
+        ->addTag( "is-premium" )
     ->addSetting( "logout_link" )
         ->setName( __( "Add Logout link to navigation", $pluginSlug ) )
         ->setType( "checkbox" )
         ->setDefault( "off" )
         ->setHelp( __( "When enabled, the plugin will attempt to put a logout link in the navigation", $pluginSlug ) )
-        ->addTag( "labs" ) //display a warning that this feature is experimental
+        ->addTag( "is-premium" )
+        ->settingToggle( "logout_link_menu" )
 	->addSetting( "logout_link_menu" )
         ->setType( "select" )
 		->addTag( "no-margin" )
@@ -111,25 +114,35 @@ $thePlugin->_settings()
 		->setType( "checkbox" )
 		->setDefault( "off" )
 		->setHelp( __( "When enabled, the RSS feed (which contains post content) will be publicly available", $pluginSlug ) )
+        ->addTag( 'is-premium' )
+    ->addSetting( "record_logs" )
+        ->setName( __( "Create a log of all logins and logouts", $pluginSlug ) )
+        ->setType( "checkbox" )
+        ->setDefault( "off" )
+        ->addTag( "is-premium" )
+        ->setHelp( __( "When enabled, every attempt to login will be logged", $pluginSlug ) )
 ;
 
-/*
+
 $thePlugin->_tables()
     ->addTable( "access_logs" )
+        ->addField( "id" )
+            ->setType( "mediumint" )
+            ->setMaxLength( 9 )
+            ->setAutoIncrement( true )
         ->addField( "timestamp" )//timestamp of entry
-            ->type( "timestamp" )
+            ->setType( "timestamp" )
         ->addField( "password" )// the number of the password used (0 if NA)
-            ->type( "int" )
         ->addField( "password_name" )//The name of that password at the time of entry
         ->addField( "password_color" )//The color of the password at time of entry
-        ->addField( "password_attempt" )//The password used if unsuccessful
         ->addField( "action" )//The action (login, logout, login attempt)
         ->addField( "user_agent")//The user agent
-        ->addField( "browser" )//The browser (as parsed at time of entry)
+            ->setType( "text" )
+        ->addField( "device" )
+        ->addField( "browser" )//The browser (as pmdarsed at time of entry)
         ->addField( "operating_system" )//The OS (as parsed at time of entry)
-        ->addField( "country_code" )//The country code (as parsed at time of entry)
         ->addField( "ip_address" )
-;*/
+;
 
 
 $thePlugin->_pages()
@@ -137,11 +150,11 @@ $thePlugin->_pages()
     ->addSettingsPage()
     ->addSkinsPage()
         ->setTitle( __( "Login Page skin", $pluginSlug ) )
-		/*
-    ->addTablePage( "access_logs" )
+    ->addPage( "access_logs", "PrivateBlogAccessLogs" )
         ->setTitle( __( "Access Logs", $pluginSlug ) )
         ->setDataSource( "access_logs" )
-        ->setDisplayOrder( "action;password;password_name;password_color;password_attempt;browser;operating_system;country_code;ip_address" )
+        ->setDisplayOrder( "timestamp;action;password_name;browser;operating_system;device;ip_address" )
+        ->setOrderBy( "timestamp DESC" )/*
     ->addPageFromTemplate( "custom", "custom" )
         ->setTitle( __( "Plugin Customisations", $pluginSlug ) )*/
 ;
@@ -150,4 +163,5 @@ $thePlugin->_pages()
     ->addCustomScripts()
     ->addCustomStyles()
 ;
+
 ?>

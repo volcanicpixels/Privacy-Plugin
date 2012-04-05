@@ -79,9 +79,20 @@ class lavaSetting extends lavaBase
             case "colour"://that's more like it
                 //no support for alpha channels at this time
                 $this->setDefault( "#FFFFFF", false );
+                $this->addTag( "reset-to-default" );
                 break;
             case "password":
                 $this->setDefault( "password" );
+                $this->addTag( "reset-to-default" );
+                break;
+            case "timeperiod":
+                $this->addTag( "reset-to-default" );
+                break;
+            case "image":
+                $this->addTag( "reset-to-default" );
+                break;
+            case "textarea":
+                $this->addTag( "reset-to-default" );
                 break;
         }
         return $this->_settings( false );
@@ -466,16 +477,16 @@ class lavaSetting extends lavaBase
     {
         $classes = array();
 
-        $classes[] = "setting";
-        $classes[] = "clearfix";
+        $classes["setting"] = "setting";
+        $classes["clearfix"] = "clearfix";
 
         foreach( $this->tags as $tag )
         {
-            $classes[] = "tag-{$tag}";
+            $classes["tag-{$tag}"] = "tag-{$tag}";
         }
 
         $type = $this->getType();
-        $classes[] = "type-{$type}";
+        $classes["type-{$type}"] = "type-{$type}";
 
         $classes = $this->runFilters( "settingClasses", $classes );
 
@@ -661,6 +672,8 @@ class lavaSetting extends lavaBase
         $settingID = "setting-cntr_{$pluginSlug}-{$settingWho}-{$settingKey}";
 
         $settingStart = "<div class=\"{$classes}\" $dataTags data-tags=\"{$tags}\" data-status=\"{$status}\" data-type=\"{$type}\" data-setting-key=\"{$key}\" data-default-value=\"{$defaultValue}\" id=\"$settingID\" >";
+            
+            $settingAbsElements = $this->runFilters( "settingAbsElements", '' );
             $statusIndicator = '<span class="status-indicator show-status"></span>';
             $preSettingStart = '<div class="pre-setting">';
                 $settingName = "<span class=\"setting-name\">$name</span>$help";
@@ -684,8 +697,9 @@ class lavaSetting extends lavaBase
         $settingFull = 
             "
             $settingStart
+                $settingAbsElements
                 $statusIndicator
-            
+
                 $preSettingStart
                     $settingName
                 $preSettingEnd
@@ -780,7 +794,7 @@ class lavaSetting extends lavaBase
             break;
 
             case "password":
-                $settingControl = "<input class='lava-focus-inner' placeholder='{$settingPlaceholder}' data-actual='true' id='{$settingInputID}' type='password' name='{$settingInputName}' value='{$settingValue}' />";
+                $settingControl = "<input class='lava-focus-inner lava-auto-resize' placeholder='{$settingPlaceholder}' data-actual='true' id='{$settingInputID}' type='password' name='{$settingInputName}' value='{$settingValue}' />";
             break;
 
             case "timeperiod":

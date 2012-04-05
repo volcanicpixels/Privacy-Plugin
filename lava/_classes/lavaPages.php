@@ -40,7 +40,8 @@ class lavaPages extends lavaBase
         $this->addStyle( $this->_slug( "dropkick" ), "lava/_static/dropkick.css" );
         $this->addStyle( $this->_slug( "codemirror" ), "lava/_static/codemirror/codemirror.css" );
         $this->addStyle( $this->_slug( "codemirror-theme" ), "lava/_static/codemirror/codemirror.theme.css" );
-        $this->addStyle( $this->_slug( "colorpicker-theme" ), "lava/_static/colorpicker/colorpicker.css" );
+        $this->addStyle( $this->_slug( "lobster" ), "http://fonts.googleapis.com/css?family=Lobster" );
+        //$this->addStyle( $this->_slug( "colorpicker-theme" ), "lava/_static/colorpicker/colorpicker.css" );
 
         $this->addScript( $this->_slug( "lavaScripts" ), "lava/_static/scripts.js", array( "jquery" ) );
         $this->addScript( $this->_slug( "dropkick" ), "lava/_static/dropkick.js", array( "jquery" ) );
@@ -52,7 +53,8 @@ class lavaPages extends lavaBase
         $this->addScript( $this->_slug( "jquery-iframe-transport" ), "lava/_static/jquery.iframe-transport.js", array( "jquery" ) );
         $this->addScript( $this->_slug( "codemirror" ), "lava/_static/codemirror/codemirror.js" );
         $this->addScript( $this->_slug( "codemirror-css" ), "lava/_static/codemirror/codemirror.css.js" );
-        $this->addScript( $this->_slug( "colorpicker" ), "lava/_static/colorpicker/colorpicker.js" );
+        $this->addScript( $this->_slug( "colorpicker" ), "lava/_static/autoResize.js", array( "jquery" ) );
+        //$this->addScript( $this->_slug( "colorpicker" ), "lava/_static/colorpicker/colorpicker.js" );
 
         
         add_action( "admin_enqueue_scripts", array( $this, "registerIncludes" ) );

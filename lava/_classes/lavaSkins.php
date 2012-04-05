@@ -42,7 +42,7 @@ class lavaSkins extends lavaBase
         $this->_settings()
             ->addSetting( 'skin', 'skins' )
                 ->setType( 'skin' )
-                ->setName( __( 'Current skin', $this->_framework() ) )
+                ->setName( __( 'Select a skin', $this->_framework() ) )
 				->setDefault( 'default' );
     }
 

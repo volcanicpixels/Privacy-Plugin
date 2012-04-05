@@ -1,7 +1,6 @@
 var passwordFieldAnimationSpeed = 0;
 jQuery( document ).ready( function(){
     makeLabels();
-	bindLogoutLink();
     jQuery('#private_blog-settings-multiple_passwords').change( function(){
         if( jQuery(this).hasAttr( 'checked' ) )
         {
@@ -119,15 +118,4 @@ function makeLabels()
 
         //jQuery(this).find( '.custom-password-label' ).css({marginLeft: -(labelWidth + 50 ),opacity:0,display: 'none'});
     });
-}
-
-function bindLogoutLink() {
-	jQuery('#private_blog-settings-logout_link').change(function(){
-		
-		if( jQuery(this).hasAttr( "checked" ) ) {console.log(2);
-			jQuery( '#setting-cntr_private_blog-settings-logout_link_menu.tag-options-available' ).slideDown();
-		} else {
-			jQuery( '#setting-cntr_private_blog-settings-logout_link_menu' ).slideUp();
-		}
-	}).change();
 }

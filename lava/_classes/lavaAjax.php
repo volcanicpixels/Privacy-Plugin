@@ -70,7 +70,6 @@ class lavaAjax extends lavaBase {
 		} else {
 			$nonce = $_GET['nonce'];
 		}
-
 		if( !wp_verify_nonce($nonce, $this->targetAction) ) {
 			return true;
 		}

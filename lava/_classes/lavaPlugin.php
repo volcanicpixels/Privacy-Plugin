@@ -33,7 +33,7 @@ class lavaPlugin
      * 
      * @since 1.0.0
      */
-    function __construct( $pluginFile, $pluginName, $pluginVersion )
+    function __construct( $pluginFile, $pluginName, $pluginVersion, $loadVendor = true )
     {
         $this->pluginFile = $pluginFile;
         $this->pluginName = $pluginName;
@@ -51,6 +51,11 @@ class lavaPlugin
         }
 
         $this->_misc();//initialise this class
+        if( $loadVendor ) {
+            require_once( dirname( $pluginFile ) .  "/vendor.php" );
+            $className = $this->_slug( "vendor" );
+            $this->pluginVendor = $this->_new( $className );
+        }
     }
     
     /**
@@ -69,6 +74,11 @@ class lavaPlugin
         if( file_exists( dirname( __FILE__ ) . "/{$className}.php" ) AND !class_exists( $className ) )//don't want to include the file if it doesn't exist
         {
         	include_once( dirname( __FILE__ ) . "/{$className}.php" );
+        }
+
+        if( file_exists( dirname( $this->_file() ) . "/_classes/{$className}.php" ) AND !class_exists( $className ) )//don't want to include the file if it doesn't exist
+        {
+            include_once( dirname( $this->_file() ) . "/_classes/{$className}.php" );
         }
     }
     
@@ -221,7 +231,7 @@ class lavaPlugin
         }
         else
         {
-            return $this->$pointer;
+            return $this->$pointer->getThis();
         }
     }
 

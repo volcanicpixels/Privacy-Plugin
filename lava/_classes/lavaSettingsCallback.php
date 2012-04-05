@@ -37,7 +37,7 @@ class lavaSettingsCallback extends lavaBase
         //settingActions
         $hookTag = "settingActions";
         add_filter( $this->_slug( "{$hookTag}-type/password" ), array( $this, "addShowPassword" ) );
-        add_filter( $this->_slug( "{$hookTag}" ), array( $this, "addResetToDefault" ) );
+        add_filter( $this->_slug( "{$hookTag}-tag/reset-to-default" ), array( $this, "addResetToDefault" ) );
 
         //settingControl
         $hookTag = "settingControl";
@@ -131,7 +131,7 @@ class lavaSettingsCallback extends lavaBase
         }
         $settingControl .=  '<div class="input-cntr show-status clearfix js-only lava-focus-outer">'.
                                 '<div class="validation" data-state="not-invoked"></div>'.
-                                '<input class="time-period-ux lava-focus-inner" type="text" value="' . $theValue . '"/>'.
+                                '<input class="time-period-ux lava-focus-inner lava-auto-resize" type="text" value="' . $theValue . '"/>'.
                             '</div>'.
                             
                             '<select class="scale-selector js-only">'.
@@ -157,7 +157,7 @@ class lavaSettingsCallback extends lavaBase
         $placeholder = 'placeholder="'. $theSetting->getProperty( "placeholder" ) .'"';
         $settingControl =  '<div class="input-cntr lava-focus-outer show-status clearfix" data-show="password">'.
                                 '<div class="validation" data-state="not-invoked"></div>'.
-                                '<input '.$placeholder.' type="text" class="password-show lava-focus-inner" value="' . $theSetting->getValue( true ) . '"/>'.
+                                '<input '.$placeholder.' type="text" class="lava-auto-resize password-show lava-focus-inner" value="' . $theSetting->getValue( true ) . '"/>'.
                                 $settingControl.
                             '</div>';
         return $settingControl;
@@ -183,7 +183,7 @@ class lavaSettingsCallback extends lavaBase
         $placeholder = 'placeholder="'. $theSetting->getProperty( "placeholder" ) .'"';
         $settingControl =  '<div class="input-cntr show-status clearfix lava-focus-outer">'.
                                 '<div class="validation" data-state="not-invoked"></div>'.
-                                '<input id="' . $settingInputID . '" class="lava-focus-inner" name="' . $settingInputName . '"  '.$placeholder.' type="text" value="' . $theSetting->getValue( true ) . '"/>'.
+                                '<input id="' . $settingInputID . '" class="lava-focus-inner lava-auto-resize" name="' . $settingInputName . '"  '.$placeholder.' type="text" value="' . $theSetting->getValue( true ) . '"/>'.
                             '</div>';
         return $settingControl;
     }
@@ -321,7 +321,7 @@ class lavaSettingsCallback extends lavaBase
         $settingVars = $theSetting->getVars();
         extract( $settingVars );
 
-        $settingControl = '<textarea data-actual="true" name="' . $settingInputName . '" id="' .  $settingInputID . '" >' . $settingValue . '</textarea>';
+        $settingControl = '<textarea class="lava-auto-resize" data-actual="true" name="' . $settingInputName . '" id="' .  $settingInputID . '" >' . $settingValue . '</textarea>';
 
         return $settingControl;
     }
