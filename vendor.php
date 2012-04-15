@@ -8,7 +8,6 @@ Add licensing to bar
 */
 class private_blog_vendor extends lavaExtension {
 
-	public $isLocal = false;
 	public $apiVersion = 1;
 
 	function init() {
@@ -161,7 +160,10 @@ class private_blog_vendor extends lavaExtension {
 	}
 
 	function getVendorUrl( $append = "" ) {
-		if( $this->isLocal ) {
+		if( ! defined( 'LAVA_API_IS_LOCAL' ) ) {
+			define( 'LAVA_API_IS_LOCAL', false );
+		}
+		if( LAVA_API_IS_LOCAL ) {
 			return "http://localhost:8082/" . $append;
 		} else {
 			return 'http://www.volcanicpixels.com/' . $append;

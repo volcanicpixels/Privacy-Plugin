@@ -115,6 +115,8 @@ class lavaTable extends lavaBase
 
         $sql .= "\n);";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+
         dbDelta($sql);
         return true;
     }

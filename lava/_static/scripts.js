@@ -295,7 +295,7 @@ function bindButtons() {
         hideUnderground();
     });
 	//not implemented buttons
-	jQuery(".lava-btn.not-implemented").addClass("lava-btn-disabled").addClass("tiptip-right").attr("title", "This feature hasn't been imlemented yet :(");
+	jQuery(".lava-btn.not-implemented").addClass("lava-btn-disabled").addClass("tiptip-right").attr("title", "This feature hasn't been implemented yet :(");
 }
 
 function bindSticky()

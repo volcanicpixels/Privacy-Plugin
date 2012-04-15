@@ -64,7 +64,7 @@ class lavaMiscFunctions extends lavaBase
         if( $ver1 == $ver2 ) {
             return true;
         }
-        return fasle;
+        return false;
     }
 
     function userAgentInfo() {

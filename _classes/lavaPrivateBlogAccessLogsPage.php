@@ -1,5 +1,5 @@
 <?php
-class lavaPrivateBlogAccessLogsPage extends lavaTablePage
+class lavaPrivateBlogAccessLogsPage extends lavaAdvancedTablePage
 {
     
 }
