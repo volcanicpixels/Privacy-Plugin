@@ -156,7 +156,7 @@ class private_blog_vendor extends lavaExtension {
 	}
 
 	function getInstallId() {
-		return md5( AUTH_SALT . get_home_url() );
+		return md5( AUTH_SALT . get_home_url() . $this->_slug() );
 	}
 
 	function getVendorUrl( $append = "" ) {

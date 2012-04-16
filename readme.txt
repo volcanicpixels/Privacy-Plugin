@@ -4,7 +4,7 @@ Donate link: http://www.spiders-design.co.uk/donate/
 Tags: password,protect,password protect,wordpress,blog, security
 Requires at least: 3.3.1
 Tested up to: 3.3.1
-Stable tag: 3.9.1
+Stable tag: 4.01
 
 This plugin password protects your wordpress blog with a single password.
 
@@ -18,10 +18,7 @@ No user accounts - just a single password.
 Easy to use admin panel.
 Internationalized to make translations easy.
 
-Custom Logo [premium only]<br />
-Custom Message [premium only]<br />
-Multiple Passwords [premium only]<br />
-Logging [premium only]
+Customize the login page (with more skins added all the time)
 
 
 Please review and vote that it works.
@@ -38,18 +35,19 @@ This section describes how to install the plugin and get it working.
 
 3. Activate the plugin through the 'Plugins' menu in WordPress
 
-1. Edit the configuration by clicking on 'password protect' under settings
+1. Edit the configuration by clicking on 'Private Blog' under settings
+
 == Frequently Asked Questions ==
 
-Q. I have made a contribution - how do I unlock the premium features.
 
-A. The features are unlocked automatically after I process the payment. Please allow 48 hrs for this before contacting me.
 
 == Screenshots ==
 
-1. Wordpress style login form with a customizable logo.
+1. Customizable login form
 
 2. Easy to use admin panel can be accessed by clicking on 'Password Protect' under settings on the wordpress admin dashboard.
+
+2. Change the CSS styles for the login page to get the look and feel right
 
 == Changelog ==
 = 1.0 =
@@ -123,3 +121,7 @@ A. The features are unlocked automatically after I process the payment. Please a
 = 3.9 =
 
 * Links can now be in the message (by typing in the html)
+
+= 4.0 =
+
+* Complete rewrite

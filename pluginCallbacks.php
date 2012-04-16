@@ -287,7 +287,9 @@ class private_blog_callbacks extends lavaBase
 		if( $expire != 0) {
 			$expire = time() + $expire;
 		}
-		setcookie( $this->_slug( "loggedin" ), $loginNonce, $expire, COOKIEPATH, COOKIE_DOMAIN );
+		if( !headers_sent() ) {
+			setcookie( $this->_slug( "loggedin" ), $loginNonce, $expire, COOKIEPATH, COOKIE_DOMAIN );
+		}
 	}
 
 	function isLoggedIn( $current ) {
