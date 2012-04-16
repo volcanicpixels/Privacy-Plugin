@@ -186,8 +186,11 @@ class lavaSkins extends lavaBase
 		}
 
 		$filePath = dirname( $this->_file() ) . '/skins/' . $currentSkin . '/templates/' . $templateName . '.html';
+		$options = array(
+			"cache_dir" => dirname( $this->_file() ) . '/lava/_cache/'
+		);
 
-		$h2o = new h2o( $filePath );
+		$h2o = new h2o( $filePath, $options );
 
 		$templateVars = apply_filters( $this->_slug( "_templateVars" ) , array() );
 
