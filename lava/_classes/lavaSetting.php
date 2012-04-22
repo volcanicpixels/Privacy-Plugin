@@ -382,7 +382,8 @@ class lavaSetting extends lavaBase
     function updateValue( $value, $doStatus = false, $suppressSave = false )
     {
         
-        $value = htmlentities($value, ENT_QUOTES);
+        //$value = htmlentities($value, ENT_QUOTES);
+        $value = utf8_encode( $value );
         $cache = $this->getCache();
         
         if( $doStatus )
@@ -406,7 +407,7 @@ class lavaSetting extends lavaBase
         $settingInputName = "{$pluginSlug}[{$settingWho}/{$settingKey}]";
         $settingInputID = "{$pluginSlug}-{$settingWho}-{$settingKey}";
         $settingOptions = $this->getProperty( "setting-options" );
-        $settingValue = $this->getValue( true );
+        $settingValue = $this->getValue( false );
 
         return array(
             "settingKey" => $settingKey,
@@ -439,7 +440,8 @@ class lavaSetting extends lavaBase
         $value = $cache[ $this->key ];
         if( $format == false)
         {
-            $value = html_entity_decode( $value );
+            //$value = html_entity_decode( $value );
+            $value = utf8_decode($value);
             return $value;
         }
         return $value;
