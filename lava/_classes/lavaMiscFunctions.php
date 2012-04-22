@@ -75,7 +75,7 @@ class lavaMiscFunctions extends lavaBase
             'os' => 'unknown',
             'browser' => 'unknown'
         );
-        if( strpos( $ua, "ipad" ) ) {
+        if( strpos( $ua, "iPad" ) ) {
             $info['device'] = "iPad";
             $info['os'] = 'ios';
             $info['browser'] = 'Mobile Safari';
