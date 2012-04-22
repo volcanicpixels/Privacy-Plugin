@@ -46,12 +46,15 @@ class CoreFilters extends FilterCollection {
     }
 
     static function urlize( $string, $truncate = false ) {
-        $reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+        $reg_exUrl = "/(^| )(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
         preg_match_all($reg_exUrl, $string, $matches);
         $usedPatterns = array();
         foreach($matches[0] as $pattern){
             if(!array_key_exists($pattern, $usedPatterns)){
                 $usedPatterns[$pattern]=true;
+                if( substr( $pattern, 0, 1 ) == " " ) {
+                    $pattern = substr( $pattern, 1 );
+                }
                 $string = str_replace($pattern, "<a href=\"{$pattern}\" rel=\"nofollow\">{$pattern}</a>", $string);
             }
         }
@@ -363,7 +366,7 @@ class DatetimeFilters extends FilterCollection {
     }
 }
 
-/*  Ultizie php funciton as Filters */
+/*  Utilize php funciton as Filters */
 h2o::addFilter(array('md5', 'sha1', 'numberformat'=>'number_format', 'wordwrap', 'trim', 'upper' => 'strtoupper', 'lower' => 'strtolower'));
 
 /* Add filter collections */
