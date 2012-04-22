@@ -228,15 +228,10 @@ function doLicensePush() {
 
 function doApiRequest( method, args ) {
 	args = addDefaultArgs( args );
-	var request_url = getVendorUrl() + method + '/?install_id=' + getInstallId();
+	var request_url = getVendorUrl() + method + '/?jsoncallback=?&install_id=' + getInstallId();
 
-	if( typeof(args) != "undefined" ) {
-		for( arg_name in args ) {
-			request_url += '&' + arg_name + '=' + args[arg_name];
-		}
+	if( typeof(args) == "undefined" ) {
+		args = {};
 	}
-
-	return jQuery.getJSON( request_url );
+	return jQuery.getJSON( request_url, args );
 }
-
-
