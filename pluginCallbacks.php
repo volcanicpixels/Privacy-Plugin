@@ -13,6 +13,9 @@ class private_blog_callbacks extends lavaBase
 		$hookTag = "get_header";
 		$this->addWPAction( $hookTag, "doHeadActions", 2 );
 
+		$hookTag = "lava_get_header";//for stupid themes that ignore coding standards
+		$this->addWPAction( $hookTag, "doHeadActions", 2 );
+
 		$hookTag = "displayLoginPage";
 		$this->addAction( $hookTag );
 
