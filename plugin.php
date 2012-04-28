@@ -163,4 +163,8 @@ $thePlugin->_pages()
     ->addCustomStyles()
 ;
 
+$thePlugin->_vendor()
+    ->setSupportForumUrl( 'https://groups.google.com/forum/#!forum/privacy-plugin' )
+;
+
 ?>
