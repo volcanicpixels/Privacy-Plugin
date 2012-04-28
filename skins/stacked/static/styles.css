@@ -1,5 +1,7 @@
 body {
-	background: #FBFBFB;
+	background-color: #f8f8f8;
+	background-image: url(images/bg.png);
+	background-repeat: repeat;
 	margin: 0px;
 	padding: 0px;
 }
@@ -10,31 +12,52 @@ body {
 	height: 200px;
 	
 	background-image: url(images/logo.png);
-	background-position: bottom center;
+	background-position: center center;
 	background-repeat: no-repeat;
 }
 
 .login-form {
+	position: relative;
 	width: 300px;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 20px;
+	padding: 0px 50px;
 	
-	border: 1px solid #E5E5E5;
-	-webkit-border-radius: 3px;
-	   -moz-border-radius: 3px;
-	    -ms-border-radius: 3px;
-	     -o-border-radius: 3px;
-	border-radius: 3px;
-	
-	-webkit-box-shadow: 0 2px 10px -1px rgba(200,200,200,0.7);
-	   -moz-box-shadow: 0 2px 10px -1px rgba(200,200,200,0.7);
-	    -ms-box-shadow: 0 2px 10px -1px rgba(200,200,200,0.7);
-	     -o-box-shadow: 0 2px 10px -1px rgba(200,200,200,0.7);
-	        box-shadow: 0 2px 10px -1px rgba(200,200,200,0.7);
-	
-	background: white;
+	background-image: url( images/login-mid.png );
+	background-position: top center;
+	background-repeat: repeat-y;
+
+	overflow: visible;
 }
+
+	.login-top, .login-bottom {
+		display: block;
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		background-repeat: no-repeat;
+	}
+
+	.login-top {
+		top: -37px;
+		height: 37px;
+		background-image: url( images/login-top.png );
+		background-position: bottom center;
+	}
+
+	.login-bottom {
+		bottom: -29px;
+		height: 29px;
+		background-image: url( images/login-bot.png );
+		background-position: top center;
+	}
+	
+	.login-message {
+		text-align:center;
+		color: #888;
+		font: 12px courier;
+		padding: 0px 0px 20px 0px;
+	}
 
 	label {
 		color: #777;

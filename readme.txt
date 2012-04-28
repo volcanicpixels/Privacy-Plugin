@@ -21,8 +21,12 @@ Internationalized to make translations easy.
 Customize the login page (with more skins added all the time)
 
 
-Please review and vote that it works.
-Follow @danielchatfield and tweet for support
+**Please review and vote that it works.
+**Follow [@danielchatfield](http://twitter.com/danielchatfield) and tweet for support
+
+[Support forums](https://groups.google.com/forum/#!forum/privacy-plugin) |
+[Suggest a feature](https://volcanicpixels.uservoice.com/forums/135365-privacy-plugin) |
+[Contact me](http://www.volcanicpixels.com/contact-us/)
 
 == Installation ==
 
@@ -144,3 +148,5 @@ This section describes how to install the plugin and get it working.
 
 = 4.05 =
 
+* Added settings link to plugin page
+* Added feed meta tags to head of login page (if they are set to public)
