@@ -183,7 +183,7 @@ class lavaPage extends lavaBase
                 
             <!--.lava-header END-->
             </div>
-            <div id="lava-nav" class="lava-nav bleed-left bleed-right with-padding lava-sticky-top">
+            <div id="lava-nav" class="lava-nav bleed-left bleed-right with-padding lava-sticky-top clearfix">
                 <div class="sticky-toggle tiptip" title="Toggle whether this bar should stick to the top of the screen."></div>
                 <div class="left-grad"></div>
                 <ul class="nav nav-horizontal clearfix">

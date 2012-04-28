@@ -264,6 +264,19 @@ class lavaBase
         }
     }
 
+    function remember( $key, $value = null )
+    {
+        return $this->lavaRemember( $key, $value );
+    }
+
+    function recall( $key, $default = null ) {
+        return $this->lavaRecall( $key, $default );
+    }
+
+    function forget( $key ) {
+        return $this->lavaDestroy( $key );
+    }
+
 
 
 	function addWPAction( $hookTags, $methodNames = "", $priority = 10, $debug = false ) {

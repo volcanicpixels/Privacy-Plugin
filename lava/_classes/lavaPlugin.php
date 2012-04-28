@@ -311,6 +311,11 @@ class lavaPlugin
     {
         return $this->_handle( "MiscFunctions", $reset);
     }
+
+    function _vendor( $reset = true )
+    {
+        return $this->pluginVendor;
+    }
     
 }
 ?>
