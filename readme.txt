@@ -4,7 +4,7 @@ Donate link: http://www.spiders-design.co.uk/donate/
 Tags: password,protect,password protect,wordpress,blog, security
 Requires at least: 3.3.1
 Tested up to: 3.3.1
-Stable tag: 4.03
+Stable tag: 4.05
 
 This plugin password protects your wordpress blog with a single password.
 
@@ -135,3 +135,12 @@ This section describes how to install the plugin and get it working.
 = 4.03 =
 
 * Fixed an issue with some of the admin side javascript and IE
+* Fixed an issue where if an HTML link was entered as the message for a skin the href attribute would be incorrectly urlized
+* Changed encoding of settings to UTF-8 to non ASCII characters that are not covered by the HTML spec (Russian characters for example) 
+
+= 4.04 =
+
+* Fixed an issue with debug vars being printed to screen after saving settings
+
+= 4.05 =
+
