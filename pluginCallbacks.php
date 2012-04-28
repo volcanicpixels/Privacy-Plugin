@@ -22,6 +22,13 @@ class private_blog_callbacks extends lavaBase
 		$hookTag = "_templateVars_pluginVars";
 		$this->addAction( $hookTag, "pluginVars");
 
+		$hookTag = "_templateVars_watermark";
+		$this->addAction( $hookTag, "watermark");
+
+		$skinAction = "head";
+		$hookTag = "skinActions/skinAction:{$skinAction}";
+		$this->addFilter( $hookTag, 'addFeedMeta' );
+
 		//Adds the fields to the login form - doing it this way allows extensions to add fields without messing with custom themes
 		$hookTag = "formInputs";
 		$this->addFilter( $hookTag, "addActionField");
@@ -322,6 +329,23 @@ class private_blog_callbacks extends lavaBase
 		$pluginVars['form_inputs'] = apply_filters( $this->_slug( "formInputs" ), array() );
 
 		return $pluginVars;
+	}
+
+	function watermark( $original ) {
+		$pluginVersion = $this->_version();
+		$installId = substr( $this->_vendor()->getInstallId(), 0, 5 );
+		return "<!-- Security provided by Volcanic Pixels (Daniel Chatfield). Debug: {$pluginVersion} {$installId} -->";
+	}
+
+	function addFeedMeta( $content ) {
+		if( ! $this->_settings()->settingExists( 'rss_feed_visible' ) ) {
+			//setting does not exist (must be an extension now)
+			return $content;
+		}
+		if( $this->_settings()->fetchSetting( 'rss_feed_visible' )->getValue() == 'on' ) {
+			$content .= '<link rel="alternate" type="application/rss+xml" title="WordPress Beta &raquo; Feed" href="' . get_bloginfo('rss2_url') . '" />';
+		}
+		return $content;
 	}
 
 	function addActionField( $formInputs ) {
