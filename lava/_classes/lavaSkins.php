@@ -205,5 +205,12 @@ class lavaSkins extends lavaBase
 	function getTranslations() {
 		return $this->translations;
 	}
+
+	function getSkinActions() {
+		$default = array(
+			'head'
+		);
+		return $this->recall( 'skin_actions', $default );
+	}
 }
 ?>

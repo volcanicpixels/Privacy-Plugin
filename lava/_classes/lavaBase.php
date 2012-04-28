@@ -394,17 +394,7 @@ class lavaBase
         }
     }
 
-     /**
-     * runActions function.
-     * 
-     * Runs the filters with all the parameters
-     * 
-     * @param string $hookTag
-     * @param $args (default: null)
-     * 
-     * @since 1.0.0
-     */
-    function runFilters( $hookTag, $argument = "", $args = null, $debug = false )
+    function applyFilters( $hookTag, $argument = "", $args = null, $debug = false )
     {
         if( is_null( $args ) ) {
             $args = $this;
@@ -424,12 +414,27 @@ class lavaBase
                 }
                 //echo( $this->_slug( "{$hookTag}{$hook}{$suffix}" ). "<br/>" );
                 $theHook = $this->_slug( "{$hookTag}{$hook}{$suffix}" );
-				if( $debug ){ echo( "$theHook<br>" ); }
+                if( $debug ){ echo( "$theHook<br>" ); }
                 $argument = apply_filters( $theHook, $argument, $args );
             }
         }
 
         return $argument;
+    }
+
+     /**
+     * runFilters function.
+     * 
+     * Runs the filters with all the parameters
+     * 
+     * @param string $hookTag
+     * @param $args (default: null)
+     * 
+     * @since 1.0.0
+     */
+    function runFilters( $hookTag, $argument = "", $args = null, $debug = false )
+    {
+        return $this->applyFilters( $hookTag, $argument, $args, $debug );
     }
 
     function hookTags()
