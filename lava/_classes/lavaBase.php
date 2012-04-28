@@ -246,17 +246,25 @@ class lavaBase
      */
     function lavaRemember( $key, $value = null )
     {
-        if( isset( $value ) )
-        {//value has been given - so lets set it
-            $this->memory[ $key ] = $value;
-            return $this;
-        }
-        if( isset( $this->memory[ $key ] ) )
-        {
-            return $this->memory[ $key ];
-        }
-        return false;
+        $this->memory[ $key ] = $value;
+        return $this;
     }
+
+    function lavaRecall( $key, $default = null ) {
+        if( array_key_exists( $key, $this->memory ) ) {
+            return $this->memory[ $key ];
+        } else {
+            return $default;
+        }
+    }
+
+    function lavaDestroy( $key ) {
+        if( array_key_exists( $key, $this->memory ) ) {
+            unset( $this->memory[ $key ] );
+        }
+    }
+
+
 
 	function addWPAction( $hookTags, $methodNames = "", $priority = 10, $debug = false ) {
 		if( !is_array( $hookTags ) ) {

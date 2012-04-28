@@ -98,7 +98,6 @@ class lavaSettingsPage extends lavaPage
 			elseif( is_admin() )
 			{
 				$theSettings = $_POST[ $this->_slug() ];
-				echo( rand() );
 				foreach( $theSettings as $setting => $value )
 				{
 					//$value = html_entity_decode( $value );
