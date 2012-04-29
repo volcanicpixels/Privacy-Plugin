@@ -1,5 +1,5 @@
 <?php
-class lavaMiscFunctions extends lavaBase
+class Lava_Functions extends Lava_Base
 {
 
 	function lavaConstruct() {

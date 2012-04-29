@@ -12,11 +12,11 @@ License: GPLv2
 <?php
 include( dirname( __FILE__ ) ."/lava/lava.php" );
 
-$pluginName = "Private Blog";
-$pluginVersion = "4.05";
+$plugin_name = "Private Blog";
+$plugin_version = "4.05";
 
-$thePlugin = lava::newPlugin( __FILE__, $pluginName, $pluginVersion );
-$pluginSlug = $thePlugin->_slug();
+$the_plugin = Lava::_new_plugin( __FILE__, $plugin_name, $plugin_version );
+$plugin_id = $the_plugin->_get_plugin_id();
 
 
 /**
@@ -27,20 +27,19 @@ $pluginSlug = $thePlugin->_slug();
  *      Login Duration
  *      Add logout button
  */
-global $maxPasswords;
-$maxPasswords = 10;
+global $max_passwords;
+$max_passwords = 10;
 
-$thePlugin->_settings()     
-    ->addSetting( "enabled" )
-        ->setName( __( "Enable Password Protection", $pluginSlug ) )
-        ->setType( "checkbox" )
-        ->setDefault( "on" )
-        ->setHelp( __( "When enabled visitors to your site will need to login to access it.", $pluginSlug ) )
-    ->addSetting( "multiple_passwords" )
-        ->setName( __( "Enable multiple passwords", $pluginSlug ) )
-        ->setType( "checkbox" )
-        ->setDefault( "off" )
-        ->setHelp( sprintf( __( "When enabled, upto %s different passwords can be set.", $pluginSlug ), 10 ) )
+$the_plugin->_settings()     
+    ->_add_setting( 'enabled', 'checkbox' )
+        ->_set_name( __( "Enable Password Protection", $plugin_id ) )
+        ->_set_default( "on" )
+        ->_setHelp( __( "When enabled visitors to your site will need to login to access it.", $plugin_id ) )
+    ->_addSetting( "multiple_passwords" )
+        ->_setName( __( "Enable multiple passwords", $plugin_id ) )
+        ->_setType( "checkbox" )
+        ->_setDefault( "off" )
+        ->_setHelp( sprintf( __( "When enabled, upto %s different passwords can be set.", $pluginSlug ), 10 ) )
         ->addTag( "is-premium" )
 ;
 

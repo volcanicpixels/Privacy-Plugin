@@ -1,5 +1,5 @@
 <?php
-class lavaExtension extends lavaBase {
+class Lava_Extension extends Lava_Base {
 	function lavaConstruct() {
 		$this->_misc()->_addAutoMethods( $this );
 		$this->registerActions();

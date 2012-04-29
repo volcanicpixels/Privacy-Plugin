@@ -1,27 +1,14 @@
 <?php
 /**
- * The lava Setting class
- * 
- * This class is the class base for all settings
+ * Setting
  * 
  * @package Lava
- * @subpackage lavaSetting
- * 
- * @author Daniel Chatfield
- * @copyright 2011
- * @version 1.0.0
- */
- 
-/**
- * lavaSetting
- * 
- * @package Lava
- * @subpackage LavaSetting
+ * @subpackage Setting
  * @author Daniel Chatfield
  * 
  * @since 1.0.0
  */
-class lavaSetting extends lavaBase
+class Lava_Setting extends Lava_Base
 {
     /**
      * @property $type - text, colour, password, image, file, checkbox, selectbox

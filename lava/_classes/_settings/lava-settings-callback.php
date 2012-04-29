@@ -21,7 +21,7 @@
  * 
  * @since 1.0.0
  */
-class lavaSettingsCallback extends lavaBase
+class lavaSettingsCallbacks extends lavaBase
 {
     /**
      * lavaSettingsCallback::lavaConstruct()

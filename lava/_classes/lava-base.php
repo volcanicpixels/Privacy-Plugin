@@ -8,7 +8,7 @@
  *
  * @since 1.0.0
  */
-class lavaBase
+class Lava_Base
 {
 	protected $_the_plugin;
 	protected $_memory = array();
@@ -26,19 +26,19 @@ class lavaBase
 	 *
 	 * @magic
 	 * @param lavaPlugin $the_plugin
-	 * @param array $arguments
+	 * @param array $args
 	 * @return void
 	 *
 	 * @since 1.0.0
 	 */
-	function __construct( $the_plugin, $arguments = array() )
+	function __construct( $the_plugin, $args = array() )
 	{
 		$this->_the_plugin = $the_plugin;
 
-		if( method_exists( $this, '_construct' ) )//call the sub classes construct argument
+		if( method_exists( $this, '_construct' ) )//call the sub classes construct method
 		{
 			$callback = array( $this, '_construct' );
-			call_user_func_array( $callback, $arguments );
+			call_user_func_array( $callback, $args );
 		}
 
 		$this->_registerHookMethods();
@@ -49,12 +49,12 @@ class lavaBase
 	 *
 	 * @magic
 	 * @param string $method_name
-	 * @param array $arguments
+	 * @param array $args
 	 * @return void
 	 *
 	 * @since 1.0.0
 	 */
-	function __call( $method_name, $arguments = array() )
+	function __call( $method_name, $args = array() )
 	{
 		/* Lets see whether we have a child */
 		if( $this->_hasChild() ){
@@ -62,7 +62,7 @@ class lavaBase
 				$child = $this->_getChild();
 				if( method_exists( $child, $method_name ) ) {
 					$callback = array( $child, $method_name );
-					return call_user_func_array( $callback , $arguments)
+					return call_user_func_array( $callback , $args);
 				}
 		}
 
@@ -72,27 +72,27 @@ class lavaBase
 				$child = $this->_getChild();
 				if( method_exists( $child, $method_name ) ) {
 					$callback = array( $child, $method_name );
-					return call_user_func_array( $callback , $arguments)
+					return call_user_func_array( $callback , $args);
 				}
 		}
 
 		/* Lets check whether we have _parent_ methods */
 		elseif( method_exists( $this, "_parent_{$method_name}") ) {
 			$callback = array( $this, "parent_{$method_name}" );
-			return call_user_func_array( $callback, $arguments );
+			return call_user_func_array( $callback, $args );
 		}
 
 		/* Check plugin instance */
 		elseif( method_exists( $this->_the_plugin, $method_name ) ) {
 			$callback = array( $this->_the_plugin, $method_name );
-			return call_user_func_array( $callback, $arguments );
+			return call_user_func_array( $callback, $args );
 		}
 
 		else {
 			/* We couldn't find anywhere to send this request */
 
-			if( $this->throw_error_if_method_is_missing ) {
-				echo "<h2>LavaError thrown on line 110 of lavaBase.php</h2> <br/>";
+			if( $this->_should_throw_error_if_method_is_missing ) {
+				echo "<h2>LavaError thrown in lavaBase.php</h2> <br/>";
 				echo "Could not find method '{$method_name}' on object of class '" . get_class( $this ) . "'. We also tried the current child which has class '" . get_class( $this->_getChild() ) . "' and the parent which has class '" . get_class( $this->_getParent() ) . "'.";
 
 				exit;
@@ -143,7 +143,10 @@ class lavaBase
 		return $this->_recall( '_return_object', $this );
 	}
 
-	function _setReturnObject( $object = $this ) {
+	function _setReturnObject( $object = null ) {
+		if( is_null( $object ) ) {
+			$object = $this;
+		}
 		return $this->_remember( '_return_object', $object );
 	}
 
@@ -165,7 +168,7 @@ class lavaBase
 	}
 
 	function _killChild() {
-		return $this->_forget( '_child' )
+		return $this->_forget( '_child' );
 	}
 
 
@@ -182,37 +185,7 @@ class lavaBase
 	}
 
 	function _killParent() {
-		return $this->_forget( '_parent' )
-	}
-
-
-
-	/**
-	 * Methods to access controller classes
-	 */
-
-	function _funcs( $remove_child = true ) {
-		return $this->_functions( $remove_child );
-	}
-
-	function _functions( $remove_child = true ) {
-		$class_name = "Functions";
-		return $this->_the_plugin->_fetchSingleton( $class_name, $remove_child );
-	}
-
-	function _pages( $remove_child = true )
-		$class_name = "Pages";
-		return $this->_the_plugin->_fetchSingleton( $class_name, $remove_child );
-	}
-
-	function _settings( $remove_child = true )
-		$class_name = "Settings";
-		return $this->_the_plugin->_fetchSingleton( $class_name, $remove_child );
-	}
-
-	function _skins( $remove_child = true )
-		$class_name = "Skins";
-		return $this->_the_plugin->_fetchSingleton( $class_name, $remove_child );
+		return $this->_forget( '_parent' );
 	}
 
 
@@ -228,253 +201,156 @@ class lavaBase
 	}
 
 
+	/**
+	 * Filter and action methods
+	 */
 
 
+	/**
+	 * If the hook name is the same as the method then the method parameter can be ommitted
+	 */
+	function _add_action( $hooks, $methods = '', $priority = 10, $how_many_args = 0, $should_namespace = false, $is_filter = false ) {
 
+		if( !is_array( $hooks ) )
+			$hooks = array( $hooks );
 
+		if( !is_array( $methods ) )
+			$methods = array( $methods );
 
+		foreach( $hooks as $hook ) {
 
+			foreach( $methods as $method ) {
 
+				if( empty( $method ) )
+					$method = $hook;
 
+				if( $should_namespace ) {
+					$method = $this	->_namespace( $method );
+					$hook = $this	->_namespace( $hook   );
+				}
 
+				$callback = $method;
 
+				if( ! is_array( $callback ) ) {
+					$callback = array( $this, $callback );
+				}
+				if( $is_filter )
+					add_filter( $hook, $callback, $priority, $how_many_args );
+				else
+					add_action( $hook, $callback, $priority, $how_many_args );
+			}
+		}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	//meant to be overridden - so a class can forward a request to something else
-	function getThis() {
 		return $this;
 	}
 
 
-	/**
-	 * lavaContext function.
-	 *
-	 * adds/removes context
-	 *
-	 * @return $this
-	 *
-	 * @since 1.0.0
-	 */
-	final function lavaContext( $context = null, $handle = "current" )
-	{
-		if( null != $context)
-		{
-			$this->chain[ $handle ] = $context;
-		}
-		if( array_key_exists($handle, $this->chain) ) {
-			return $this->chain[ $handle ];
-		} else {
-			return $this;
-		}
+
+	function _add_filter( $hooks, $methods = '', $priority = 10, $how_many_args = 1, $should_namespace = false ) {
+		return $this->_add_action( $hooks, $methods, $priority, $how_many_args, $should_namespace, true );
 	}
 
-	/**
-	 * lavaContext function.
-	 *
-	 * adds/removes context
-	 *
-	 * @return $this
-	 *
-	 * @since 1.0.0
-	 */
-	final function setContext( $context = null, $handle = "current" )
-	{
-		$this->chain[ $handle ] = $context;
+	function _add_lava_action( $hooks, $methods = '', $priority = 10, $how_many_args ) {
+		return $this->_add_action( $hooks, $methods, $priority, $how_many_args ,true );
 	}
 
-	/**
-	 * lavaContext function.
-	 *
-	 * adds/removes context
-	 *
-	 * @return $this
-	 *
-	 * @since 1.0.0
-	 */
-	final function getContext( $handle = "current" )
-	{
-		if( array_key_exists( $handle, $this->chain ) )
-		{
-			return $this->chain[ $handle ];
+	function _add_lava_filter( $hooks, $methods = '', $priority = 10, $how_many_args = 1 ) {
+		return $this->_add_filter( $hooks, $methods, $priority, $how_many_args, true );
+	}
+
+	function _do_action( $hooks, $args = array(), $should_namespace = false ) {
+
+		if( ! is_array( $hooks ) )
+			$hooks = array( $hooks );
+
+		foreach ( $hooks as $hook ) {
+
+			if( $should_namespace ) {
+				$hook = $this->_namespace( $hook );
+			}
+			$callback = "do_action";
+
+			$_args = $args;
+			array_unshift( $_args, $hook );
+
+			call_user_func_array( $callback , $_args );
 		}
-		return null;
-	}
-
-	/**
-	 * withinContext function.
-	 *
-	 * Sets the parent handler (adds to chain for method lookups)
-	 *
-	 * @return $this
-	 *
-	 * @since 1.0.0
-	 */
-	final function withinContext( $context )
-	{
-		$this->setContext( $context, "parent" );
 
 		return $this;
 	}
 
-	/**
-	 * clearLavaContext function.
-	 *
-	 * adds/removes context
-	 *
-	 * @return $this
-	 *
-	 * @since 1.0.0
-	 */
-	final function clearContext( $handle = "current" )
-	{
-		$this->chain[ $handle ] = null;
+	function _do_lava_action( $hooks, $args = array() ) {
+		return $this->_do_action( $hooks, $args, true );
 	}
 
-	/**
-	 * lavaRemember function.
-	 *
-	 * The lavaRemember function stores data as a key>value pair as a protected property to a class
-	 *
-	 * @param string $key
-	 * @param $value (default: null)
-	 * @return $this || $value || false
-	 *
-	 * @since 1.0.0
-	 */
-	function lavaRemember( $key, $value = null )
-	{
-		$this->memory[ $key ] = $value;
-		return $this;
-	}
+	function _apply_filters_( $hooks, $value, $args = array(), $should_namespace = false ) {
+		if( ! is_array( $hooks ) )
+			$hooks = array( $hooks );
 
-	function lavaRecall( $key, $default = null ) {
-		if( array_key_exists( $key, $this->memory ) ) {
-			return $this->memory[ $key ];
-		} else {
-			return $default;
-		}
-	}
+		foreach ( $hooks as $hook ) {
 
-	function lavaDestroy( $key ) {
-		if( array_key_exists( $key, $this->memory ) ) {
-			unset( $this->memory[ $key ] );
-		}
-	}
-
-	function remember( $key, $value = null )
-	{
-		return $this->lavaRemember( $key, $value );
-	}
-
-	function recall( $key, $default = null ) {
-		return $this->lavaRecall( $key, $default );
-	}
-
-	function forget( $key ) {
-		return $this->lavaDestroy( $key );
-	}
-
-
-
-	function addWPAction( $hookTags, $methodNames = "", $priority = 10, $debug = false ) {
-		if( !is_array( $hookTags ) ) {
-			$hookTags = array( $hookTags );
-		}
-		if( !is_array( $methodNames ) ) {
-			$methodNames = array( $methodNames );
-		}
-		foreach( $hookTags as $hookTag ) {
-
-			foreach( $methodNames as $methodName ) {
-				$_methodName = $methodName;
-				if( empty( $_methodName) ) {
-					$_methodName = $hookTag;
-				}
-				//if( $debug) { echo $hookTag; echo "<br>"; echo $_methodName;echo "<br>"; }
-				add_action( $hookTag, array( $this, $_methodName ), $priority );
+			if( $should_namespace ) {
+				$hook = $this->_namespace( $hook );
 			}
+			$callback = "apply_filters";
+
+			$_args = $args;
+			array_unshift( $_args, $value );
+			array_unshift( $_args, $hook );
+
+			$value = call_user_func_array( $callback , $_args );
 		}
-		//if( $debug ) exit;
+
+		return $value;
 	}
 
-	function addWPFilter( $hookTags, $methodNames = "", $priority = 10, $args = 1 ) {
-		if( !is_array( $hookTags ) ) {
-			$hookTags = array( $hookTags );
-		}
-		if( !is_array( $methodNames ) ) {
-			$methodNames = array( $methodNames );
-		}
-		foreach( $hookTags as $hookTag ) {
+	function _apply_filters( $hooks, $value = '' ) {
+		$args = func_get_args();
 
-			foreach( $methodNames as $methodName ) {
-				$_methodName = $methodName;
-				if( empty( $_methodName) ) {
-					$_methodName = $hookTag;
-				}
-				//if( $debug) { echo $hookTag; echo "<br>"; echo $_methodName;echo "<br>"; }
-				add_filter( $hookTag, array( $this, $_methodName ), $priority, $args );
-			}
+		if( func_num_args() >= 2 ) {
+			unset( $args[0] );
+			unset( $args[1] );
 		}
-		//if( $debug ) exit;
+
+		return $this->_apply_filters_( $hooks, $value, $args, false );
 	}
 
-	function addAction( $hookTags, $methodNames = "", $priority = 10 ) {
-		if( !is_array( $hookTags ) ) {
-			$hookTags = array( $hookTags );
-		}
-		if( !is_array( $methodNames ) ) {
-			$methodNames = array( $methodNames );
-		}
-		foreach( $hookTags as $hookTag ) {
+	function _apply_lava_filters( $hooks, $value = '' ) {
+		$args = func_get_args();
 
-			foreach( $methodNames as $methodName ) {
-				$_methodName = $methodName;
-				if( empty( $_methodName) ) {
-					$_methodName = $hookTag;
-				}
-				add_action( $this->_slug( $hookTag ), array( $this, $_methodName ), $priority );
-			}
+		if( func_num_args() >= 2 ) {
+			unset( $args[0] );
+			unset( $args[1] );
 		}
+
+		return $this->_apply_filters_( $hooks, $value, $args, true );
 	}
+	
 
 
-	function addFilter( $hookTags, $methodNames = "", $priority = 10, $args = 1 ) {
 
-		if( !is_array( $hookTags ) ) {
-			$hookTags = array( $hookTags );
-		}
-		if( !is_array( $methodNames ) ) {
-			$methodNames = array( $methodNames );
-		}
-		foreach( $hookTags as $hookTag ) {
 
-			foreach( $methodNames as $methodName ) {
-				$_methodName = $methodName;
-				if( empty( $_methodName) ) {
-					$_methodName = $hookTag;
-				}
-				add_filter( $this->_slug( $hookTag ), array( $this, $_methodName ), $priority, $args );
-			}
-		}
-	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	/**
 	 * runActions function.
@@ -509,7 +385,7 @@ class lavaBase
 		}
 	}
 
-	function applyFilters( $hookTag, $argument = "", $args = null, $debug = false )
+	function applyFilters( $hookTag, $value = "", $args = null, $debug = false )
 	{
 		if( is_null( $args ) ) {
 			$args = $this;
@@ -530,27 +406,13 @@ class lavaBase
 				//echo( $this->_slug( "{$hookTag}{$hook}{$suffix}" ). "<br/>" );
 				$theHook = $this->_slug( "{$hookTag}{$hook}{$suffix}" );
 				if( $debug ){ echo( "$theHook<br>" ); }
-				$argument = apply_filters( $theHook, $argument, $args );
+				$value = apply_filters( $theHook, $value, $args );
 			}
 		}
 
-		return $argument;
+		return $value;
 	}
 
-	 /**
-	 * runFilters function.
-	 *
-	 * Runs the filters with all the parameters
-	 *
-	 * @param string $hookTag
-	 * @param $args (default: null)
-	 *
-	 * @since 1.0.0
-	 */
-	function runFilters( $hookTag, $argument = "", $args = null, $debug = false )
-	{
-		return $this->applyFilters( $hookTag, $argument, $args, $debug );
-	}
 
 	function hookTags()
 	{

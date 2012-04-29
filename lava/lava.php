@@ -37,12 +37,12 @@ class Lava
 
 		$plugin_id = strtolower( str_replace( " ", "_", $plugin_name ) );
 
-		if( !isset( self::$_instances[ $plugin_id ] ) )
+		if( !isset( self::$_plugin_instances[ $plugin_id ] ) )
 		{
-			self::$_instances[ $plugin_id ] = new Lava_Plugin( $plugin_file, $plugin_name, $plugin_version );
+			self::$_plugin_instances[ $plugin_id ] = new Lava_Plugin( $plugin_file_path, $plugin_name, $plugin_version );
 		}
 
-		return self::$_instances[ $plugin_id ];
+		return self::$_plugin_instances[ $plugin_id ];
 
 	}
 
@@ -56,7 +56,7 @@ class Lava
 	 *
 	 * @since 1.0.0
 	 */
-	static function _fetch_plugin( $plugin_name )
+	static function _get_plugin( $plugin_name )
 	{
 		$plugin_id = strtolower( str_replace( " ", "_", $plugin_id ) );
 
