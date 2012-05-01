@@ -10,6 +10,6 @@
  */
 
 class Lava_Setting_ extends Lava_Setting {
-
+	public $_setting_type = '';
 }
 ?>

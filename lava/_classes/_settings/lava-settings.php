@@ -13,9 +13,7 @@ class Lava_Settings extends Lava_Base
 	protected $_settings = array();
 	protected $_setting_prefix = 'settings';
 	protected $_setting_types = array(
-		'' 			=> '',
-		'text' 		=> 'Text',
-		'checkbox'	=> 'Checkbox'
+		'' 			=> ''
 	);
 
 
@@ -26,9 +24,9 @@ class Lava_Settings extends Lava_Base
 		add_option( $this->_namespace( $this->_setting_prefix ), array() );
 	}
 
-	function _add_setting( $setting_key, $setting_type ) {
+	function _add_setting( $setting_key, $setting_type = '' ) {
 		if( ! $this->_setting_exists( $setting_key ) ) {
-			if( ! array_key_exists( strtolower( $setting_type ) , $this->_setting_types ) ) {
+			if( array_key_exists( strtolower( $setting_type ) , $this->_setting_types ) ) {
 				$setting_type = $this->_setting_types[ $setting_type ];
 			} else {
 				$setting_type = '';
@@ -37,7 +35,7 @@ class Lava_Settings extends Lava_Base
 			$class_name = "Setting_{$setting_type}";
 
 			$args = array(
-				$this->_setting_prefix,
+				$this,
 				$setting_key
 			);
 
@@ -52,10 +50,10 @@ class Lava_Settings extends Lava_Base
 
 	function _get_setting( $setting_key )
 	{
-		$this->_killChild();
+		$this->_kill_child();
 
 		if( $this->_setting_exists( $setting_key ) ) {
-			$this->_setChild( $this->_settings[ $setting_key ] );
+			$this->_set_child( $this->_settings[ $setting_key ] );
 		}
 
 		return $this;

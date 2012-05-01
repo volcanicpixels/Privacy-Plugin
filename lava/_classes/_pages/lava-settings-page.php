@@ -1,5 +1,14 @@
 <?php
-class lavaSettingsPage extends lavaPage
+/**
+ * Settings_Page
+ *
+ * @package Lava
+ * @subpackage Settings_Page
+ * @author Daniel Chatfield
+ *
+ * @since 1.0.0
+ */
+class Lava_Settings_Page extends Lava_Page
 {
 	public $multisiteSupport = true;
 	public $who = "settings";

@@ -8,6 +8,7 @@
  *
  * @since 1.0.0
  */
+if( ! class_exists('Lava_Base') ):
 class Lava_Base
 {
 	protected $_the_plugin;
@@ -18,7 +19,7 @@ class Lava_Base
 	*/
 	public $_should_throw_error_if_method_is_missing = true;
 	/* If this is true then some methods will get auto called at the appropriate time */
-	public $_should_register_hook_methods = false;
+	public $_should_register_action_methods = false;
 
 
 	/**
@@ -41,7 +42,7 @@ class Lava_Base
 			call_user_func_array( $callback, $args );
 		}
 
-		$this->_registerHookMethods();
+		$this->_register_action_methods( $this );
 	}
 
 	/**
@@ -57,27 +58,25 @@ class Lava_Base
 	function __call( $method_name, $args = array() )
 	{
 		/* Lets see whether we have a child */
-		if( $this->_hasChild() ){
+		if( $this->_has_child() ){
 			//right, we have a child but does it have this method
-				$child = $this->_getChild();
+				$child = $this->_get_child();
 				if( method_exists( $child, $method_name ) ) {
 					$callback = array( $child, $method_name );
 					return call_user_func_array( $callback , $args);
 				}
 		}
-
 		/* Lets see if we have any parents */
-		 elseif( $this->_hasParent() ){
+		if( $this->_has_parent() ){
 			//right, we have a parent but does it have this method
-				$child = $this->_getChild();
-				if( method_exists( $child, $method_name ) ) {
-					$callback = array( $child, $method_name );
+				$parent = $this->_get_parent();
+				if( method_exists( $parent, $method_name ) ) {
+					$callback = array( $parent, $method_name );
 					return call_user_func_array( $callback , $args);
 				}
 		}
-
 		/* Lets check whether we have _parent_ methods */
-		elseif( method_exists( $this, "_parent_{$method_name}") ) {
+		if( method_exists( $this, "_parent_{$method_name}") ) {
 			$callback = array( $this, "parent_{$method_name}" );
 			return call_user_func_array( $callback, $args );
 		}
@@ -88,26 +87,37 @@ class Lava_Base
 			return call_user_func_array( $callback, $args );
 		}
 
-		else {
 			/* We couldn't find anywhere to send this request */
 
-			if( $this->_should_throw_error_if_method_is_missing ) {
-				echo "<h2>LavaError thrown in lavaBase.php</h2> <br/>";
-				echo "Could not find method '{$method_name}' on object of class '" . get_class( $this ) . "'. We also tried the current child which has class '" . get_class( $this->_getChild() ) . "' and the parent which has class '" . get_class( $this->_getParent() ) . "'.";
-
-				exit;
-			} else {
-				return $this->_getReturnObject();
-			}
+		if( $this->_should_throw_error_if_method_is_missing ) {
+			echo "<h2>LavaError thrown in lavaBase.php</h2> <br/>";
+			echo "Could not find method '{$method_name}' on object of class '" . get_class( $this ) . "'. We also tried the current child which has class '" . get_class( $this->_get_child() ) . "'and the parent which has class '" . get_class( $this->_get_parent() ) . "'.";
+			exit;
+		} else {
+			return $this->_get_return_object();
 		}
 	}
+
+	function _blank() {
+		
+	}
+
+	/**
+	 *  Translation
+	 */
+
+	function __( $string ) {
+		$domain = 'lava_framework';
+		return __( $string, $domain );
+	}
+
 
 	/**
 	 * Functions for adding, removing and retrieving data from the class
 	 *
 	 */
 
-	function _isInMemory( $key ) {
+	function _is_in_memory( $key ) {
 		if( array_key_exists( $key, $this->_memory ) ) {
 			return true;
 		} else {
@@ -139,11 +149,21 @@ class Lava_Base
 	 * Methods for getting and setting the object that is returned if a method that doesn't exist is called.
 	 */
 
-	function _getReturnObject() {
+	function _r( $kill_child = false ) {
+		return $this->_get_return_object()->_this( $kill_child );
+	}
+
+	function _this( $kill_child = true ) {
+		if( $kill_child )
+			$this->_kill_child();
+		return $this;
+	}
+
+	function _get_return_object() {
 		return $this->_recall( '_return_object', $this );
 	}
 
-	function _setReturnObject( $object = null ) {
+	function _set_return_object( $object = null ) {
 		if( is_null( $object ) ) {
 			$object = $this;
 		}
@@ -155,36 +175,36 @@ class Lava_Base
 	 * Accessor methods for family
 	 */
 
-	function _hasChild() {
-		return $this->_isInMemory( '_child' );
+	function _has_child() {
+		return $this->_is_in_memory( '_child' );
 	}
 
-	function _getChild() {
+	function _get_child() {
 		return $this->_recall( '_child' );
 	}
 
-	function _setChild( $child ) {
+	function _set_child( $child ) {
 		return $this->_remember( '_child', $child );
 	}
 
-	function _killChild() {
+	function _kill_child() {
 		return $this->_forget( '_child' );
 	}
 
 
-	function _hasParent() {
-		return $this->_isInMemory( '_parent' );
+	function _has_parent() {
+		return $this->_is_in_memory( '_parent' );
 	}
 
-	function _getParent() {
+	function _get_parent() {
 		return $this->_recall( '_parent' );
 	}
 
-	function _setParent( $parent ) {
+	function _set_parent( $parent ) {
 		return $this->_remember( '_parent', $parent );
 	}
 
-	function _killParent() {
+	function _kill_parent() {
 		return $this->_forget( '_parent' );
 	}
 
@@ -194,9 +214,9 @@ class Lava_Base
 	 * Registers methods with hook names (e.g. _adminInit() ) to be called when that hook is called
 	 */
 
-	function _registerHookMethods() {
-		if( $this->_should_register_hook_methods == true ) {
-			$this->_funcs()->_registerHookMethods( $this );
+	function _register_action_methods( $ignore ) {
+		if( $this->_should_register_action_methods == true ) {
+			$this->_funcs()->_register_action_methods( $this );
 		}
 	}
 
@@ -210,7 +230,7 @@ class Lava_Base
 	 * If the hook name is the same as the method then the method parameter can be ommitted
 	 */
 	function _add_action( $hooks, $methods = '', $priority = 10, $how_many_args = 0, $should_namespace = false, $is_filter = false ) {
-
+		$debug = false;
 		if( !is_array( $hooks ) )
 			$hooks = array( $hooks );
 
@@ -220,7 +240,6 @@ class Lava_Base
 		foreach( $hooks as $hook ) {
 
 			foreach( $methods as $method ) {
-
 				if( empty( $method ) )
 					$method = $hook;
 
@@ -234,13 +253,14 @@ class Lava_Base
 				if( ! is_array( $callback ) ) {
 					$callback = array( $this, $callback );
 				}
-				if( $is_filter )
-					add_filter( $hook, $callback, $priority, $how_many_args );
-				else
-					add_action( $hook, $callback, $priority, $how_many_args );
+				if( is_callable( $callback ) ) {
+					if( $is_filter )
+						add_filter( $hook, $callback, $priority, $how_many_args );
+					else
+						add_action( $hook, $callback );
+				}
 			}
 		}
-
 		return $this;
 	}
 
@@ -328,95 +348,7 @@ class Lava_Base
 	
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/**
-	 * runActions function.
-	 *
-	 * Runs the actions with all the parameters
-	 *
-	 * @param string $key
-	 * @param $value (default: null)
-	 *
-	 * @since 1.0.0
-	 */
-	function runActions( $hookTag, $debug = false )
-	{
-		$hooks = array_unique( $this->hookTags() );
-		$suffixes = array_unique( $this->suffixes );
-
-		foreach( $suffixes as $suffix)
-		{
-			foreach( $hooks as $hook )
-			{
-				if( $hook == " " ) {
-					$hook = "";
-				} else {
-					$hook = "-".$hook;
-				}
-				if( $debug )
-				{
-					echo $this->_slug( "{$hookTag}{$hook}{$suffix}" ) . "\n";
-				}
-				do_action( $this->_slug( "{$hookTag}{$hook}{$suffix}" ), $this );
-			}
-		}
-	}
-
-	function applyFilters( $hookTag, $value = "", $args = null, $debug = false )
-	{
-		if( is_null( $args ) ) {
-			$args = $this;
-		}
-
-		$hooks = array_unique( $this->hookTags() );
-		$suffixes = array_unique( $this->suffixes );
-
-		foreach( $suffixes as $suffix)
-		{
-			foreach( $hooks as $hook )
-			{
-				if( $hook == " " ) {
-					$hook = "";
-				} else {
-					$hook = "-".$hook;
-				}
-				//echo( $this->_slug( "{$hookTag}{$hook}{$suffix}" ). "<br/>" );
-				$theHook = $this->_slug( "{$hookTag}{$hook}{$suffix}" );
-				if( $debug ){ echo( "$theHook<br>" ); }
-				$value = apply_filters( $theHook, $value, $args );
-			}
-		}
-
-		return $value;
-	}
-
-
-	function hookTags()
-	{
-		return array( " " );
-	}
 }
+
+endif;
 ?>
