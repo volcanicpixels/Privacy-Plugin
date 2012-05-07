@@ -27,6 +27,14 @@ class Lava_Page extends Lava_Base
 		$this->_section_id = $section_id;
 
 		$this->_set_return_object( $this->_page_controller );
+
+		$this->_add_action( 'admin_menu', '_register_page', 3 );
+	}
+
+
+
+	function _get_section_id() {
+		return $this->_section_id;
 	}
 
 	function _get_page_id() {
@@ -45,6 +53,21 @@ class Lava_Page extends Lava_Base
 		return $this->_recall( '_page_title', 'Undefined Page' );
 	}
 
+	function _get_menu_title() {
+		return $this->_recall( '_menu_title', $this->_get_page_title() );
+	}
+
+	function _set_menu_title( $menu_title ) {
+		$this->_remember( '_menu_title', $menu_title );
+		return $this->_r();
+	}
+
+	function _get_page_slug() {
+		return $this->_get_section_id() . '_' . $this->_get_page_id();
+	}
+
+
+
 	function _set_page_title( $page_title ) {
 		$this->_remember( '_page_title', $page_title );
 		return $this->_r();
@@ -57,9 +80,13 @@ class Lava_Page extends Lava_Base
 
 
 	function _register_page() {
-		$section = 
 
-		$parent_slug = "{$section_id}_"
+		$parent_slug = $this->_page_controller->_get_section_slug( $this->_section_id );
+		$page_title = $this->_get_page_title();
+		$menu_title = $this->_get_menu_title();
+		$capability = 'manage_options'; # @todo add capability handling
+		$menu_slug = $this->_get_page_slug();
+		$function = array( $this, '_blank' );
 
 
 		$page_hook = add_submenu_page(
@@ -68,8 +95,13 @@ class Lava_Page extends Lava_Base
 			$menu_title,
 			$capability,
 			$menu_slug,
-			$function = ''
+			$function
 		);
+
+	}
+
+	function _do_page() {
+		
 	}
 
 
@@ -77,20 +109,7 @@ class Lava_Page extends Lava_Base
 
 
 
-	function registerPage( $parentSlug )
-	{
-		$this->pageHook = add_submenu_page(
-			$parentSlug,
-			$this->get( "title" ),
-			$this->get( "title" ),
-			$this->get( "capability" ),
-			$this->get( "slug" ),
-			array( $this, "doPage")
-		);
-		$hook_suffix = $this->pageHook;
-		add_action( "admin_print_styles-$hook_suffix", array( $this, "enqueueIncludes" ) );
-		$this->_registerActions();
-	}
+
 
 
 

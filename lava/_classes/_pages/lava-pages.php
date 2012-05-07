@@ -19,7 +19,6 @@ class Lava_Pages extends Lava_Base
 
 	function _construct() {
 		$this->_add_action( 'admin_menu', '_register_sections', 2 );
-		$this->_add_action( 'admin_menu', '_register_pages' );
 	}
 
 
@@ -116,6 +115,16 @@ class Lava_Pages extends Lava_Base
 			return null;
 	}
 
+	function _get_section_slug( $section_id ) {
+		if( ! $this->_has_section( $section_id ) )
+			return null;
+
+		$section = $this->_get_section( $section_id );
+		extract( $section );
+
+		return "{$section_id}_{$section_default_page}";
+	}
+
 	function _set_section( $section_id, $section ) {
 		$this->_admin_sections[ $section_id ] = $section;
 		return $this->_r();
@@ -141,7 +150,15 @@ class Lava_Pages extends Lava_Base
 
 	function _add_settings_page( $page_id = 'settings' ) {
 		$this->_add_page( $page_id, 'settings' )
-				->_set_page_title( $this->__( 'Plugin Settingsss'/*Test*/ ) )
+				->_set_page_title( $this->__( 'Plugin Settings') )
+		;
+
+		return $this->_r();
+	}
+
+	function _add_skins_page( $page_id = 'skins' ) {
+		$this->_add_page( $page_id, 'skins' )
+				->_set_page_title( $this->__( 'Plugin Skin' ) )
 		;
 
 		return $this->_r();
@@ -160,15 +177,20 @@ class Lava_Pages extends Lava_Base
 		foreach( $sections as $section ) {
 			# @todo - add filter for capabilities (get minimum capabilities required)
 			extract( $section );
+
+			$section_slug = $this->_get_section_slug( $section_id );
+			$page_title = $this->_get_page( $section_default_page )->_get_page_title();
+
 			add_menu_page(
-				'Undefined Page',
+				$page_title,
 				$section_title,
 				'manage_options',
-				"{$section_id}_{$section_default_page}",
+				$section_slug,
 				array( $this, '_blank' ) 
 			);
 		}
 	}
+
 
 
 

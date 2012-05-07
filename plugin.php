@@ -27,6 +27,8 @@ class Volcanic_Pixels_Privacy_Plugin extends Lava_Plugin {
 	function _register_pages() {
 		$this->_pages()
 				->_add_settings_page()
+				->_add_skins_page()
+					->_set_page_title( $this->__( 'Login Page Skin' ) )
 		;
 	}
 }
