@@ -1,0 +1,1072 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"page",
+				"page_title"
+			],
+			[
+				"men",
+				"menu_slug"
+			],
+			[
+				"_get_page_",
+				"_get_page_title"
+			],
+			[
+				"_page",
+				"_page_id"
+			],
+			[
+				"_get_page",
+				"_get_page_title"
+			],
+			[
+				"sectio",
+				"section_id"
+			],
+			[
+				"section",
+				"section_slug"
+			],
+			[
+				"_admin_s",
+				"_admin_submenu_pages"
+			],
+			[
+				"parent",
+				"parent_page_id"
+			],
+			[
+				"par",
+				"parent_page_id"
+			],
+			[
+				"function",
+				"function_exists"
+			],
+			[
+				"_set",
+				"_set_child"
+			],
+			[
+				"_sett",
+				"_setting_default"
+			],
+			[
+				"_se",
+				"_setting_name"
+			],
+			[
+				"setting",
+				"setting_name"
+			],
+			[
+				"_setting",
+				"_setting_name"
+			],
+			[
+				"call_user",
+				"call_user_func"
+			],
+			[
+				"class",
+				"class_name"
+			],
+			[
+				"_plugin",
+				"_plugin_id"
+			],
+			[
+				"Lava",
+				"Lava_Base"
+			],
+			[
+				"_upda",
+				"_update_settings_to_db"
+			],
+			[
+				"setti",
+				"setting_value"
+			],
+			[
+				"_get_sett",
+				"_get_settings_from_db"
+			],
+			[
+				"_get_se",
+				"_get_settings_from_db"
+			],
+			[
+				"func",
+				"function"
+			],
+			[
+				"set",
+				"setting_key"
+			],
+			[
+				"_apply_fil",
+				"_apply_filters_"
+			],
+			[
+				"func_",
+				"func_get_args"
+			],
+			[
+				"call",
+				"callback"
+			],
+			[
+				"me",
+				"method"
+			],
+			[
+				"is",
+				"is_filter"
+			],
+			[
+				"sho",
+				"should_namespace"
+			],
+			[
+				"for",
+				"foreach	foreach …"
+			],
+			[
+				"is_a",
+				"is_array"
+			],
+			[
+				"sh",
+				"should_namespace"
+			],
+			[
+				"se",
+				"setting_key"
+			],
+			[
+				"sett",
+				"setting_prefix"
+			],
+			[
+				"classN",
+				"class_name"
+			],
+			[
+				"str_re",
+				"str_replace"
+			],
+			[
+				"_getPlugin",
+				"_getPluginFilePath"
+			],
+			[
+				"remove",
+				"remove_child"
+			],
+			[
+				"_get",
+				"_getChild"
+			],
+			[
+				"method_",
+				"method_name"
+			],
+			[
+				"incl",
+				"include_once"
+			],
+			[
+				"skinAc",
+				"skinAction"
+			],
+			[
+				"arg",
+				"argument"
+			],
+			[
+				"hook",
+				"hookTag"
+			],
+			[
+				"wh",
+				"which_links"
+			],
+			[
+				"plugin_",
+				"plugin_basename"
+			],
+			[
+				"link",
+				"linkUrl"
+			],
+			[
+				"lin",
+				"linkText"
+			],
+			[
+				"wp_crea",
+				"wp_create_nonce"
+			],
+			[
+				"settingA",
+				"settingAbsElements"
+			],
+			[
+				"stat",
+				"statusIndicator"
+			],
+			[
+				"new",
+				"new_skin"
+			],
+			[
+				"re",
+				"relative"
+			],
+			[
+				"skin-selector",
+				"skin-selector-2"
+			],
+			[
+				"bac",
+				"background	background-color: rgb"
+			],
+			[
+				"ajax-",
+				"ajax-check-loading"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"lava-table-",
+				"lava-table-update-trigger"
+			],
+			[
+				"loader",
+				"loader-middle-spacing"
+			],
+			[
+				"loader-bl",
+				"loader-block-color"
+			],
+			[
+				"ui",
+				"ui-foreground-color"
+			],
+			[
+				"lava-load",
+				"lava-loader-block-dimension"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"bind",
+				"bindAutoResize"
+			],
+			[
+				"ui-",
+				"ui-colors-focus"
+			],
+			[
+				"code",
+				"codeRefresh"
+			],
+			[
+				"current",
+				"current_value"
+			],
+			[
+				"curre",
+				"current_value"
+			],
+			[
+				"settingInput",
+				"settingInputName"
+			],
+			[
+				"lava-fo",
+				"lava-focus-inner"
+			],
+			[
+				"lava-focus-",
+				"lava-focus-outer"
+			],
+			[
+				"lava-s",
+				"lava-shadow-overlay"
+			],
+			[
+				"data",
+				"data-actual"
+			],
+			[
+				"lava-mess",
+				"lava-message-red"
+			],
+			[
+				"settings",
+				"settingsArray"
+			],
+			[
+				"settin",
+				"settingsArray"
+			],
+			[
+				"currentS",
+				"currentSkinSlug"
+			],
+			[
+				"array_key",
+				"array_key_exists"
+			],
+			[
+				"bindIma",
+				"bindImageChange"
+			],
+			[
+				"upload_",
+				"upload_overrides"
+			],
+			[
+				"upload",
+				"uploadArray"
+			],
+			[
+				"file",
+				"fileInputClass"
+			],
+			[
+				"serai",
+				"serialisedArray"
+			],
+			[
+				"fileUpl",
+				"fileUploadTmp"
+			],
+			[
+				"settingUpload",
+				"settingUploadInputName"
+			],
+			[
+				"json_",
+				"json_encode"
+			],
+			[
+				"fu",
+				"fullHandler"
+			],
+			[
+				"response",
+				"responseData"
+			],
+			[
+				"array_ke",
+				"array_key_exists"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"seria",
+				"serializeArray"
+			],
+			[
+				"form",
+				"formData"
+			],
+			[
+				"po",
+				"pointer"
+			],
+			[
+				"drop",
+				"dropZone"
+			],
+			[
+				"admin_",
+				"admin_url"
+			],
+			[
+				"jquery-ui-",
+				"jquery-ui-widget"
+			],
+			[
+				"lava",
+				"lavaSettingsCallback"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "_code/readme.txt",
+			"settings":
+			{
+				"buffer_size": 3511,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "_code/plugin.php",
+			"settings":
+			{
+				"buffer_size": 989,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "_code/_lava/lava.php",
+			"settings":
+			{
+				"buffer_size": 1911,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "_code/_lava/_classes/_templating/h2o/loaders.php",
+			"settings":
+			{
+				"buffer_size": 7988,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Profiles/Daniel/Downloads/home.php",
+			"settings":
+			{
+				"buffer_size": 5282,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 311.0,
+		"selected_items":
+		[
+			[
+				"paclk",
+				"Package Control: Discover Packages"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Package Control: Add Channel"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"pacl",
+				"Package Control: Install Package"
+			],
+			[
+				"for",
+				"Format: Php"
+			],
+			[
+				"forma",
+				"Format: Php"
+			],
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"close",
+				"File: Close All"
+			]
+		],
+		"width": 514.0
+	},
+	"console":
+	{
+		"height": 112.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/_pages/lava-page.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/_pages/lava-pages.php",
+		"/D/Google Drive/Work/Privacy Plugin/Privacy-Plugin/lava/_classes/_pages/lava-settings-page.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lava-base.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lava-functions.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/_settings/lava-setting.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lava-plugin.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/lava.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/_settings/lava-setting-.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/_settings/lava-settings.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/_settings/lava-settings-callback.php",
+		"/D/Google Drive/Work/Lava/Repo/vendor.php",
+		"/D/Google Drive/Work/Privacy Plugin/Privacy-Plugin/lava/_classes/_settings/lava-settings.php",
+		"/D/Google Drive/Work/Privacy Plugin/Privacy-Plugin/lava/_classes/_extensions/lava-extension.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_static/styles.less",
+		"/D/Google Drive/Work/Privacy Plugin/Privacy-Plugin/lava/_classes/lava-base.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/_skins/lavaSkins.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/_skins/lavaSkin.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaFunctions.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaBase.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaSkins.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaSettings.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaSkinsCallback.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaPlugin.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaPages.php",
+		"/D/Else/WebMatrix sites/WordPress beta/wp-content/mu-plugins/junction-link.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaMiscFunctions.php",
+		"/D/Else/WebMatrix sites/WordPress beta/wp-content/plugins/privacy-plugin/lava/_classes/lavaTables.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaPage.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/h2o/loaders.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/h2o.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaSkin.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_static/scripts.js",
+		"/D/Google Drive/Work/Lava/Repo/lava/_static/scripts_new.js",
+		"/D/Google Drive/Work/Lava/Repo/lava/_static/table_scripts.js",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaTablePage.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaAdvancedTablePage.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaTable.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaAjax.php",
+		"/D/Google Drive/Work/Lava/Repo/lava/_classes/lavaSettingsPage.php",
+		"/D/Work/Lava/Repo/lava/_cache/index.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaPage.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaDataSourceAjax.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaPlugin.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaAjaxHandlers.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaSettings.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaTablePage.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaPages.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaSetting.php",
+		"/D/Work/Lava/Repo/lava/_static/scripts.js",
+		"/D/Work/Lava/Repo/lava/_static/styles.less",
+		"/D/Work/Lava/Repo/lava/_classes/lavaExtension.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaMiscFunctions.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaSettingsPage.php",
+		"/D/Work/Lava/Repo/lava/_static/tiptip.js",
+		"/D/Work/Lava/Repo/lava/_classes/lavaSkins.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaSkinsPage.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaSettingsCallback.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaSkinsCallback.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaBase.php",
+		"/D/Work/Lava/Repo/vendor.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaTableField.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaTable.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaAjax.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaSkin.php",
+		"/D/Work/Lava/Repo/lava/_static/jquery.fileupload.js",
+		"/D/Work/Lava/Repo/lava/_classes/lavaTables.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaFileUploadAjax.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaTableField",
+		"/D/Work/Lava/Repo/lava/_static/autoResize.js",
+		"/D/Work/Lava/Repo/lava/_classes/lavaTables",
+		"/D/Work/Lava/Repo/lava/_static/codemirror/codemirror.js",
+		"/D/Work/Lava/Repo/lava/_classes/h2o.php",
+		"/D/Work/Lava/Repo/lava/_classes/h2o/parser.php",
+		"/D/Work/Lava/Repo/lava/_classes/h2o/filters.php",
+		"/D/Work/Lava/Repo/lava/_classes/h2o/tags.php",
+		"/D/Work/Lava/Repo/lava/_static/codemirror.theme.css",
+		"/D/Work/Lava/Repo/lava/_static/codemirror.js",
+		"/D/Work/Subscriptions Plugin/plugin.php",
+		"/C/Users/Daniel/AppData/Local/Temp/Temp1_private-blog.zip/private-blog/lava/_classes/lavaAjaxHandlers.php",
+		"/D/Profiles/Daniel/Downloads/private-blog/private-blog/lava/_classes/lavaAjaxHandlers.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaImageUploadAjax.php",
+		"/D/Work/Lava/Repo/lava/_classes/lavaSupportPage.php",
+		"/D/Work/Lava/Repo/plugin.php",
+		"/C/Program Files/Sublime Text 2/Pristine Packages/PHP.sublime-package"
+	],
+	"find":
+	{
+		"height": 32.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"<open files>",
+			"<open folders>",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"require",
+			"e1",
+			"->add_action",
+			"bob",
+			"die",
+			"print",
+			"argument",
+			"_insta",
+			"getThis",
+			"isInMem",
+			"addAuto",
+			"filter",
+			"recall",
+			"versionMatch",
+			"doInstall()",
+			"versionMatch",
+			".anima",
+			"under",
+			"]",
+			"under",
+			"onder",
+			"message",
+			"messages",
+			"under",
+			"skin",
+			"anima",
+			"key",
+			"keyfram",
+			"h2",
+			"toolbarB",
+			"toolbar",
+			"bindLogo",
+			"ajax",
+			"ajaxurl",
+			"keyfr",
+			"animations",
+			"toggle",
+			"bind",
+			"         }",
+			"uniq",
+			"settingAc",
+			"getLength",
+			"lavaSetting",
+			"lava-tool",
+			"hide",
+			"timep",
+			"bindA",
+			"remove",
+			"resize",
+			"textarea",
+			"autoescape",
+			"code",
+			"prettifyCode",
+			"focused",
+			"textarea",
+			"get",
+			"pageHook",
+			"settings",
+			"overgr",
+			"lava-o",
+			"overground",
+			"asd",
+			"240",
+			"addPreset",
+			"fileUpload",
+			"referrer",
+			"true",
+			"tool",
+			"toolbar",
+			"toolbarButtons",
+			"hookTags",
+			"console",
+			"formData",
+			".shadow",
+			"shadow",
+			"enqueue"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"lavaTable"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "_code/readme.txt",
+					"settings":
+					{
+						"buffer_size": 3511,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1319,
+								1319
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "_code/plugin.php",
+					"settings":
+					{
+						"buffer_size": 989,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								386,
+								386
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "_code/_lava/lava.php",
+					"settings":
+					{
+						"buffer_size": 1911,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "_code/_lava/_classes/_templating/h2o/loaders.php",
+					"settings":
+					{
+						"buffer_size": 7988,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5806,
+								5806
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2610.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/D/Profiles/Daniel/Downloads/home.php",
+					"settings":
+					{
+						"buffer_size": 5282,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								785,
+								753
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 30.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"base",
+				"lava/_classes/lavaBase.php"
+			],
+			[
+				"skins",
+				"lava/_classes/lavaSkins.php"
+			],
+			[
+				"settings",
+				"lava/_classes/lavaSettings.php"
+			],
+			[
+				"page",
+				"lava/_classes/lavaPage.php"
+			],
+			[
+				"skin",
+				"lava/_classes/lavaSkin.php"
+			],
+			[
+				"pa",
+				"lava/_classes/lavaPage.php"
+			],
+			[
+				"pages",
+				"lava/_classes/lavaPages.php"
+			],
+			[
+				"table",
+				"lava/_classes/lavaTablePage.php"
+			],
+			[
+				"misc",
+				"lava/_classes/lavaMiscFunctions.php"
+			],
+			[
+				"styl",
+				"lava/_static/styles.less"
+			],
+			[
+				"sett",
+				"lava/_classes/lavaSettings.php"
+			],
+			[
+				"scripts",
+				"lava/_static/scripts.js"
+			],
+			[
+				"setting",
+				"lava/_classes/lavaSetting.php"
+			],
+			[
+				"settin",
+				"lava/_classes/lavaSetting.php"
+			],
+			[
+				"settingsc",
+				"lava/_classes/lavaSettingsCallback.php"
+			],
+			[
+				"lavase",
+				"lava/_classes/lavaSetting.php"
+			],
+			[
+				"sc",
+				"lava/_static/scripts.js"
+			],
+			[
+				"sty",
+				"lava/_static/styles.less"
+			],
+			[
+				"lavapl",
+				"lava/_classes/lavaPlugin.php"
+			],
+			[
+				"lavapage",
+				"lava/_classes/lavaPages.php"
+			],
+			[
+				"lavasettingsp",
+				"lava/_classes/lavaSettingsPage.php"
+			],
+			[
+				"lavapa",
+				"lava/_classes/lavaPage.php"
+			],
+			[
+				"tablefield",
+				"lava/_classes/lavaTableField.php"
+			],
+			[
+				"lavabase",
+				"lava/_classes/lavaBase.php"
+			],
+			[
+				"lavatables",
+				"lava/_classes/lavaTables.php"
+			],
+			[
+				"lavatab",
+				"lava/_classes/lavaTablePage.php"
+			],
+			[
+				"style",
+				"lava/_static/styles.less"
+			],
+			[
+				"lavaskin",
+				"lava/_classes/lavaSkin.php"
+			],
+			[
+				"lavata",
+				"lava/_classes/lavaTables.php"
+			],
+			[
+				"styles",
+				"lava/_static/styles.less"
+			],
+			[
+				"scr",
+				"lava/_static/scripts.js"
+			],
+			[
+				"lavasetting",
+				"lava/_classes/lavaSettings.php"
+			],
+			[
+				"lavasettings",
+				"lava/_classes/lavaSettingsCallback.php"
+			],
+			[
+				"lavapages",
+				"lava/_classes/lavaPages.php"
+			],
+			[
+				"lavaskins",
+				"lava/_classes/lavaSkins.php"
+			],
+			[
+				"skincall",
+				"lava/_classes/lavaSkinsCallback.php"
+			],
+			[
+				"lacase",
+				"lava/_classes/lavaSetting.php"
+			],
+			[
+				"lavas",
+				"lava/_classes/lavaSkins.php"
+			],
+			[
+				"lavasettingsca",
+				"lava/_classes/lavaSettingsCallback.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 244.0,
+	"status_bar_visible": true
+}

@@ -171,6 +171,7 @@ function h2o_cache($options = array()) {
 class H2o_File_Cache {
     var $ttl = 3600;
     var $prefix = 'h2o_';
+    var $suffix = '.cache';
     
     function __construct($options = array()) {
         if (isset($options['cache_dir']) && is_writable($options['cache_dir'])) {
@@ -191,10 +192,10 @@ class H2o_File_Cache {
     }
 
     function read($filename) {
-        if (!file_exists($this->path . $this->prefix. $filename))
+        if (!file_exists($this->path . $this->prefix. $filename . $this->suffix ))
             return false;
 
-        $content = file_get_contents($this->path . $this->prefix. $filename);
+        $content = file_get_contents($this->path . $this->prefix. $filename . $this->suffix);
         $expires = (int)substr($content, 0, 10);
 
         if (time() >= $expires) 
@@ -205,7 +206,7 @@ class H2o_File_Cache {
     function write($filename, &$object) {
         $expires = time() + $this->ttl;
         $content = $expires . serialize($object);
-        return file_put_contents($this->path . $this->prefix. $filename, $content);   
+        return file_put_contents($this->path . $this->prefix. $filename . $this->suffix, $content);   
     }
     
     function flush() {
