@@ -10,7 +10,6 @@ License: GPLv2
 */
 ?>
 <?php
-error_reporting(E_ALL);
 require( dirname( __FILE__ ) ."/_lava/lava.php" );
 
 class Volcanic_Pixels_Privacy_Plugin extends Lava_Plugin {
