@@ -1,0 +1,5 @@
+# admin_pages.yaml defines the admin pages - beware that strings in here are not marked for translation so some work needs to be done to get that to work
+
+- type: settings
+- type: skins
+  title: Login Page Skin

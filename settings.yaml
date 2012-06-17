@@ -1,0 +1,14 @@
+#
+#	settings.yaml contains the setting definitions in a nice human-readable format
+#
+
+
+- id: enabled
+  type: checkbox
+  default: on
+- id: password
+  type: password
+  default: password
+- id: login_duration
+  type: timeperiod, text
+  

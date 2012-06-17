@@ -6,7 +6,7 @@ Add premium feature trial load
 Add licensing to bar
 
 */
-class Volcanic_Pixels_Privacy_Plugin_Vendor extends Lava_Extension {
+class Volcanic_Pixels_Private_Blog_Vendor extends Lava_Extension {
 
 	public $apiVersion = 1;
 
