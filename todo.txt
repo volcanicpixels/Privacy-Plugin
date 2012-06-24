@@ -1,0 +1,4 @@
+Feature pointers
+Redirect to settings page on install
+Add links to settings etc. on plugins page
+Add browser popup
