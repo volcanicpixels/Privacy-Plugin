@@ -2,3 +2,9 @@ Feature pointers
 Redirect to settings page on install
 Add links to settings etc. on plugins page
 Add browser popup
+
+
+
+
+Add hook to flush defaults to database on activation, upgrade, rand etc.
+Hidden pages

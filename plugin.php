@@ -18,9 +18,12 @@ class Volcanic_Pixels_Private_Blog extends Lava_Plugin {
 	public $_plugin_version = 4.05;
 
 	function _register_settings() {
+		parent::_register_settings();
+		/*
 		$this->_settings()
 				->_add_setting( 'enabled', 'checkbox' )
 		;
+		*/
 	}
 
 	function _register_pages() {

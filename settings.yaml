@@ -5,6 +5,7 @@
 enabled:
   type: checkbox
   default: on
+  section_title: General Settings
 
 password:
   type: password
@@ -13,3 +14,5 @@ password:
 login_duration:
   type: text
   default: 86400 #one day
+  section: advanced
+  section_title: Advanced Settings
