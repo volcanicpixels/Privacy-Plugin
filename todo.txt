@@ -8,3 +8,14 @@ Add browser popup
 
 Add hook to flush defaults to database on activation, upgrade, rand etc.
 Hidden pages
+
+
+
+
+
+
+settings:
+	What to protect
+	RSS feeds
+	Login Duration
+	Multiple passwords
