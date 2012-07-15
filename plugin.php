@@ -17,6 +17,10 @@ class Volcanic_Pixels_Private_Blog extends Lava_Plugin {
 	public $_plugin_name = "Private Blog";
 	public $_plugin_version = 4.05;
 
+	function _init() {
+		parent::_init();
+	}
+
 	function _register_settings() {
 		parent::_register_settings();
 		/*
