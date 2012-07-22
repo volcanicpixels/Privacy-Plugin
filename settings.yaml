@@ -18,10 +18,6 @@ text:
   type: text
   default: this is a test
 
-undefined:
-  title: Undefined test
-  default: this is a test
-
 login_duration:
   title: How long before a user's session expires
   type: text

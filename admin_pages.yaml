@@ -1,9 +1,9 @@
 # admin_pages.yaml defines the admin pages - beware that strings in here are not marked for translation so some work needs to be done to get that to work - hopefully an in-wordpress translation plugin 
 
 # although this page will be automatically created when the settings are defined it is easier to manage the order it is displayed in if we define it here
+
 settings:
   type: settings
-
 skins:
   type: skins
   title: Login Page Skin

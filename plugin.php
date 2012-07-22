@@ -23,21 +23,10 @@ class Volcanic_Pixels_Private_Blog extends Lava_Plugin {
 
 	function _register_settings() {
 		parent::_register_settings();
-		/*
-		$this->_settings()
-				->_add_setting( 'enabled', 'checkbox' )
-		;
-		*/
 	}
 
 	function _register_pages() {
 		parent::_register_pages();
-		/*
-		$this->_pages()
-				->_add_settings_page()
-				->_add_skins_page()
-					->_set_page_title( $this->__( 'Login Page Skin' ) )*/
-		;
 	}
 }
 
