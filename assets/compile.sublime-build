@@ -1,0 +1,3 @@
+{
+	"cmd": ["coffee -o js/lava/ -cw coffee/lava/"]
+}
