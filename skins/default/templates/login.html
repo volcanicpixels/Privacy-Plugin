@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>{{ get_bloginfo( 'name' ) }} | Login</title>
+		{{ head() }}
+		{{ styles() }}
+		<style type="text/css">
+			#logo {
+				background-image:url({{ logo }});
+			}
+		</style>
+		{{ scripts() }}
+	</head>
+	<body class="" >
+		<div id="logo">
+			{# The logo is actually displayed using the background-image but this is used to make sure the height is correct #}
+			<img src="{{ logo }}" />
+		</div>
+		<div id="login_form_cntr">
+			<form id="login_form" method="post">
+				{{ widget( 'form' ) }}
+			</form>
+		</div>
+	</body>
+</html>

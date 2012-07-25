@@ -6,9 +6,26 @@ Add premium feature trial load
 Add licensing to bar
 
 */
-class Volcanic_Pixels_Private_Blog_Vendor extends Lava_Extension {
+class Volcanic_Pixels_Private_Blog_Vendor extends Lava_Vendor {
 
 	public $apiVersion = 1;
+
+	function _construct() {
+		parent::_construct( dirname(__file__), 'vendor' );
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	function init() {
 		$this->registerLicensingSettings();

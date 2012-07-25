@@ -1,0 +1,30 @@
+@import "../../lava/assets/less/mixins.less";
+
+body {
+	background: #fefefe;
+}
+
+#logo{
+	background-repeat: no-repeat;
+	background-position: bottom center;
+	min-height: 100px;
+	max-height: 500px;
+
+	img {
+		margin-left: -1000px;
+		opacity: 0;
+		z-index: -1;
+	}
+}
+
+#login_form_cntr {
+	margin-left: auto;
+	margin-right: auto;
+	background: white;
+	border: 1px solid #BEBEBE;
+	width: 300px;
+	padding: 20px;
+
+	.box-shadow(0 1px 3px rgba(0, 0, 0, 0.2) );
+	.border-radius( 3px );
+}

@@ -1,0 +1,3 @@
+This file outlines the guidelines that all skins should follow to ensure compatibility with extensions.
+
+The login form should have the id login_form

@@ -1,0 +1,8 @@
+#
+#	settings.yaml contains the setting definitions in a nice human-readable format
+#
+
+logo:
+  type: image
+  default: /images/logo.png
+  get_url: true # this automatically changes the default value into an absolute url
