@@ -1,13 +1,15 @@
 @import "../../lava/assets/less/mixins.less";
 
 body {
-	background: #fefefe;
+	background: #fbfbfb;
+	color: #666;
+	font-family: sans-serif;
 }
 
 #logo{
 	background-repeat: no-repeat;
 	background-position: bottom center;
-	min-height: 100px;
+	min-height: 200px;
 	max-height: 500px;
 
 	img {
@@ -27,4 +29,16 @@ body {
 
 	.box-shadow(0 1px 3px rgba(0, 0, 0, 0.2) );
 	.border-radius( 3px );
+}
+
+input:not([type="submit"]) {
+	width: 100%;
+	line-height: 30px;
+	height: 30px;
+	font-size: 24px;
+	font-weight: 200;
+}
+
+label {
+	font-size: 14px;
 }

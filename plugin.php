@@ -38,10 +38,6 @@ class Volcanic_Pixels_Private_Blog extends Lava_Plugin {
 		$this->_do_plugin_action( 'do_authentication' );
 	}
 
-	function _register_widgets() {
-		die('asd');
-	}
-
 	###########################################
 	##	lava hooks
 	###########################################

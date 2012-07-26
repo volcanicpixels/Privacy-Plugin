@@ -18,9 +18,18 @@
 			<img src="{{ logo }}" />
 		</div>
 		<div id="login_form_cntr">
-			<form id="login_form" method="post">
-				{{ widget( 'form' ) }}
-			</form>
+				{% if widget_exists( 'form' ) %}
+					{{ widget( 'form' ) }}
+				{% else %}
+					<form id="login_form" method="post">
+						<label>
+							{{ translate( 'Password' ) }}
+							<br />
+							<input type="password" />
+						</label>
+						<input type="submit" value="{{ translate( 'login' ) }}" />
+					</form>
+				{% endif %}
 		</div>
 	</body>
 </html>
