@@ -19,15 +19,18 @@
 		</div>
 		<div id="login_form_cntr">
 				{% if widget_exists( 'form' ) %}
-					{{ widget( 'form' ) }}
+					{{ widget( 'form' ) }}{# This allows an extension to override the form #}
 				{% else %}
 					<form id="login_form" method="post">
-						<label>
-							{{ translate( 'Password' ) }}
-							<br />
-							<input type="password" />
-						</label>
-						<input type="submit" value="{{ translate( 'login' ) }}" />
+						<input type="hidden" name="{{ namespace( 'action' ) }}" value="login"  />
+						<p>
+							<label>
+								{{ translate( 'Password' ) }}
+								<br />
+								<input type="password" name="{{ namespace( 'password' ) }}" />
+							</label>
+						</p>
+						<input type="submit" value="{{ translate( 'Login' ) }}" />
 					</form>
 				{% endif %}
 		</div>

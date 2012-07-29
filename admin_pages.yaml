@@ -7,3 +7,8 @@ settings:
 skins:
   type: skins
   title: Login Page Skin
+extensions:
+  type: extensions
+support:
+  type: support
+  support_forum_url: https://groups.google.com/forum/embed/?place=forum/privacy-plugin&showpopout=true&showsearch=true
