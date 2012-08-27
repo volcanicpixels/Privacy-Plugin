@@ -1,26 +1,37 @@
 #
-#	settings.yaml contains the setting definitions in a nice human-readable format
+#	Sections
+#
+
+general:
+  title: General Settings
+  type: section
+
+advanced:
+  title: Advanced Settings
+  type: section
+
+#
+# Settings
 #
 
 enabled:
   title: Enable Protection
   type: checkbox
   default: on
-  section_title: General Settings
 
 password:
   title: Password
   type: password
   default: password
 
-text:
-  title: Text test
-  type: text
-  default: this is a test
-
 login_duration:
   title: How long before a user's session expires
   type: text
   default: 86400 # one day
   section: advanced
-  section_title: Advanced Settings
+
+enable_public_rss_feeds:
+  title: Make RSS feeds publicly viewable
+  type: checkbox
+  default: off
+  section: advanced

@@ -1,8 +1,40 @@
 #
-#	settings.yaml contains the setting definitions in a nice human-readable format
+# Sections
+#
+
+general:
+  type: section
+  title: Skin Settings
+
+#
+#	Settings
 #
 
 logo:
+  title: Logo
   type: image
   default: /images/logo.png
   get_url: true # this automatically changes the default value into an absolute url
+
+message_enabled:
+  title: Display a messsage
+  type: toggle
+  default: off
+
+message:
+  type: message
+  default: Enter the password to get in.
+
+custom_css_enabled:
+  title: Enable custom CSS
+  type: toggle
+  default: off
+
+custom_css:
+  type: textarea
+  default: |
+    /*
+    @todo: add link to a snippet
+    */
+
+

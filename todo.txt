@@ -6,6 +6,8 @@ Add browser popup
 
 
 
+Bugs:
+	Make feed message properly formatted
 
 
 Hidden pages:
@@ -13,18 +15,26 @@ Hidden pages:
 	Change log (update)
 
 
+premium:
+	Manage installations
+	Manage licenses
+	Purchase license
 
+if not premium:
+	Do not update premium settings on save (remove from vars)
+	Change premium settings to default on retrieval (but ensure that changed values persist in database)
+	
 
 
 settings:
-	What to protect
 	RSS feeds
 	Login Duration
-	Multiple passwords
 
 extensions:
 	make case insensitive
 	protocol
+	What to protect
+	Multiple passwords
 
 pages:
 	skins page:
@@ -81,3 +91,11 @@ blog posts:
 	Making an extension
 	Why we have dropped IE7 support
 		< 0.2 % users using IE7
+	Demo server
+		Intro then technical stuff including a plugin?
+
+UX:
+	Auto resize inputs
+	
+Updates API
+	A way of determining if a setting is still default and changing it

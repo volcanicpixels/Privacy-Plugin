@@ -10,6 +10,11 @@
 				background-image:url({{ logo }});
 			}
 		</style>
+		{% if custom_css_enabled == 'on' %}
+		<style type="text/css">
+			{{ custom_css | raw }}
+		</style>
+		{% endif %}
 		{{ scripts() }}
 	</head>
 	<body class="" >
@@ -18,6 +23,11 @@
 			<img src="{{ logo }}" />
 		</div>
 		<div id="login_form_cntr">
+				{% if message_enabled == 'on' %}
+					<div class="message">
+						{{ message }}
+					</div>
+				{% endif %}
 				{% if widget_exists( 'form' ) %}
 					{{ widget( 'form' ) }}{# This allows an extension to override the form #}
 				{% else %}
