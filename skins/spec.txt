@@ -1,5 +1,0 @@
-This file outlines the guidelines that all skins should follow to ensure compatibility with extensions.
-
-The login form should have the id private_blog_login_form
-
-The login form should be overrideable using widget()
