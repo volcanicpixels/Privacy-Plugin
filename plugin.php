@@ -3,172 +3,264 @@
 Plugin Name: Private Blog
 Plugin URI: http://www.volcanicpixels.com/password-protect-wordpress-plugin/
 Description: Private Blog is a wordpress plugin which allows you to password protect all of your wordpress blog including all posts and feeds with a single password.
-Version: 4.05
+Version: 4.11.2
 Author: Daniel Chatfield
-Author URI: http://www.volcanicpixels.com/
+Author URI: http://www.danielchatfield.com
 License: GPLv2
 */
 ?>
 <?php
-/*
-This plugin uses a framework to do most of the heavy lifting, you should be able to follow the code though.
-*/
 include( dirname( __FILE__ ) ."/lava/lava.php" );
 
-class Volcanic_Pixels_Private_Blog extends Lava_Plugin {
+$pluginName = "Private Blog";
+$pluginVersion = "4.11.2";
 
-	public $_plugin_name = "Private Blog";
-	public $_plugin_version = 4.05;
+$thePlugin = lava::newPlugin( __FILE__, $pluginName, $pluginVersion );
+$pluginSlug = $thePlugin->_slug();
 
-	/*
-		An array of actions that if a method by the same name exists on a plugin class it will be automagically registered.
-	*/
-	public $_plugin_actions = array(
-		'do_logout',
-		'do_login',
-		'do_login_display',
-		'do_feed_message'
+
+/**
+ * Define the plugin settings:
+ *	Enabled
+ *	Multiple Passwords
+ *	Passwords
+ *	Login Duration
+ *	Add logout button
+ */
+
+
+// To change maximum passwords change the value of the variable below
+global $maxPasswords;
+$maxPasswords = 10;
+
+$thePlugin->_settings()
+	->addSetting( "enabled" )
+		->setName( __( "Enable Password Protection", $pluginSlug ) )
+		->setType( "checkbox" )
+		->setDefault( "on" )
+		->setHelp( __( "When enabled visitors to your site will need to login to access it.", $pluginSlug ) )
+	->addSetting( "use_template_hook" )
+		->setName( __( "Enable this ONLY if the login page never appears (RSS feeds will not be public)", $pluginSlug ) )
+		->setType( "checkbox" )
+		->setDefault( "off" )
+	->addSetting( "multiple_passwords" )
+		->setName( __( "Enable multiple passwords", $pluginSlug ) )
+		->setType( "checkbox" )
+		->setDefault( "off" )
+		->setHelp( sprintf( __( "When enabled, upto %s different passwords can be set.", $pluginSlug ), 10 ) )
+		->addTag( "is-premium" )
+;
+
+for( $i = 1; $i <= $maxPasswords; $i++ )
+{
+	$default = ( 1 == $i )? "password" : "";//set the default for the first password and leave the rest blank
+	$name = ( 1 == $i )? __( "Password", $pluginSlug ) : ""; //set the name for the first password and leave the rest blank
+	$namePlural = __( "Passwords", $pluginSlug );
+	$tag = ( 1 != $i )? "multi-password" : "";//add the "multi-pasword" tag to all the passswords except number 1
+
+	$colourArray = array(
+		"#26d2e1",//light blue
+		"#e10808",//red
+		"#e17812",//orange
+		"#a4e19c",//light green
+		"#FEDA71", //light yellow
+		"#f0518b", //pink
+		"#5d5042", //turd
+		"#ab6fd1", //purple
+		"#69aeb4", //turqoise
+		"#97dd10" //grass green
 	);
-	/*
-		Same as above but with filters
-	*/
+	$numberColours = count( $colourArray );
+	$colour = $colourArray[ ($i - 1) % $numberColours ];//cycle through the pre-defined colours. Flexible code allows for more colours to be defined easily and more passwords.
 
-	public $_plugin_filters = array(
-		'get_query_args',
-		'is_authorised',
-		'is_logout_request',
-		'is_login_request'
-	);
-
-	###########################################
-	##	lava hooks - these are functions called by the framework (most of them are directly linked to WordPress hooks)
-	###########################################
-
-	function _init() {
-		parent::_init();
-
-		$hooks = array(
-			'do_feed',
-			'do_feed_rdf',
-			'do_feed_rss',
-			'do_feed_rss2',
-			'do_feed_atom'
-		);
-
-		if( $this->_settings()->_get_value_for( 'enable_public_rss_feeds', 'off' ) != 'on' ) {
-			$this->_add_action( $hooks, 'do_feed', 1 );
-		}
-
-
-		$this->_set_fingerprint_cookie();
-		$this->_do_action_if( 'logout', 'logout_request' );
-		$this->_do_action_if( 'login', 'login_request' );
-	}
-
-	function _get_header() {
-		// [action], [condition], [default], [should_terminate] - make sure the page is terminated after printing the login template
-		$this->_do_action_unless( 'login_display', 'authorised', false, true );
-	}
-
-
-	###########################################
-	##	Plugin hooks
-	###########################################
-
-	function do_feed() {
-		$this->_do_action_unless( 'feed_message', 'authorised', false, true );
-	}
-
-	function do_feed_message() {
-		wp_die( __('The feed for this website is protected, please visit our <a href="'. get_bloginfo('url') .'">website</a> to login first!') );
-	}
-
-	function get_query_args( $args ) {
-		$new = array(
-			'logged_in',
-			'logged_out',
-			'incorrect_credentials',
-			$this->_namespace( 'action' ),
-			$this->_namespace( 'logout' )
-		);
-		return array_merge( $args, $new );
-	}
-
-	/*
-		Checks whether user is logging out
-	*/
-	function is_logout_request( $current ) {
-		//die('gary');
-		if( $this->_request_var( 'logout', false ) or $this->_request_var( 'action', '' ) == 'logout' ) {
-			$current = true;
-		}
-		return $current;
-	}
-
-	function do_logout() {
-		$fingerprint = array(
-			'password_expiration' => 0
-		);
-		$this->_merge_fingerprint( $fingerprint );
-		$args = $this->_apply_plugin_filters( 'get_query_args', array() );
-		$url = remove_query_arg( $args );
-		$url = add_query_arg( 'logged_out', '', $url );
-		wp_redirect( $url );
-		exit;
-	}
-
-	function is_login_request( $current ) {
-		if( $this->_request_var( 'login', false ) or $this->_request_var( 'action', '' ) == 'login' ) {
-			$current = true;
-		}
-		return $current;
-	}
-
-	function do_login() {
-		// check password against setting
-		$password = $this->_settings()->_get_value_for( 'password' );
-		if( $this->_request_var( 'password' ) == $password ) {
-			$fingerprint = array(
-				'password' => $password,
-				'password_expiration'  => current_time( 'timestamp' ) + $this->_settings()->_get_value_for( 'login_duration', 60*60*24 )
-			);
-			$this->_merge_fingerprint( $fingerprint );
-			$args = $this->_apply_plugin_filters( 'get_query_args', array() );
-			$url = remove_query_arg( $args );
-			$url = add_query_arg( 'logged_in', '', $url );
-			wp_redirect( $url );
-			exit;
-		} else {
-			//details incorrect
-			$args = $this->_apply_plugin_filters( 'get_query_args', array() );
-			$url = remove_query_arg( $args );
-			$url = add_query_arg( 'incorrect_credentials', '', $url );
-			wp_redirect( $url );
-			exit;
-		}
-	}
-
-
-	function is_authorised( $current ) {
-		$fingerprint = $this->_get_fingerprint( 'password_expiration' );
-		if( array_key_exists( 'password', $fingerprint ) ) {
-			if( $fingerprint['password'] == $this->_settings()->_get_value_for('password') ) {
-				$current = true;
-			}
-		}
-		return $current;
-	}
-
-
-	/*
-		Displays the login page
-	*/
-	function do_login_display() {
-		$this->_skins()->_display_template( 'login' );
-	}
+	$thePlugin->_settings()
+		->addSetting( "password".$i."_value" )
+			->setName( $name )
+			->setType("password")
+			->setDefault( $default )
+			->setProperty('placeholder', __( "Leave blank to disable", $pluginSlug ) )
+			->addTag( $tag )//makes it easy to select all multi password settings
+			->addTag( "password-label" )
+			->bindData( "name-singular", $name )
+			->bindData( "name-plural", $namePlural )
+			->bindData( "pass-short-name", "password".$i )
+		->addSetting( "password".$i."_name" )
+			->setType("text")
+			->setDefault( $i )
+			->setVisibility( false )
+		->addSetting( "password".$i."_colour" )
+			->setType("text")
+			->setDefault( $colour )
+			->setVisibility( false )
+	;
 }
 
-$the_plugin = new Volcanic_Pixels_Private_Blog( __FILE__ );
+$defaultTimeout = 60*60*24;//1 day
 
+$thePlugin->_settings()
+	->addSetting( "timeout_length" )
+		->setName( __( "Duration that user stays logged in", $pluginSlug ) )
+		->setType( "timeperiod" )
+		->setHelp( __( "The length of inactivity before the user must login again. Set to 0 to timeout when browser closes.", $pluginSlug ) )
+		->setDefault( $defaultTimeout )
+		->addTag( "is-premium" )
+	->addSetting( "logout_link" )
+		->setName( __( "Add Logout link to navigation", $pluginSlug ) )
+		->setType( "checkbox" )
+		->setDefault( "off" )
+		->setHelp( __( "When enabled, the plugin will attempt to put a logout link in the navigation", $pluginSlug ) )
+		->addTag( "is-premium" )
+	->addSetting( "logout_link_menu" )
+		->setType( "select" )
+		->addTag( "no-margin" )
+		->settingToggledBy( "logout_link" )
+	->addSetting( "rss_feed_visible" )
+		->setName( __( "Make RSS Feeds public", $pluginSlug ) )
+		->setType( "checkbox" )
+		->setDefault( "off" )
+		->setHelp( __( "When enabled, the RSS feed (which contains post content) will be publicly available", $pluginSlug ) )
+		->addTag( 'is-premium' )
+	->addSetting( "protect_certain_pages" )
+		->setName( __( "Only protect certain pages", $pluginSlug ) )
+		->setType( "checkbox" )
+		->setDefault( "off" )
+		->setHelp( __( "When enabled, you can choose posts, categories, tags etc. to protect", $pluginSlug ) )
+		->addTag( 'is-premium' )
+	->addSetting( "pages_to_protect" )
+		->setName( __( "Pages/posts to protect", $pluginSlug ) )
+		->setType( "text" )
+		->setDefault( "Hello World" )
+		->setHelp( __( "Enter either the ID, the slug ( e.g. hello-world ) or title", $pluginSlug ) )
+		->addTag( 'is-premium' )
+		->settingToggledBy('protect_certain_pages')
+	->addSetting( "categories_to_protect" )
+		->setName( __( "Categories to protect", $pluginSlug ) )
+		->setType( "text" )
+		->setDefault( "example-category-slug, Example Category Name" )
+		->setHelp( __( "Enter a comma delimited list of category IDs, names or slugs", $pluginSlug ) )
+		->addTag( 'is-premium' )
+		->settingToggledBy('protect_certain_pages')
+	->addSetting( "tags_to_protect" )
+		->setName( __( "Tags to protect", $pluginSlug ) )
+		->setType( "text" )
+		->setDefault( "example-tag-slug, Example Tag Name" )
+		->setHelp( __( "Enter a comma delimited list of tag IDs, names or slugs", $pluginSlug ) )
+		->addTag( 'is-premium' )
+		->settingToggledBy('protect_certain_pages')
+	->addSetting( "post_types_to_protect" )
+		->setName( __( "Post types to protect", $pluginSlug ) )
+		->setType( "text" )
+		->setDefault( "example-category-slug, Example Category Name" )
+		->setHelp( __( "Enter a comma delimited list of post-type IDs, slugs or names", $pluginSlug ) )
+		->addTag( 'is-premium' )
+		->settingToggledBy('protect_certain_pages')
+	->addSetting( "urls_to_protect" )
+		->setName( __( "Url patterns to protect", $pluginSlug ) )
+		->setType( "text" )
+		->setDefault( "" )
+		->setHelp( __( "Enter a comma delimited list of patterns to match against", $pluginSlug ) )
+		->addTag( 'is-premium' )
+		->settingToggledBy('protect_certain_pages')
+
+
+
+	->addSetting( "unprotect_certain_pages" )
+		->setName( __( "Do not protect certain pages", $pluginSlug ) )
+		->setType( "checkbox" )
+		->setDefault( "off" )
+		->setHelp( __( "When enabled, you can choose posts, categories, tags etc. to protect.", $pluginSlug ) )
+		->addTag( 'is-premium' )
+	->addSetting( "pages_to_unprotect" )
+		->setName( __( "Pages/posts to not protect", $pluginSlug ) )
+		->setType( "text" )
+		->setDefault( "" )
+		->setHelp( __( "Enter either the ID, the slug ( e.g. hello-world ) or title", $pluginSlug ) )
+		->setInlineHelp( "" )
+		->addTag( 'is-premium' )
+		->settingToggledBy('unprotect_certain_pages')
+	->addSetting( "categories_to_unprotect" )
+		->setName( __( "Categories to not protect", $pluginSlug ) )
+		->setType( "text" )
+		->setDefault( "example-category-slug, Example Category Name" )
+		->setHelp( __( "Enter a comma delimited list of category IDs, names or slugs", $pluginSlug ) )
+		->addTag( 'is-premium' )
+		->settingToggledBy('unprotect_certain_pages')
+	->addSetting( "tags_to_unprotect" )
+		->setName( __( "Tags to not protect", $pluginSlug ) )
+		->setType( "text" )
+		->setDefault( "example-tag-slug, Example Tag Name" )
+		->setHelp( __( "Enter a comma delimited list of tag IDs, names or slugs", $pluginSlug ) )
+		->addTag( 'is-premium' )
+		->settingToggledBy('unprotect_certain_pages')
+	->addSetting( "post_types_to_unprotect" )
+		->setName( __( "Post types to not protect", $pluginSlug ) )
+		->setType( "text" )
+		->setDefault( "example-category-slug, Example Category Name" )
+		->setHelp( __( "Enter a comma delimited list of post-type IDs, slugs or names", $pluginSlug ) )
+		->addTag( 'is-premium' )
+		->settingToggledBy('unprotect_certain_pages')
+	->addSetting( "urls_to_unprotect" )
+		->setName( __( "Url patterns to unprotect", $pluginSlug ) )
+		->setType( "text" )
+		->setDefault( "" )
+		->setHelp( __( "Enter a comma delimited list of patterns to match against", $pluginSlug ) )
+		->addTag( 'is-premium' )
+		->settingToggledBy('unprotect_certain_pages')
+
+
+	->addSetting( "record_logs" )
+		->setName( __( "Create a log of all logins and logouts", $pluginSlug ) )
+		->setType( "checkbox" )
+		->setDefault( "off" )
+		->addTag( "is-premium" )
+		->setHelp( __( "When enabled, every attempt to login will be logged", $pluginSlug ) )
+	->addSetting( "secure_media" )
+		->setName( __( "Block access to media unless loggedin (only works on apache with permalinks)", $pluginSlug ) )
+		->setType( "checkbox" )
+		->setDefault( "off" )
+		->addTag( "is-premium" )
+		->setHelp( __( "When enabled access to media files will be blocked if user is not logged in", $pluginSlug ) )
+;
+
+
+$thePlugin->_tables()
+	->addTable( "access_logs" )
+		->addField( "id" )
+			->setType( "mediumint" )
+			->setMaxLength( 9 )
+			->setAutoIncrement( true )
+		->addField( "timestamp" )//timestamp of entry
+			->setType( "timestamp" )
+		->addField( "password" )// the number of the password used (0 if NA)
+		->addField( "password_name" )//The name of that password at the time of entry
+		->addField( "password_color" )//The color of the password at time of entry
+		->addField( "action" )//The action (login, logout, login attempt)
+		->addField( "user_agent")//The user agent
+			->setType( "text" )
+		->addField( "device" )
+		->addField( "browser" )//The browser (as pmdarsed at time of entry)
+		->addField( "operating_system" )//The OS (as parsed at time of entry)
+		->addField( "ip_address" )
+;
+
+
+$thePlugin->_pages()
+	->addScript( $thePlugin->_slug( "uservoice" ), "http://widget.uservoice.com/tVw9FecEfqZnVhHj01zqsw.js" )
+	->addSettingsPage()
+	->addSkinsPage()
+		->setTitle( __( "Login Page skin", $pluginSlug ) )
+	->addPage( "access_logs", "PrivateBlogAccessLogs" )
+		->setTitle( __( "Access Logs", $pluginSlug ) )
+		->setDataSource( "access_logs" )
+		->setDisplayOrder( "timestamp;action;password_name;browser;operating_system;device;ip_address" )
+		->setOrderBy( "timestamp DESC" )/*
+	->addPageFromTemplate( "custom", "custom" )
+		->setTitle( __( "Plugin Customisations", $pluginSlug ) )*/
+;
+
+$thePlugin->_pages()
+	->addCustomScripts()
+	->addCustomStyles()
+;
 
 ?>

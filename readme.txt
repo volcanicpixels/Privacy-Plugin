@@ -3,8 +3,8 @@ Contributors: volcanicpixels
 Donate link: http://www.spiders-design.co.uk/donate/
 Tags: password,protect,password protect,wordpress,blog, security
 Requires at least: 3.3.1
-Tested up to: 3.3.1
-Stable tag: 4.04
+Tested up to: 3.5.1
+Stable tag: 4.11.1
 
 This plugin password protects your wordpress blog with a single password.
 
@@ -14,19 +14,17 @@ Want to make your blog private from prying eyes? Well my password protection plu
 
 Features:
 
-No user accounts - just a single password.
+No user accounts - just a single password (or multiple passwords).
 Easy to use admin panel.
-Internationalized to make translations easy.
-
-Customize the login page (with more skins added all the time)
+Choose which pages/posts/categories/tags/urls to protect
 
 
-**Please review and vote that it works.
-**Follow [@danielchatfield](http://twitter.com/danielchatfield) and tweet for support
+Customize the login page
 
-[Support forums](https://groups.google.com/forum/#!forum/privacy-plugin) |
-[Suggest a feature](https://volcanicpixels.uservoice.com/forums/135365-privacy-plugin) |
-[Contact me](http://www.volcanicpixels.com/contact-us/)
+
+Please review and vote that it works.
+
+For support please [contact me](http://www.danielchatfield.com)
 
 == Installation ==
 
@@ -146,7 +144,68 @@ This section describes how to install the plugin and get it working.
 
 * Fixed an issue with debug vars being printed to screen after saving settings
 
-= 4.05 =
+= 4.08 =
 
-* Added settings link to plugin page
-* Added feed meta tags to head of login page (if they are set to public)
+* Fixed issue where on some (poorly coded) themes logging in didn't work
+
+= 4.09 =
+
+* Fixed regression where on some themes you had to login twice.
+
+= 4.10.1 =
+
+* Fixed an issue with "double login" where a domain could be accessed with or without www
+
+* Fixed an issue with public RSS feeds
+
+= 4.10.2 =
+
+* Would help if I actually included the changed files when releasing an update (doh)
+
+= 4.10.3 =
+
+* A fix for the bug where login attempts would be ignored when wp installation is in sub directory.
+
+= 4.10.4
+
+* Added support for selecting which pages/posts to protect
+
+= 4.10.5 =
+
+* Fixed bug where previous update only worked for posts and not pages.
+
+= 4.10.6 =
+
+* Actually fixed it now
+
+= 4.10.7 =
+
+* Added regular expressions
+
+= 4.10.8 =
+
+* Made protecting certain content easier
+
+= 4.10.9 =
+
+* Added ability to protect uploads when using apache
+
+= 4.10.10 =
+
+* Added secure uploads support for more servers
+
+= 4.11.0 =
+
+* Added ability to remove logs
+* Added ability to name passwords
+* Filter by URL pattern
+
+= 4.11.1 =
+
+* Added ability to auto-login users
+* Added ability to auto-populate password field
+* Prevented robots indexing login page
+
+= 4.11.2
+
+* Fixed bug with logout on paths
