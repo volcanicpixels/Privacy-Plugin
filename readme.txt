@@ -10,21 +10,25 @@ This plugin password protects your wordpress blog with a single password.
 
 == Description ==
 
-Want to make your blog private from prying eyes? Well my password protection plugin is perfect for that job; with its sexy looks (well sort of), intelligent UI and endless features it will make the chore of keeping your data secure and private easy.
+Want to make your blog private from prying eyes? Well my password protection plugin is perfect for that job; with its intelligent UI and endless features it will make the chore of keeping your data secure and private easy.
 
 Features:
 
-No user accounts - just a single password (or multiple passwords).
+No user accounts - just a single password.
 Easy to use admin panel.
+
+Premium Features (paid upgrade):
+
+Multiple passwords
 Choose which pages/posts/categories/tags/urls to protect
-
-
 Customize the login page
+Make RSS feeds public
+Protect media files and attachments from hot-linking
 
 
 Please review and vote that it works.
 
-For support please [contact me](http://www.danielchatfield.com)
+If you need a feature not offered or need support please [contact me](http://www.danielchatfield.com)
 
 == Installation ==
 
@@ -209,3 +213,5 @@ This section describes how to install the plugin and get it working.
 = 4.11.2
 
 * Fixed bug with logout on paths
+
+== Upgrade Notice ==
