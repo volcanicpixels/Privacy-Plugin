@@ -213,5 +213,11 @@ This section describes how to install the plugin and get it working.
 = 4.11.2
 
 * Fixed bug with logout on paths
+* Fixed typo
+* Fixed issue where 'incorrect credential' notice would not be shown
 
 == Upgrade Notice ==
+
+= 4.11.2 =
+
+* When the wrong password is entered when using 'only protect certain pages' it now displays 'incorrect credentials' notice.

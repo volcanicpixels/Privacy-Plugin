@@ -399,6 +399,7 @@ class private_blog_callbacks extends lavaBase
 		if( array_key_exists($this->_slug( "redirect" ), $_POST) ) {
 			$redirect = $_POST[ $this->_slug( "redirect" ) ];
 		}
+		$redirect = add_query_arg( 'loggedin', '', $redirect );
 		wp_redirect( $redirect );
 		exit;
 	}
@@ -409,12 +410,17 @@ class private_blog_callbacks extends lavaBase
 		);
 		if( $this->recordLogs() )
 			$this->_tables()->fetchTable( "access_logs" )->insertRow( $row, "loginRejected" );
-		$redirect = add_query_arg( "incorrect_credentials", "" );
+		$redirect = get_home_url('/');
+		if( array_key_exists($this->_slug( "redirect" ), $_POST) ) {
+			$redirect = $_POST[ $this->_slug( "redirect" ) ];
+		}
+		$redirect = add_query_arg( "incorrect_credentials", "", $redirect );
+		$redirect = remove_query_arg( "loggedout", $redirect );
 		$redirect = remove_query_arg( "loggedout", $redirect );
 		$redirect = remove_query_arg( $this->_slug( "action" ), $redirect );
 		$redirect = remove_query_arg( $this->_slug( "password" ), $redirect );
 		wp_redirect( $redirect );
-	}
+	}1
 
 	function setCookie() {
 		$loginNonce = wp_create_nonce( $this->_slug( "loggedin" ) );
@@ -471,7 +477,6 @@ class private_blog_callbacks extends lavaBase
 	}
 
 	function addRedirectField( $formInputs ) {
-		$redirect = add_query_arg( "loggedin", "" );
 		$redirect = remove_query_arg( "loggedout", $redirect );
 		$redirect = remove_query_arg( "incorrect_credentials", $redirect );
 
