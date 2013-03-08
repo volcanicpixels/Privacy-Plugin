@@ -7,3 +7,4 @@ thumbs.db
 */.svn/*
 *.svn/*
 *.svn/
+lava/_cache/*
