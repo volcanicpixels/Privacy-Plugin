@@ -4,7 +4,7 @@ Donate link: http://www.spiders-design.co.uk/donate/
 Tags: password,protect,password protect,wordpress,blog, security
 Requires at least: 3.3.1
 Tested up to: 3.5.1
-Stable tag: 4.11.2
+Stable tag: 4.11.4
 
 This plugin password protects your wordpress blog with a single password.
 
@@ -56,45 +56,116 @@ This section describes how to install the plugin and get it working.
 2. Change the CSS styles for the login page to get the look and feel right
 
 == Changelog ==
-= 1.0 =
 
-* First Version
+= 4.11.4 =
 
-* Search engine access
+* Fixed issue with some blogs (I think)
 
-= 2.0 =
+= 4.11.3 =
 
-* Better documentation
+* Emergency update
 
-* Revised Search engine access list
+= 4.11.2 =
 
-= 2.1 =
+* Fixed bug with logout on paths
+* Fixed typo
+* Fixed issue where 'incorrect credential' notice would not be shown
 
-* Emergency Bug Fix
+= 4.11.1 =
 
-= 2.3 =
+* Added ability to auto-login users
+* Added ability to auto-populate password field
+* Prevented robots indexing login page
 
-* Default logo file path fix
+= 4.11.0 =
 
-= 2.5 =
+* Added ability to remove logs
+* Added ability to name passwords
+* Filter by URL pattern
 
-* Firefox options page fix
+= 4.10.10 =
 
-= 2.7 =
+* Added secure uploads support for more servers
 
-* Password check on return key press
+= 4.10.9 =
 
-* Password box automatically has focus
+* Added ability to protect uploads when using apache
 
-* Preliminary support for Aruba Systems RMP (remote managment protocol)
 
-* Fixed conflict with wordpress admin page
+= 4.10.8 =
 
-= 2.8 =
+* Made protecting certain content easier
 
-* Licensing improvements
+= 4.10.7 =
 
-* Added support for directories other than the default
+* Added regular expressions
+
+= 4.10.6 =
+
+* Actually fixed it now
+
+= 4.10.5 =
+
+* Fixed bug where previous update only worked for posts and not pages.
+
+= 4.10.4
+
+* Added support for selecting which pages/posts to protect
+
+= 4.10.3 =
+
+* A fix for the bug where login attempts would be ignored when wp installation is in sub directory.
+
+= 4.10.2 =
+
+* Would help if I actually included the changed files when releasing an update (doh)
+
+
+
+= 4.10.1 =
+
+* Fixed an issue with "double login" where a domain could be accessed with or without www
+
+* Fixed an issue with public RSS feeds
+
+= 4.09 =
+
+* Fixed regression where on some themes you had to login twice.
+= 4.08 =
+
+* Fixed issue where on some (poorly coded) themes logging in didn't work
+= 4.04 =
+
+* Fixed an issue with debug vars being printed to screen after saving settings
+
+= 4.03 =
+
+* Fixed an issue with some of the admin side javascript and IE
+* Fixed an issue where if an HTML link was entered as the message for a skin the href attribute would be incorrectly urlized
+* Changed encoding of settings to UTF-8 to non ASCII characters that are not covered by the HTML spec (Russian characters for example) 
+= 4.02 =
+
+* Fixed issue with template loader
+* Fixed issue with header buffer being flushed by All In One SEO pack when theme uses weird get_header call (I mean WTF was that theme designer doing)
+* Turned error reporting off
+= 4.0 =
+
+* Complete rewrite
+
+= 3.9 =
+
+* Links can now be in the message (by typing in the html)
+= 3.7 =
+
+* Fixed compatibility issue where setting headings were getting removed
+
+* removed PHP short tags
+
+= 3.3 =
+
+* Multi password support
+
+* Logs supports
 
 = 3.0 =
 
@@ -112,109 +183,44 @@ This section describes how to install the plugin and get it working.
 
 * Helpful instructions
 
-= 3.3 =
+= 2.8 =
 
-* Multi password support
+* Licensing improvements
 
-* Logs supports
+* Added support for directories other than the default
+= 2.7 =
 
-= 3.7 =
+* Password check on return key press
 
-* Fixed compatibility issue where setting headings were getting removed
+* Password box automatically has focus
 
-* removed PHP short tags
+* Preliminary support for Aruba Systems RMP (remote managment protocol)
 
-= 3.9 =
+* Fixed conflict with wordpress admin page
+= 2.5 =
 
-* Links can now be in the message (by typing in the html)
+* Firefox options page fix
 
-= 4.0 =
+= 2.3 =
 
-* Complete rewrite
+* Default logo file path fix
 
-= 4.02 =
+= 2.1 =
 
-* Fixed issue with template loader
-* Fixed issue with header buffer being flushed by All In One SEO pack when theme uses weird get_header call (I mean WTF was that theme designer doing)
-* Turned error reporting off
+* Emergency Bug Fix
 
-= 4.03 =
+= 2.0 =
 
-* Fixed an issue with some of the admin side javascript and IE
-* Fixed an issue where if an HTML link was entered as the message for a skin the href attribute would be incorrectly urlized
-* Changed encoding of settings to UTF-8 to non ASCII characters that are not covered by the HTML spec (Russian characters for example) 
+* Better documentation
 
-= 4.04 =
+* Revised Search engine access list
 
-* Fixed an issue with debug vars being printed to screen after saving settings
+= 1.0 =
 
-= 4.08 =
+* First Version
 
-* Fixed issue where on some (poorly coded) themes logging in didn't work
+* Search engine access
 
-= 4.09 =
-
-* Fixed regression where on some themes you had to login twice.
-
-= 4.10.1 =
-
-* Fixed an issue with "double login" where a domain could be accessed with or without www
-
-* Fixed an issue with public RSS feeds
-
-= 4.10.2 =
-
-* Would help if I actually included the changed files when releasing an update (doh)
-
-= 4.10.3 =
-
-* A fix for the bug where login attempts would be ignored when wp installation is in sub directory.
-
-= 4.10.4
-
-* Added support for selecting which pages/posts to protect
-
-= 4.10.5 =
-
-* Fixed bug where previous update only worked for posts and not pages.
-
-= 4.10.6 =
-
-* Actually fixed it now
-
-= 4.10.7 =
-
-* Added regular expressions
-
-= 4.10.8 =
-
-* Made protecting certain content easier
-
-= 4.10.9 =
-
-* Added ability to protect uploads when using apache
-
-= 4.10.10 =
-
-* Added secure uploads support for more servers
-
-= 4.11.0 =
-
-* Added ability to remove logs
-* Added ability to name passwords
-* Filter by URL pattern
-
-= 4.11.1 =
-
-* Added ability to auto-login users
-* Added ability to auto-populate password field
-* Prevented robots indexing login page
-
-= 4.11.2
-
-* Fixed bug with logout on paths
-* Fixed typo
-* Fixed issue where 'incorrect credential' notice would not be shown
 
 == Upgrade Notice ==
 
