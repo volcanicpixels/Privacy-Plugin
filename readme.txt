@@ -57,6 +57,11 @@ This section describes how to install the plugin and get it working.
 
 == Changelog ==
 
+= 4.11.5 =
+
+* Fixed issue with redirects when incorrect password is entered
+* Fixed issue with multiple comma separated values not correctly being parsed
+
 = 4.11.4 =
 
 * Fixed issue with some blogs (I think)
@@ -223,6 +228,9 @@ This section describes how to install the plugin and get it working.
 
 
 == Upgrade Notice ==
+
+= 4.11.5 =
+Fixes issue with login redirects and multiple comma delimited values
 
 = 4.11.2 =
 
