@@ -420,6 +420,7 @@ class private_blog_callbacks extends lavaBase
 		$redirect = remove_query_arg( $this->_slug( "action" ), $redirect );
 		$redirect = remove_query_arg( $this->_slug( "password" ), $redirect );
 		wp_redirect( $redirect );
+		exit;
 	}
 
 	function setCookie() {
