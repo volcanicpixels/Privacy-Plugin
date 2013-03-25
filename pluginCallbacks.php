@@ -396,8 +396,8 @@ class private_blog_callbacks extends lavaBase
 	function loginAccepted() {
 		$this->setCookie();
 		$redirect = get_home_url('/?loggedin');
-		if( array_key_exists($this->_slug( "redirect" ), $_POST) ) {
-			$redirect = $_POST[ $this->_slug( "redirect" ) ];
+		if( array_key_exists($this->_slug( "redirect" ), $_REQUEST) ) {
+			$redirect = $_REQUEST[ $this->_slug( "redirect" ) ];
 		}
 		$redirect = add_query_arg( 'loggedin', '', $redirect );
 		wp_redirect( $redirect );
@@ -411,8 +411,8 @@ class private_blog_callbacks extends lavaBase
 		if( $this->recordLogs() )
 			$this->_tables()->fetchTable( "access_logs" )->insertRow( $row, "loginRejected" );
 		$redirect = get_home_url('/');
-		if( array_key_exists($this->_slug( "redirect" ), $_POST) ) {
-			$redirect = $_POST[ $this->_slug( "redirect" ) ];
+		if( array_key_exists($this->_slug( "redirect" ), $_REQUEST) ) {
+			$redirect = $_REQUEST[ $this->_slug( "redirect" ) ];
 		}
 		$redirect = add_query_arg( "incorrect_credentials", "", $redirect );
 		$redirect = remove_query_arg( "loggedout", $redirect );
