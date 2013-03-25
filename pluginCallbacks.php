@@ -230,11 +230,11 @@ class private_blog_callbacks extends lavaBase
 		$is_single = (is_single() or is_page() or is_singular());
 
 		if( $unprotect_certain_pages == "on" ) {
-			$unprotectPages = explode(',', $this->_settings()->fetchSetting( "pages_to_unprotect" )->getValue());
-			$unprotectCategories = explode(',', $this->_settings()->fetchSetting( "categories_to_unprotect" )->getValue());
-			$unprotectTags = explode(',', $this->_settings()->fetchSetting( "tags_to_unprotect" )->getValue());
-			$unprotectPostTypes = explode(',', $this->_settings()->fetchSetting( "post_types_to_unprotect" )->getValue());
-			$unprotectUrls = explode(',', $this->_settings()->fetchSetting( "urls_to_unprotect" )->getValue());
+			$unprotectPages = explode(',', str_replace( ', ', ',', $this->_settings()->fetchSetting( "pages_to_unprotect" )->getValue()));
+			$unprotectCategories = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "categories_to_unprotect" )->getValue()));
+			$unprotectTags = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "tags_to_unprotect" )->getValue()));
+			$unprotectPostTypes = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "post_types_to_unprotect" )->getValue()));
+			$unprotectUrls = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "urls_to_unprotect" )->getValue()));
 		} else {
 			$unprotectPages = array('garbageurl-willnotmatchanything');
 			$unprotectCategories = array('garbageurl-willnotmatchanything');
@@ -244,11 +244,11 @@ class private_blog_callbacks extends lavaBase
 		}
 
 		if( $protect_certain_pages == "on" ) {
-			$protectPages = explode(',', $this->_settings()->fetchSetting( "pages_to_protect" )->getValue());
-			$protectCategories = explode(',', $this->_settings()->fetchSetting( "categories_to_protect" )->getValue());
-			$protectTags = explode(',', $this->_settings()->fetchSetting( "tags_to_protect" )->getValue());
-			$protectPostTypes = explode(',', $this->_settings()->fetchSetting( "post_types_to_protect" )->getValue());
-			$protectUrls = explode(',', $this->_settings()->fetchSetting( "urls_to_protect" )->getValue());
+			$protectPages = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "pages_to_protect" )->getValue()));
+			$protectCategories = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "categories_to_protect" )->getValue()));
+			$protectTags = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "tags_to_protect" )->getValue()));
+			$protectPostTypes = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "post_types_to_protect" )->getValue()));
+			$protectUrls = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "urls_to_protect" )->getValue()));
 		} else {
 			$protectPages = array('garbageurl-willnotmatchanything');
 			$protectCategories = array('garbageurl-willnotmatchanything');
