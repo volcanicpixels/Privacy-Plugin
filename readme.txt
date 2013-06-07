@@ -4,7 +4,7 @@ Donate link: http://www.spiders-design.co.uk/donate/
 Tags: password,protect,password protect,wordpress,blog, security
 Requires at least: 3.3.1
 Tested up to: 3.5.1
-Stable tag: 4.11.6
+Stable tag: 4.11.7
 
 This plugin password protects your wordpress blog with a single password.
 
@@ -12,18 +12,23 @@ This plugin password protects your wordpress blog with a single password.
 
 Want to make your blog private from prying eyes? Well my password protection plugin is perfect for that job; with its intelligent UI and endless features it will make the chore of keeping your data secure and private easy.
 
+> **NOTE** This plugin will not work on WPEngine due to their very aggressive caching.
+
+
+> Use w3-total-cache instead of wp-super-cache
+
 Features:
 
-No user accounts - just a single password.
-Easy to use admin panel.
+No user accounts - just a single password.  
+Easy to use admin panel.  
 
-Premium Features (paid upgrade):
+Premium Features (paid upgrade):  
 
-Multiple passwords
-Choose which pages/posts/categories/tags/urls to protect
-Customize the login page
-Make RSS feeds public
-Protect media files and attachments from hot-linking
+ - Multiple passwords
+ - Choose which pages/posts/categories/tags/urls to protect
+ - Customize the login page
+ - Make RSS feeds public
+ - Protect media files and attachments from hot-linking
 
 
 Please review and vote that it works.
@@ -43,9 +48,6 @@ This section describes how to install the plugin and get it working.
 
 1. Edit the configuration by clicking on 'Private Blog' under settings
 
-== Frequently Asked Questions ==
-
-
 
 == Screenshots ==
 
@@ -56,6 +58,11 @@ This section describes how to install the plugin and get it working.
 2. Change the CSS styles for the login page to get the look and feel right
 
 == Changelog ==
+
+= 4.11.7 =
+
+* Updated readme
+* Added javascript error reporting so that I can fix conflicts with other plugins.
 
 = 4.11.6 =
 
