@@ -590,10 +590,13 @@ class private_blog_callbacks extends lavaBase
 	*/
 
 	function addLogoutLink() {
-		$menu = $this->_settings()->fetchSetting( "logout_link_menu" )->getValue();
-		$this->addWPFilter( "wp_nav_menu_{$menu}_items", "pagesFilter", 10, 2 );
-		$this->addWPFilter( "wp_list_pages", "pagesFilter", 10, 2 );
-		$this->addWPFilter( "wp_page_menu", "pagesFilter", 10, 2 );//this is fired when the theme uses WP3 menus but the admin hasn't created one
+		$isLoggedIn = apply_filters( $this->_slug( "isLoggedIn" ), false );
+		if( $isLoggedIn ) {
+			$menu = $this->_settings()->fetchSetting( "logout_link_menu" )->getValue();
+			$this->addWPFilter( "wp_nav_menu_{$menu}_items", "pagesFilter", 10, 2 );
+			$this->addWPFilter( "wp_list_pages", "pagesFilter", 10, 2 );
+			$this->addWPFilter( "wp_page_menu", "pagesFilter", 10, 2 );//this is fired when the theme uses WP3 menus but the admin hasn't created one
+		}
 	}
 
 	/*

@@ -4,7 +4,7 @@ Donate link: http://www.spiders-design.co.uk/donate/
 Tags: password,protect,password protect,wordpress,blog, security
 Requires at least: 3.3.1
 Tested up to: 3.5.1
-Stable tag: 4.11.5
+Stable tag: 4.11.6
 
 This plugin password protects your wordpress blog with a single password.
 
@@ -56,6 +56,10 @@ This section describes how to install the plugin and get it working.
 2. Change the CSS styles for the login page to get the look and feel right
 
 == Changelog ==
+
+= 4.11.6 =
+
+* Fixed issue with logout link displaying when not logged in.
 
 = 4.11.5 =
 
@@ -228,6 +232,10 @@ This section describes how to install the plugin and get it working.
 
 
 == Upgrade Notice ==
+
+= 4.11.6 =
+
+* Fixed issue with logout link displaying when not logged in.
 
 = 4.11.5 =
 Fixes issue with login redirects and multiple comma delimited values
