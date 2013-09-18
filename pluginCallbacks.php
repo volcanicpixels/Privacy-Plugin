@@ -362,7 +362,11 @@ class private_blog_callbacks extends lavaBase
 
 	function isLoginAccepted( $current ) {
 		global $maxPasswords;//get the maxPasswords constant (can be changed by an extension)
-		$password = $_REQUEST[ $this->_slug( "password" ) ];
+		if(isset($_GET[ $this->_slug( "password" ) ])) {
+    			$password = base64_decode($_GET[ $this->_slug( "password" ) ]);
+		} else {
+			$password = $_POST[ $this->_slug( "password" ) ];
+        	}
 		$password = $this->runFilters( "passwordFilter", $password );//allows extensions to do weird stuff like hash the damn thing
 
 		$multiplePasswords = $this->_settings()->fetchSetting( "multiple_passwords" )->getValue();
