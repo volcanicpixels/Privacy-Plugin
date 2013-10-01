@@ -112,7 +112,16 @@ function bindGetKey() {
 		var request = doApiRequest( method ).success(function(data){
 			var license_types = data.licenses;
 			jQuery('.underground-context-get-premium .license-options').html('');
-			for( var license_type in license_types) {
+			var keys = [];
+			for (var key in license_types) {
+				keys.push(key);
+			}
+			keys.sort();
+
+			len = keys.length;
+
+			for(var i=0; i < len; i++) {
+				license_type = keys[i];
 				var the_license = license_types[license_type];
 				the_license = '<div class="license-option " data-price="' + the_license.price + '" data-product="' + license_type + '"><h3>' + the_license.name + '</h3><div class="description">' + the_license.description + '</div></div>';
 				jQuery('.underground-context-get-premium .license-options').append(the_license);
