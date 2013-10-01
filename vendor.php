@@ -156,7 +156,7 @@ class private_blog_vendor extends lavaExtension {
 	}
 
 	function getInstallId() {
-		return md5( AUTH_SALT . get_home_url() . $this->_slug() );
+		return md5( AUTH_SALT . get_home_url() . 'private_blog' );
 	}
 
 	function getVendorUrl( $append = "" ) {
@@ -164,9 +164,9 @@ class private_blog_vendor extends lavaExtension {
 			define( 'LAVA_API_IS_LOCAL', false );
 		}
 		if( LAVA_API_IS_LOCAL ) {
-			return "http://localhost:8082/" . $append;
+			return "http://localhost:11080/" . $append;
 		} else {
-			return 'http://www.volcanicpixels.com/' . $append;
+			return 'http://legacy.volcanicpixels.com/' . $append;
 		}
 	}
 }

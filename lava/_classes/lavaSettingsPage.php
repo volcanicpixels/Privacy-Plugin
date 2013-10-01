@@ -69,7 +69,7 @@ class lavaSettingsPage extends lavaPage
 	function customPlugin() {
 		?>
 		<p>
-			Need a feature we don't offer? <a href="http://www.volcanicpixels.com/contact-us/?utm_source=plugin_settings">Contact us</a> and we'll give you a quote for a custom plugin.
+			Need a feature we don't offer? <a href="mailto:hello@volcanicpixels.com">Contact us</a> and we'll give you a quote for a custom plugin.
 		</p>
 		<?php
 	}

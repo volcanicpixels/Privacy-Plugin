@@ -752,6 +752,9 @@ class private_blog_callbacks extends lavaBase
 		$today = strtotime( "Today");
 		$yesterday = strtotime( "Yesterday");
 
+		$timeStamp = strtotime( $timeString );
+		return date( "D, d F Y H:i", $timeStamp );
+
 		if( $now < $timeStamp ) {
 			return __( "The future (check config)", $this->_slug() );
 		} elseif( $now - $timeStamp < 60 ) {
@@ -769,6 +772,8 @@ class private_blog_callbacks extends lavaBase
 		} else {
 			return date( "d F", $timeStamp );
 		}
+
+
 
 
 

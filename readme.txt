@@ -3,8 +3,8 @@ Contributors: volcanicpixels
 Donate link: http://www.spiders-design.co.uk/donate/
 Tags: password,protect,password protect,wordpress,blog, security
 Requires at least: 3.3.1
-Tested up to: 3.6.0
-Stable tag: 4.11.9
+Tested up to: 3.6.1
+Stable tag:  5.0.0
 
 This plugin password protects your wordpress blog with a single password.
 
@@ -60,6 +60,13 @@ This section describes how to install the plugin and get it working.
 2. Change the CSS styles for the login page to get the look and feel right
 
 == Changelog ==
+
+= 5.0.0
+
+* Fixed issue where on some sites clicking home would return user to login page
+* Add "allow updates" option so that people who customise it can easily disable the updates.
+* Migrated to legacy api domain
+* Removed blue effect as it affects performance too much
 
 = 4.11.9 =
 
@@ -250,6 +257,10 @@ This section describes how to install the plugin and get it working.
 
 
 == Upgrade Notice ==
+
+= 5.0.0 =
+
+* Large update that fixes lot's of bugs and adds some new features (see readme).
 
 = 4.11.6 =
 

@@ -3,17 +3,18 @@
 Plugin Name: Private Blog
 Plugin URI: http://www.volcanicpixels.com/password-protect-wordpress-plugin/
 Description: Private Blog is a wordpress plugin which allows you to password protect all of your wordpress blog including all posts and feeds with a single password.
-Version: 4.11.9
+Version: 5.0.0
 Author: Daniel Chatfield
 Author URI: http://www.danielchatfield.com
 License: GPLv2
 */
 ?>
 <?php
+error_reporting(0);
 include( dirname( __FILE__ ) ."/lava/lava.php" );
 
 $pluginName = "Private Blog";
-$pluginVersion = "4.11.9";
+$pluginVersion = "5.0.0";
 
 $thePlugin = lava::newPlugin( __FILE__, $pluginName, $pluginVersion );
 $pluginSlug = $thePlugin->_slug();
@@ -122,7 +123,7 @@ $thePlugin->_settings()
 		->setHelp( __( "When enabled, the RSS feed (which contains post content) will be publicly available", $pluginSlug ) )
 		->addTag( 'is-premium' )
 	->addSetting( "protect_certain_pages" )
-		->setName( __( "Only protect certain pages", $pluginSlug ) )
+		->setName( __( "Only protect certain pages/categories/tags/post types/url patterns", $pluginSlug ) )
 		->setType( "checkbox" )
 		->setDefault( "off" )
 		->setHelp( __( "When enabled, you can choose posts, categories, tags etc. to protect", $pluginSlug ) )
@@ -137,21 +138,21 @@ $thePlugin->_settings()
 	->addSetting( "categories_to_protect" )
 		->setName( __( "Categories to protect", $pluginSlug ) )
 		->setType( "text" )
-		->setDefault( "example-category-slug, Example Category Name" )
+		->setDefault( "" )
 		->setHelp( __( "Enter a comma delimited list of category IDs, names or slugs", $pluginSlug ) )
 		->addTag( 'is-premium' )
 		->settingToggledBy('protect_certain_pages')
 	->addSetting( "tags_to_protect" )
 		->setName( __( "Tags to protect", $pluginSlug ) )
 		->setType( "text" )
-		->setDefault( "example-tag-slug, Example Tag Name" )
+		->setDefault( "" )
 		->setHelp( __( "Enter a comma delimited list of tag IDs, names or slugs", $pluginSlug ) )
 		->addTag( 'is-premium' )
 		->settingToggledBy('protect_certain_pages')
 	->addSetting( "post_types_to_protect" )
 		->setName( __( "Post types to protect", $pluginSlug ) )
 		->setType( "text" )
-		->setDefault( "example-category-slug, Example Category Name" )
+		->setDefault( "" )
 		->setHelp( __( "Enter a comma delimited list of post-type IDs, slugs or names", $pluginSlug ) )
 		->addTag( 'is-premium' )
 		->settingToggledBy('protect_certain_pages')
@@ -166,7 +167,7 @@ $thePlugin->_settings()
 
 
 	->addSetting( "unprotect_certain_pages" )
-		->setName( __( "Do not protect certain pages", $pluginSlug ) )
+		->setName( __( "Do not protect certain pages/categories/tags/post types/url patterns", $pluginSlug ) )
 		->setType( "checkbox" )
 		->setDefault( "off" )
 		->setHelp( __( "When enabled, you can choose posts, categories, tags etc. to protect.", $pluginSlug ) )
@@ -182,21 +183,21 @@ $thePlugin->_settings()
 	->addSetting( "categories_to_unprotect" )
 		->setName( __( "Categories to not protect", $pluginSlug ) )
 		->setType( "text" )
-		->setDefault( "example-category-slug, Example Category Name" )
+		->setDefault( "" )
 		->setHelp( __( "Enter a comma delimited list of category IDs, names or slugs", $pluginSlug ) )
 		->addTag( 'is-premium' )
 		->settingToggledBy('unprotect_certain_pages')
 	->addSetting( "tags_to_unprotect" )
 		->setName( __( "Tags to not protect", $pluginSlug ) )
 		->setType( "text" )
-		->setDefault( "example-tag-slug, Example Tag Name" )
+		->setDefault( "" )
 		->setHelp( __( "Enter a comma delimited list of tag IDs, names or slugs", $pluginSlug ) )
 		->addTag( 'is-premium' )
 		->settingToggledBy('unprotect_certain_pages')
 	->addSetting( "post_types_to_unprotect" )
 		->setName( __( "Post types to not protect", $pluginSlug ) )
 		->setType( "text" )
-		->setDefault( "example-category-slug, Example Category Name" )
+		->setDefault( "" )
 		->setHelp( __( "Enter a comma delimited list of post-type IDs, slugs or names", $pluginSlug ) )
 		->addTag( 'is-premium' )
 		->settingToggledBy('unprotect_certain_pages')
@@ -256,8 +257,8 @@ $thePlugin->_tables()
 
 
 $thePlugin->_pages()
-	->addScript( $thePlugin->_slug( "zendesk" ), "//assets.zendesk.com/external/zenbox/v2.6/zenbox.js" )
-	->addStyle( $thePlugin->_slug( "zendesk" ), "//assets.zendesk.com/external/zenbox/v2.6/zenbox.css")
+	->addScript( $thePlugin->_slug( "zendesk" ), "https://assets.zendesk.com/external/zenbox/v2.6/zenbox.js" )
+	->addStyle( $thePlugin->_slug( "zendesk" ), "https://assets.zendesk.com/external/zenbox/v2.6/zenbox.css")
 	->addSettingsPage()
 	->addSkinsPage()
 		->setTitle( __( "Login Page Skin", $pluginSlug ) )
