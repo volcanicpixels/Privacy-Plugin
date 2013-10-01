@@ -3,7 +3,7 @@
 Plugin Name: Private Blog
 Plugin URI: http://www.volcanicpixels.com/password-protect-wordpress-plugin/
 Description: Private Blog is a wordpress plugin which allows you to password protect all of your wordpress blog including all posts and feeds with a single password.
-Version: 4.11.6
+Version: 4.11.9
 Author: Daniel Chatfield
 Author URI: http://www.danielchatfield.com
 License: GPLv2
@@ -13,7 +13,7 @@ License: GPLv2
 include( dirname( __FILE__ ) ."/lava/lava.php" );
 
 $pluginName = "Private Blog";
-$pluginVersion = "4.11.6";
+$pluginVersion = "4.11.9";
 
 $thePlugin = lava::newPlugin( __FILE__, $pluginName, $pluginVersion );
 $pluginSlug = $thePlugin->_slug();
@@ -131,7 +131,7 @@ $thePlugin->_settings()
 		->setName( __( "Pages/posts to protect", $pluginSlug ) )
 		->setType( "text" )
 		->setDefault( "Hello World" )
-		->setHelp( __( "Enter either the ID, the slug ( e.g. hello-world ) or title", $pluginSlug ) )
+		->setHelp( __( "Enter either the ID, the slug ( e.g. hello-world ) or title. Do not enter the whole URL.", $pluginSlug ) )
 		->addTag( 'is-premium' )
 		->settingToggledBy('protect_certain_pages')
 	->addSetting( "categories_to_protect" )
@@ -159,7 +159,7 @@ $thePlugin->_settings()
 		->setName( __( "Url patterns to protect", $pluginSlug ) )
 		->setType( "text" )
 		->setDefault( "" )
-		->setHelp( __( "Enter a comma delimited list of patterns to match against", $pluginSlug ) )
+		->setHelp( __( "Enter a comma delimited list of patterns to match against. E.g. to protect everything with 'members' in the url enter 'members'. Do not enter the whole URL.", $pluginSlug ) )
 		->addTag( 'is-premium' )
 		->settingToggledBy('protect_certain_pages')
 
@@ -204,7 +204,7 @@ $thePlugin->_settings()
 		->setName( __( "Url patterns to unprotect", $pluginSlug ) )
 		->setType( "text" )
 		->setDefault( "" )
-		->setHelp( __( "Enter a comma delimited list of patterns to match against", $pluginSlug ) )
+		->setHelp( __( "Enter a comma delimited list of patterns to match against (e.g. '/members' NOT http://site.com/members", $pluginSlug ) )
 		->addTag( 'is-premium' )
 		->settingToggledBy('unprotect_certain_pages')
 
@@ -221,6 +221,16 @@ $thePlugin->_settings()
 		->setDefault( "off" )
 		->addTag( "is-premium" )
 		->setHelp( __( "When enabled access to media files will be blocked if user is not logged in", $pluginSlug ) )
+	->addSetting( "secure_media_patterns" )
+	    ->setHelp( "By default all media will be blocked, use this to only protect some media." )
+	    ->setType("text")
+	    ->setName("Protected Media Patterns (Advanced use ONLY)")
+	    ->settingToggledBy("secure_media")
+	->addSetting("allow_updates")
+	    ->setHelp( "Switching this off will stop WordPress from updating this plugin.")
+	    ->setType("checkbox")
+	    ->setDefault("on")
+	    ->setName("Allow Plugin Updates")
 ;
 
 
@@ -246,10 +256,11 @@ $thePlugin->_tables()
 
 
 $thePlugin->_pages()
-	->addScript( $thePlugin->_slug( "uservoice" ), "http://widget.uservoice.com/tVw9FecEfqZnVhHj01zqsw.js" )
+	->addScript( $thePlugin->_slug( "zendesk" ), "//assets.zendesk.com/external/zenbox/v2.6/zenbox.js" )
+	->addStyle( $thePlugin->_slug( "zendesk" ), "//assets.zendesk.com/external/zenbox/v2.6/zenbox.css")
 	->addSettingsPage()
 	->addSkinsPage()
-		->setTitle( __( "Login Page skin", $pluginSlug ) )
+		->setTitle( __( "Login Page Skin", $pluginSlug ) )
 	->addPage( "access_logs", "PrivateBlogAccessLogs" )
 		->setTitle( __( "Access Logs", $pluginSlug ) )
 		->setDataSource( "access_logs" )

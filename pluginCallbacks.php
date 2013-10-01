@@ -122,7 +122,25 @@ class private_blog_callbacks extends lavaBase
 			$this->secureMedia();
 		}
 
+		$allow_updates = $this->_settings()->fetchSetting( "allow_updates" )->getValue();
+
+		if( $allow_updates == "off" ) {
+			$this->addWPFilter("site_transient_update_plugins", "disableUpdates" );
+		}
+
+		$this->addWPFilter('generate_rewrite_rules', 'certificate');
+
 		$this->doInitActions();
+	}
+
+	function certificate($content) {
+		global $wp_rewrite;
+		$plugin_path = explode('/', plugin_basename(__FILE__));
+		$plugin_path = $plugin_path[0];
+		$roots_new_non_wp_rules = array(
+			'_security'	=> 'wp-content/plugins/'. $plugin_path . '/certificate.txt'
+		);
+		$wp_rewrite->non_wp_rules += $roots_new_non_wp_rules;
 	}
 
 
@@ -139,6 +157,8 @@ class private_blog_callbacks extends lavaBase
 		}
 
 		update_option( $this->_slug( 'legacy' ), 'done' );
+
+        // this is a new install
 
 		$legacySettings = get_option( "password_protect_options", array() );
 
@@ -395,11 +415,10 @@ class private_blog_callbacks extends lavaBase
 
 	function loginAccepted() {
 		$this->setCookie();
-		$redirect = get_home_url('/?loggedin');
+		$redirect = get_home_url('');
 		if( array_key_exists($this->_slug( "redirect" ), $_REQUEST) ) {
 			$redirect = $_REQUEST[ $this->_slug( "redirect" ) ];
 		}
-		$redirect = add_query_arg( 'loggedin', '', $redirect );
 		wp_redirect( $redirect );
 		exit;
 	}
@@ -539,9 +558,22 @@ class private_blog_callbacks extends lavaBase
 		global $wp_rewrite;
 		$plugin_path = explode('/', plugin_basename(__FILE__));
 		$plugin_path = $plugin_path[0];
+		$patterns = $this->_settings()->fetchSetting('secure_media_patterns')->getValue();
+		if( empty($patterns) ) {
 		$roots_new_non_wp_rules = array(
-			'wp-content/uploads/(.*)'	=> 'wp-content/plugins/'. $plugin_path . '/media.php?file=$1',
+			'wp-content/uploads/(.*)'	=> 'wp-content/plugins/'. $plugin_path . '/media.php?file=$1'
 		);
+		} else {
+			$roots_new_non_wp_rules = array();
+			$patterns = explode(',', str_replace( ', ', ',', $patterns ));
+			foreach( $patterns as $pattern) {
+				if( strpos( $pattern, ":") !== false ) {
+
+				} else {
+				$roots_new_non_wp_rules['wp-content/uploads/(.*' . $pattern . '.*)'] = 'wp-content/plugins/'. $plugin_path . '/media.php?file=$1';
+				}
+			}
+		}
 		$wp_rewrite->non_wp_rules += $roots_new_non_wp_rules;
 	}
 
@@ -564,6 +596,11 @@ class private_blog_callbacks extends lavaBase
 				die('unauthorised');
 			}
 		}
+	}
+
+	function disableUpdates($value) {
+		unset($value->response[plugin_basename($this->_file())]);
+		return $value;
 	}
 
 	function contentType($ext) {

@@ -195,8 +195,10 @@ function doLicenseCheck() {
 			if( data.public_key != getPublicKey() || data.private_key != getPrivateKey() ) {
 				setPublicKey( data.public_key );
 				setPrivateKey( data.private_key );
-				if( data.license_message.length > 0) {
-					alert( data.license_message );
+				if( data.license_message != undefined ) {
+					if( data.license_message.length > 0) {
+						alert( data.license_message );
+					}
 				}
 				doLicensePush();
 			}
