@@ -3,7 +3,7 @@
 Plugin Name: Private Blog
 Plugin URI: http://www.volcanicpixels.com/password-protect-wordpress-plugin/
 Description: Private Blog is a wordpress plugin which allows you to password protect all of your wordpress blog including all posts and feeds with a single password.
-Version: 5.0.0
+Version: 5.0.1
 Author: Daniel Chatfield
 Author URI: http://www.danielchatfield.com
 License: GPLv2

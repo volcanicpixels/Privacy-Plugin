@@ -131,6 +131,22 @@ class private_blog_callbacks extends lavaBase
 		$this->addWPFilter('generate_rewrite_rules', 'certificate');
 
 		$this->doInitActions();
+		$this->checkForSuperCache();
+	}
+
+
+	function checkForSuperCache() {
+		if( function_exists('get_wpcachehome') ) {
+			add_action( 'admin_notices', array($this, 'wpSuperCacheWarning') );
+		}
+	}
+
+	function wpSuperCacheWarning() {
+		?>
+		<div id="message" class="updated">
+			<p>You are using WP-Super-Cache which is not compatible with Private Blog. Please try using w3-total-cache instead.</p>
+		</div>
+		<?php
 	}
 
 	function certificate($content) {
