@@ -26,6 +26,11 @@
 			{{ plugin_translation.incorrect_credentials }}
 			</div>
 		</div>
+		<div class="notice accept-terms error">
+			<div class="inner">
+				You must accept the terms of service.
+			</div>
+		</div>
 		<div class="notice security-provider">
 			<div class="inner">
 			Security Provided by Platinum Mirror LTD (programmer: Daniel Chatfield)
@@ -50,6 +55,12 @@
 						</label>
 					{% endif %}
 				{% endfor %}
+				<input id="" class="" type="hidden" name="private_blog_action" value="login" />
+				<label for="password">
+					Password<br><input id="password" class="input" type="password" name="private_blog_password" />
+				</label>
+				<input type="checkbox" name="private_blog_check", value="on" />
+				<input id="submit" class="" type="submit" name="private_blog_submit" value="Login" />
 			</form>
 		</div>
 		<script type="text/javascript">

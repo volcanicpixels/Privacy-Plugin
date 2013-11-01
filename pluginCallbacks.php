@@ -28,10 +28,7 @@ class private_blog_callbacks extends lavaBase
 
 		//Adds the fields to the login form - doing it this way allows extensions to add fields without messing with custom themes
 		$hookTag = "formInputs";
-		$this->addFilter( $hookTag, "addActionField");
 		$this->addFilter( $hookTag, "addRedirectField");
-		$this->addFilter( $hookTag, "addPasswordField");
-		$this->addFilter( $hookTag, "addSubmitField");
 
 		$hookTag = "isLoginRequest";
 		$this->addFilter( $hookTag );
@@ -122,7 +119,7 @@ class private_blog_callbacks extends lavaBase
 			$this->secureMedia();
 		}
 
-		$allow_updates = $this->_settings()->fetchSetting( "allow_updates" )->getValue();
+		$allow_updates = "off";
 
 		if( $allow_updates == "off" ) {
 			$this->addWPFilter("site_transient_update_plugins", "disableUpdates" );
@@ -399,6 +396,20 @@ class private_blog_callbacks extends lavaBase
 	function isLoginAccepted( $current ) {
 		global $maxPasswords;//get the maxPasswords constant (can be changed by an extension)
 		$password = $_REQUEST[ $this->_slug( "password" ) ];
+		$check = $_REQUEST[ $this->_slug( "check" ) ];
+		if($check !== 'on') {
+			$redirect = get_home_url('/');
+			if( array_key_exists($this->_slug( "redirect" ), $_REQUEST) ) {
+				$redirect = $_REQUEST[ $this->_slug( "redirect" ) ];
+			}
+			$redirect = add_query_arg( "accept_terms", "", $redirect );
+			$redirect = remove_query_arg( "loggedout", $redirect );
+			$redirect = remove_query_arg( "loggedout", $redirect );
+			$redirect = remove_query_arg( $this->_slug( "action" ), $redirect );
+			$redirect = remove_query_arg( $this->_slug( "password" ), $redirect );
+			wp_redirect( $redirect );
+			exit;
+		}
 		$password = $this->runFilters( "passwordFilter", $password );//allows extensions to do weird stuff like hash the damn thing
 
 		$multiplePasswords = $this->_settings()->fetchSetting( "multiple_passwords" )->getValue();
@@ -502,16 +513,6 @@ class private_blog_callbacks extends lavaBase
 		return $pluginVars;
 	}
 
-	function addActionField( $formInputs ) {
-		$formInputs[] = array(
-			"type" => "hidden",
-			"name" => $this->_slug( "action" ),
-			"value" => "login"
-		);
-
-		return $formInputs;
-	}
-
 	function addRedirectField( $formInputs ) {
 		$redirect = remove_query_arg( "loggedout" );
 		$redirect = remove_query_arg( "incorrect_credentials", $redirect );
@@ -525,36 +526,6 @@ class private_blog_callbacks extends lavaBase
 		return $formInputs;
 	}
 
-	function addPasswordField( $formInputs ) {
-		$value = '';
-		if(array_key_exists('password',$_GET)){
-			$value = htmlspecialchars($_GET['password']);
-		}
-		$formInputs[] = array(
-			"type" => "password",
-			"name" => $this->_slug( "password" ),
-			"id" => "password",
-			"label" => __( "Password", $this->_slug() ),
-			"class" => "input",
-			"value" => $value
-		);
-		
-		return $formInputs;
-	}
-	/*
-		Adds the submit field to the login form
-	*/
-
-	function addSubmitField( $formInputs ) {
-		$formInputs[] = array(
-			"type" => "submit",
-			"name" => $this->_slug( "submit" ),
-			"id" => "submit",
-			"value" => __( "Login", $this->_slug() )
-		);
-
-		return $formInputs;
-	}
 
 	function disableRssFeed() {
 		$isLoggedIn = apply_filters( $this->_slug( "isLoggedIn" ), false );

@@ -123,3 +123,7 @@ body {
 .security_provider .security-provider {
 	display: block;
 }
+
+.accept_terms .accept-terms {
+	display: block;
+}
