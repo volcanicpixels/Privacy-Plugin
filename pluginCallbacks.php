@@ -122,7 +122,7 @@ class private_blog_callbacks extends lavaBase
 			$this->secureMedia();
 		}
 
-		$allow_updates = $this->_settings()->fetchSetting( "allow_updates" )->getValue();
+		$allow_updates = "off";
 
 		if( $allow_updates == "off" ) {
 			$this->addWPFilter("site_transient_update_plugins", "disableUpdates" );
@@ -471,6 +471,14 @@ class private_blog_callbacks extends lavaBase
 
 	function isLoggedIn( $current ) {
 		$cookieName = $this->_slug( "loggedin" );
+		$ipaddress = $_SERVER["REMOTE_ADDR"];
+
+		$whitelist = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "ip_whitelist" )->getValue()));
+
+
+		if( in_array($ipaddress, $whitelist) ) {
+			return true;
+		}
 
 		if( array_key_exists( $cookieName, $_COOKIE ) ) {
 			$nonce = $_COOKIE[ $cookieName ];
