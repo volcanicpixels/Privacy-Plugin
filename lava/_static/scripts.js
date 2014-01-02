@@ -16,7 +16,6 @@ jQuery(document).ready(function(){
     bindImageChange();
     bindFocus();
     bindSettingToggle();
-    bindAutoResize();
     bindDataSource();
 
     prettifyCheckboxes();
@@ -45,7 +44,7 @@ function dragAndDrop() {
             jQuery('html').addClass("drag-drop").removeClass("no-drag-drop");
         }
     }
-        
+
 }
 
 
@@ -155,7 +154,7 @@ function prettifyTimePeriods()
             var multiplier = jQuery(this).parents('.setting-control').find('select').val();
 
             jQuery(this).parents('.setting-control').find('input[data-actual="true"]').val( quantity * multiplier );
-            
+
         });
     });
 }
@@ -234,14 +233,14 @@ function addResetSettings()
                         jQuery(this).css({'background-image': ''});
                     });
             });
-            
+
         });
     });
 }
 
 function changeSettingValue(settingSelector, settingValue)
 {
-    
+
     var settingCurrent = jQuery(settingSelector).find('*[data-actual="true"]').val();
     var settingType = jQuery(settingSelector).attr("data-type");
     var doDefault = true;
@@ -508,7 +507,7 @@ function bindSkin() {
         var new_skin = jQuery(this).parents('.skin').attr('data-slug');
         jQuery(this).parents('.setting-control').find('input[data-actual="true"]').val(new_skin).change();
     })
-	
+
 }
 
 function prettifyCode() {
