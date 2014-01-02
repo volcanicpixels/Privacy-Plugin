@@ -132,7 +132,7 @@ class private_blog_vendor extends lavaExtension {
 			'ajax_action' => $this->_slug('licensing'),
 			'vendor_url' => $this->getVendorUrl( 'api/' . $this->apiVersion . '/' )
 		);
-		foreach( $lava_variables as $variable_name => $variable_key ): 
+		foreach( $lava_variables as $variable_name => $variable_key ):
 			?>
 				<input type="hidden" class="vendor-input" data-variable-name="<?php echo $variable_name ?>" value="<?php  echo $variable_key ?>"/>
 			<?php
@@ -166,7 +166,7 @@ class private_blog_vendor extends lavaExtension {
 		if( LAVA_API_IS_LOCAL ) {
 			return "http://localhost:11080/" . $append;
 		} else {
-			return 'http://legacy.volcanicpixels.com/' . $append;
+			return 'https://legacy.volcanicpixels.com/' . $append;
 		}
 	}
 }
