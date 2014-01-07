@@ -3,8 +3,8 @@ Contributors: volcanicpixels
 Donate link: http://www.spiders-design.co.uk/donate/
 Tags: password,protect,password protect,wordpress,blog, security
 Requires at least: 3.3.1
-Tested up to: 3.6.1
-Stable tag:  5.0.1
+Tested up to: 3.8
+Stable tag:  5.0.2
 
 This plugin password protects your wordpress blog with a single password.
 
@@ -13,18 +13,18 @@ This plugin password protects your wordpress blog with a single password.
 Want to make your blog private from prying eyes? Well my password protection plugin is perfect for that job; with its intelligent UI and endless features it will make the chore of keeping your data secure and private easy.
 
 > **NOTE** This plugin will not work on WPEngine due to their very aggressive caching.
-  
-  
-> Use w3-total-cache instead of wp-super-cache.  
+
+
+> Use w3-total-cache instead of wp-super-cache.
 
 > Deactivating a caching plugin does NOT always purge the cache. Before deactivating go to the plugin admin page and turn off caching from there.
 
 Features:
 
-No user accounts - just a single password.  
-Easy to use admin panel.  
+No user accounts - just a single password.
+Easy to use admin panel.
 
-Premium Features (paid upgrade):  
+Premium Features (paid upgrade):
 
  - Multiple passwords
  - Choose which pages/posts/categories/tags/urls to protect
@@ -60,6 +60,12 @@ This section describes how to install the plugin and get it working.
 2. Change the CSS styles for the login page to get the look and feel right
 
 == Changelog ==
+
+= 5.0.2 =
+
+* Added link to cache setup guide
+* Fixed js error that messed up UI
+* Made https safe
 
 = 5.0.1 =
 
@@ -180,7 +186,7 @@ This section describes how to install the plugin and get it working.
 
 * Fixed an issue with some of the admin side javascript and IE
 * Fixed an issue where if an HTML link was entered as the message for a skin the href attribute would be incorrectly urlized
-* Changed encoding of settings to UTF-8 to non ASCII characters that are not covered by the HTML spec (Russian characters for example) 
+* Changed encoding of settings to UTF-8 to non ASCII characters that are not covered by the HTML spec (Russian characters for example)
 = 4.02 =
 
 * Fixed issue with template loader

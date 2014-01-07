@@ -144,7 +144,7 @@ class private_blog_callbacks extends lavaBase
 	function wpSuperCacheWarning() {
 		?>
 		<div id="message" class="updated">
-			<p>You are using WP-Super-Cache which is not compatible with Private Blog. Please try using w3-total-cache instead.</p>
+			<p>You are using WP-Super-Cache which is not compatible with Private Blog. Please try using w3-total-cache instead and follow <a href="https://platinummirror.zendesk.com/hc/en-gb/articles/201164027">this guide</a>.</p>
 		</div>
 		<?php
 	}
@@ -339,7 +339,7 @@ class private_blog_callbacks extends lavaBase
 
 		// match urls
 
-		
+
 		foreach($unprotectUrls as $pattern) {
 			if(!empty($pattern)) {
 				if(preg_match('`'. trim($pattern) . '`', $_SERVER['REQUEST_URI'])) {
@@ -538,7 +538,7 @@ class private_blog_callbacks extends lavaBase
 			"class" => "input",
 			"value" => $value
 		);
-		
+
 		return $formInputs;
 	}
 	/*
