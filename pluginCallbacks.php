@@ -431,7 +431,7 @@ class private_blog_callbacks extends lavaBase
 
 	function loginAccepted() {
 		$this->setCookie();
-		$redirect = get_home_url('');
+		$redirect = get_home_url('/');
 		if( array_key_exists($this->_slug( "redirect" ), $_REQUEST) ) {
 			$redirect = $_REQUEST[ $this->_slug( "redirect" ) ];
 		}

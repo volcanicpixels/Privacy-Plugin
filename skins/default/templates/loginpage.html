@@ -7,7 +7,7 @@
         <meta name="robots" content="noindex">
         <title>{{ environment.blog_name }} | Login</title>
 		<link rel="stylesheet" type="text/css" href="{{ environment.static_url }}/styles.css" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 		{{ skin_actions.head }}
     </head>
     <body class="{{ body_class }}" >
@@ -35,9 +35,9 @@
 						<label for="{{ input.id }}">{{ input.label }}
 						<br>
 					{% endif %}
-						
+
 					<input id="{{ input.id }}" class="{{ input.class }}" type="{{ input.type }}" name="{{ input.name }}" value="{{ input.value }}" />
-						
+
 					{% if input.label %}
 						</label>
 					{% endif %}
