@@ -230,8 +230,12 @@ $thePlugin->_settings()
 	->addSetting("allow_updates")
 	    ->setHelp( "Switching this off will stop WordPress from updating this plugin.")
 	    ->setType("checkbox")
-	    ->setDefault("on")
+	    ->setDefault("off")
 	    ->setName("Allow Plugin Updates")
+	->addSetting( "ip_whitelist" )
+	  ->setName("IP Whitelist")
+		->setType("text")
+		->addTag("is-premium")
 ;
 
 

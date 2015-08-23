@@ -472,6 +472,16 @@ class private_blog_callbacks extends lavaBase
 	function isLoggedIn( $current ) {
 		$cookieName = $this->_slug( "loggedin" );
 
+		$whitelist = $this->_settings()->fetchSetting("ip_whitelist")->getValue();
+		$whitelist = str_replace(' ', '', $whitelist);
+		$whitelist = explode(',', $whitelist);
+
+		foreach ($whitelist as $ip) {
+			if ($_SERVER['REMOTE_ADDR'] === $ip) {
+				return true;
+			}
+		}
+
 		if( array_key_exists( $cookieName, $_COOKIE ) ) {
 			$nonce = $_COOKIE[ $cookieName ];
 
