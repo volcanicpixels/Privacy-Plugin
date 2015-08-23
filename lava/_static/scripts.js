@@ -16,7 +16,6 @@ jQuery(document).ready(function(){
     bindImageChange();
     bindFocus();
     bindSettingToggle();
-    bindAutoResize();
     bindDataSource();
 
     prettifyCheckboxes();
@@ -45,7 +44,7 @@ function dragAndDrop() {
             jQuery('html').addClass("drag-drop").removeClass("no-drag-drop");
         }
     }
-        
+
 }
 
 
@@ -155,7 +154,7 @@ function prettifyTimePeriods()
             var multiplier = jQuery(this).parents('.setting-control').find('select').val();
 
             jQuery(this).parents('.setting-control').find('input[data-actual="true"]').val( quantity * multiplier );
-            
+
         });
     });
 }
@@ -234,14 +233,14 @@ function addResetSettings()
                         jQuery(this).css({'background-image': ''});
                     });
             });
-            
+
         });
     });
 }
 
 function changeSettingValue(settingSelector, settingValue)
 {
-    
+
     var settingCurrent = jQuery(settingSelector).find('*[data-actual="true"]').val();
     var settingType = jQuery(settingSelector).attr("data-type");
     var doDefault = true;
@@ -315,11 +314,11 @@ function bindSticky()
 
 function bindSettingToggle() {
     jQuery( '.setting.tag-setting-toggle input[data-actual="true"]').change(function(){
-        var item_to_toggle = jQuery(this).parents('.setting').attr('data-setting-toggle');
+        var setting_id = jQuery(this).parents('.setting').attr('data-setting-key');
         if( jQuery(this).hasAttr( "checked" ) ) {
-            jQuery('.setting[data-setting-key="' + item_to_toggle + '"]').removeClass( "lava-setting-toggle-hidden" );
+            jQuery('.setting[data-setting-toggle="' + setting_id + '"]').removeClass( "lava-setting-toggle-hidden" );
         } else {
-            jQuery('.setting[data-setting-key="' + item_to_toggle + '"]').addClass( "lava-setting-toggle-hidden" );
+            jQuery('.setting[data-setting-toggle="' + setting_id + '"]').addClass( "lava-setting-toggle-hidden" );
         }
         codeRefresh();//hack to fix code box issues
     });
@@ -345,20 +344,26 @@ function bindFocus() {
 }
 
 function bindDataSource() {
+    var offset = 0;
     jQuery('.lava-table-loader-refresh-button').click(function(){
-        doDataSource();
+        offset = 0;
+        doDataSource(offset);
     })
-    doDataSource();
+    jQuery('.lava-table-loader-older-button').click(function(){
+        offset = offset + 1;
+        doDataSource(offset);
+    })
+    doDataSource(0);
 }
 
-function doDataSource() {
+function doDataSource(offset) {
     jQuery('.lava-full-page-loader').show();
     jQuery('.lava-table-viewer').each(function(){
         jQuery(this).find('table').html("<thead></thead><tbody></tbody>");
         var dataSource = jQuery(this).attr( "data-data-source" );
         var action = jQuery(this).attr( "data-ajax-action" );
         var nonce = jQuery(this).attr( "data-ajax-nonce" );
-		jQuery.getJSON( ajaxurl + '?action=' + action + '&nonce=' + nonce + '&data-source=' + dataSource, function(data) {
+		jQuery.getJSON( ajaxurl + '?action=' + action + '&nonce=' + nonce + '&data-source=' + dataSource + '&offset=' + offset, function(data) {
 			jQuery('.lava-full-page-loader').hide();
 			parseTableData( dataSource, data["data"]["data"] );
         });
@@ -370,6 +375,7 @@ function doDataSource() {
     	});
     });
 }
+
 
 function parseTableData( dataSource, data ) {
 
@@ -501,7 +507,7 @@ function bindSkin() {
         var new_skin = jQuery(this).parents('.skin').attr('data-slug');
         jQuery(this).parents('.setting-control').find('input[data-actual="true"]').val(new_skin).change();
     })
-	
+
 }
 
 function prettifyCode() {

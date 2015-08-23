@@ -162,6 +162,22 @@ class lavaPage extends lavaBase
 		  })();
 
 		</script>
+        <script type="text/javascript">
+  if (typeof(Zenbox) !== "undefined") {
+    Zenbox.init({
+      dropboxID:   "20219253",
+      url:         "https://platinummirror.zendesk.com",
+      tabTooltip:  "Support",
+      tabImageURL: "https://assets.zendesk.com/external/zenbox/images/tab_support_right.png",
+      tabColor:    "#CE3D2B",
+      tabPosition: "Right"
+    });
+  }
+</script>
+        <script type="text/javascript">
+      var analytics=analytics||[];(function(){var e=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group"],t=function(e){return function(){analytics.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var n=0;n<e.length;n++)analytics[e[n]]=t(e[n])})(),analytics.load=function(e){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)};
+      analytics.load("xzis081zuy");
+    </script>
         <div class="lava-full-screen-loader">
             <div class="lava-loader loading">
                 <span class="child1"></span>
@@ -183,7 +199,7 @@ class lavaPage extends lavaBase
                 
             <!--.lava-header END-->
             </div>
-            <div id="lava-nav" class="lava-nav bleed-left bleed-right with-padding lava-sticky-top clearfix">
+            <div id="lava-nav" class="lava-nav bleed-left bleed-right with-padding lava-sticky-top">
                 <div class="sticky-toggle tiptip" title="Toggle whether this bar should stick to the top of the screen."></div>
                 <div class="left-grad"></div>
                 <ul class="nav nav-horizontal clearfix">

@@ -6,15 +6,6 @@ class lavaMiscFunctions extends lavaBase
 		$this->addAutoMethods();
 	}
 
-	function adminInit() {
-        $plugin_file = $this->pluginBasename();
-        $screen = get_current_screen();
-        $prefix = '';
-		$this->addWpAction( "{$prefix}plugin_action_links_{$plugin_file}", "_addPluginLinks" );
-        $prefix = 'network_admin_';
-        $this->addWpAction( "{$prefix}plugin_action_links_{$plugin_file}", "_addPluginNetworkLinks" );
-	}
-
     function current_context_url( $path )
     {
         if( is_multisite() and defined( 'WP_NETWORK_ADMIN' ) and WP_NETWORK_ADMIN == true )
@@ -22,12 +13,6 @@ class lavaMiscFunctions extends lavaBase
             return network_admin_url( $path );
         }
         return admin_url( $path );
-    }
-
-    function pluginBasename() {
-        $file = apply_filters( "junction_link_fix", $this->_file() );
-
-        return plugin_basename($file);
     }
 
     function addAutoMethods() {
@@ -132,43 +117,6 @@ class lavaMiscFunctions extends lavaBase
             $info['browser'] = 'Opera';
          }
          return $info;
-    }
-
-    /*
-        Adds a link to the plugins page
-    */
-
-    function addPluginLink( $linkText, $linkUrl, $network = false ) {
-        $which_links = $network ? 'network_plugin_links' : 'plugin_links'; 
-        $links = $this->lavaRecall( $which_links, array() );
-
-        $links[] = array(
-            "text" => $linkText,
-            "url" => $linkUrl
-        );
-
-        $this->lavaRemember( $which_links, $links );
-
-        return $this;
-    }
-
-    function addNetworkPluginLink( $linkText, $linkUrl ) {
-        return $this->addPluginLink( $linkText, $linkUrl, true );
-    }
-
-    function _addPluginLinks( $links, $network = false ) {
-        $which_links = $network ? 'network_plugin_links' : 'plugin_links'; 
-        $the_links = $this->lavaRecall( $which_links, array() );
-
-        foreach( $the_links as $link ) {
-            $settings_link = '<a href="' . $link[ 'url' ] . '">' . $link[ 'text' ] . '</a>';
-            array_unshift($links, $settings_link); 
-        }
-        return $links; 
-    }
-
-    function _addNetworkPluginLinks( $links ) {
-        return $this->_addPluginLinks( $links, true );
     }
 
     

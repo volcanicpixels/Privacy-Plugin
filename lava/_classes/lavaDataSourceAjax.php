@@ -16,6 +16,11 @@ class lavaDataSourceAjax extends lavaAjax {
 	function doAjax() {
 		$dataSourceSlug = $_REQUEST['data-source'];//no need to santize it here as that is handled later
 
+		$offset = 0;
+		if(array_key_exists('offset', $_REQUEST)) {
+			$offset = $_REQUEST['offset'];
+		}
+
 		if( !$this->_tables()->tableExists( $dataSourceSlug ) ) {
 			$this->returnError( "The specified data source could not be retrieved :(" );
 			$this->doReturn();
@@ -34,9 +39,6 @@ class lavaDataSourceAjax extends lavaAjax {
 			$newRow = array();
 
 			foreach( $row as $col => $column ) {
-				
-				
-
 				$newColumn = $this->runFilters( "_dataSourceAjax_column", $column );
 				$newColumn = $this->runFilters( "_dataSourceAjax_column/dataSource:{$dataSourceSlug}", $newColumn );
 				$newColumn = $this->runFilters( "_dataSourceAjax_column/dataSource:{$dataSourceSlug}/col:$col", $newColumn );
@@ -58,6 +60,10 @@ class lavaDataSourceAjax extends lavaAjax {
 
 			$newResult[$i] = $newRow;
 		}
+
+		$limit = 50;
+
+		$newResult = array_slice($newResult, $offset * $limit, $limit);
 
 		
 

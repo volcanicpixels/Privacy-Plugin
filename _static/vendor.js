@@ -4,7 +4,6 @@ jQuery(document).ready(function(){
 	bindPurchaseKey();
 
 	doRegister();
-	doLicenseCheck();
 	
 })
 
@@ -54,12 +53,13 @@ function setLavaVariable( variableName, variableValue ) {
 }
 
 function setPublicKey( public_key ) {
+	if (public_key == undefined) {
+		public_key = '';
+	} 
+    public_key = public_key.replace(/(^\s+|\s+$)/g,'');
 	return setLavaVariable( 'public_key', public_key );
 }
 
-function setLavaVariable( variableName, variableValue ) {
-	return jQuery('input.vendor-input[data-variable-name="' + variableName + '"]').val( variableValue );
-}
 function setPrivateKey( private_key ) {
 	return setLavaVariable( 'private_key', private_key );
 }
@@ -98,7 +98,7 @@ function bindChangeKey() {
 
 		var userInput = prompt( 'Enter license key:', current_key );
 
-		if (userInput != null) {
+		if (userInput !== null) {
 			setPublicKey(userInput);
 			doLicensePush();
 		}
@@ -112,7 +112,16 @@ function bindGetKey() {
 		var request = doApiRequest( method ).success(function(data){
 			var license_types = data.licenses;
 			jQuery('.underground-context-get-premium .license-options').html('');
-			for( license_type in license_types) {
+			var keys = [];
+			for (var key in license_types) {
+				keys.push(key);
+			}
+			keys.sort();
+
+			len = keys.length;
+
+			for(var i=0; i < len; i++) {
+				license_type = keys[i];
 				var the_license = license_types[license_type];
 				the_license = '<div class="license-option " data-price="' + the_license.price + '" data-product="' + license_type + '"><h3>' + the_license.name + '</h3><div class="description">' + the_license.description + '</div></div>';
 				jQuery('.underground-context-get-premium .license-options').append(the_license);
@@ -122,7 +131,7 @@ function bindGetKey() {
 					jQuery(this).addClass( 'selected');
 				});
 			}
-		})
+		});
 	});
 }
 
@@ -176,6 +185,7 @@ function doRegister() {
 
 	var request = doApiRequest( method, args ).success(function(data){
 		setAjaxBlinkerStatus( method, "success", "Registered" );
+		doLicenseCheck();
 	})
 }
 
@@ -195,8 +205,10 @@ function doLicenseCheck() {
 			if( data.public_key != getPublicKey() || data.private_key != getPrivateKey() ) {
 				setPublicKey( data.public_key );
 				setPrivateKey( data.private_key );
-				if( data.license_message.length > 0) {
-					alert( data.license_message );
+				if( data.license_message != undefined ) {
+					if( data.license_message.length > 0) {
+						alert( data.license_message );
+					}
 				}
 				doLicensePush();
 			}
@@ -205,7 +217,16 @@ function doLicenseCheck() {
 				setAjaxBlinkerStatus( method, 'success', 'License accepted' );
 			} else if( data.license_status == 'dead' ) {
 				setAjaxBlinkerStatus( method, 'error', 'This installation is not licensed for premium features' )
+			} else if( data.license_status == 'old' ) {
+				alert( data.old_message );
 			}
+		}
+
+		if (data.license_status === 'engaged') {
+			setAjaxBlinkerStatus( method, 'error', 'Licensed already being used' );
+			setPublicKey('');
+			alert("This license key is already being used on the maximum number of sites, to unlicense a site enter 'unlicense' as the key in the site you wish to unlicense.");
+			doLicensePush();
 		}
 	})
 }

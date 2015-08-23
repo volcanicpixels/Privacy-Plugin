@@ -1,7 +1,5 @@
 body {
 	background: #FBFBFB;
-	margin: 0px;
-	padding: 0px;
 }
 
 
@@ -83,11 +81,6 @@ body {
 		        box-shadow: inset 1px 1px 3px rgba(200,200,200,0.8);
 	}
 
-	
-	input.input:focus {
-		border-color: #4D90F0;
-	}
-
 .notice {
 	display: none;
 	position: absolute;
@@ -124,5 +117,9 @@ body {
 }
 
 .incorrect_credentials .incorrect-credentials {
+	display: block;
+}
+
+.security_provider .security-provider {
 	display: block;
 }

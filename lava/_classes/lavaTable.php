@@ -173,5 +173,14 @@ class lavaTable extends lavaBase
 
         return $result;
     }
+
+    function deleteTable() {
+        global $wpdb;
+        $tableName = $this->getTableName();
+
+        $sql = "DELETE FROM {$tableName}";
+
+        $wpdb->query($sql);
+    }
 }
 ?>

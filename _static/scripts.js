@@ -114,8 +114,13 @@ function makeLabels()
 
         jQuery(this).find( '.custom-password-label span' ).html( labelName ).css({backgroundColor: labelColor});
 
-        var labelWidth = jQuery(this).find( '.custom-password-label' ).width();
-
-        //jQuery(this).find( '.custom-password-label' ).css({marginLeft: -(labelWidth + 50 ),opacity:0,display: 'none'});
+        jQuery(this).find('.custom-password-label').click(function() {
+            var current = jQuery( '#private_blog-settings-' + shortName + '_name').val();
+            var newLabel = prompt( 'Enter password label', current );
+            if(newLabel != null) {
+                jQuery( '#private_blog-settings-' + shortName + '_name').val(newLabel);
+                jQuery(this).find( 'span' ).html( newLabel )
+            }
+        });
     });
 }

@@ -9,6 +9,8 @@ class lavaSettingsPage extends lavaPage
 		$this->saveSettings();
 		$this->resetSettings();
 		$this->addAction( "toolbarButtons" );
+		global $wp_rewrite;
+		$wp_rewrite->flush_rules();
 		//queue notifications
 		//do redirect
 	}
@@ -55,12 +57,21 @@ class lavaSettingsPage extends lavaPage
 			echo $setting->doSetting();
 			//action hook
 		}
+		$this->customPlugin();
 		?>
 		<div class="lava-action-tray" style="margin-left:30px; margin-top:20px;">
 			<input type="submit" class="lava-btn js-fallback" name="action" value="<?php _e( "Save Settings", $this->_framework() ) ?>" />
 		</div>
 		<?php
 		echo '</form>';
+	}
+
+	function customPlugin() {
+		?>
+		<p>
+			Need a feature we don't offer? <a href="mailto:hello@volcanicpixels.com">Contact us</a> and we'll give you a quote for a custom plugin.
+		</p>
+		<?php
 	}
 
 	function saveSettings()

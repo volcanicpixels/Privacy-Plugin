@@ -99,8 +99,6 @@ class lavaSkinsCallback extends lavaSettingsCallback
 		$pluginVars = apply_filters( $this->_slug( "_templateVars_pluginVars" ), array() );
 		$skinSettings = $this->_templateVars_skinSettings();
 		$pluginTranslation = $this->_skins()->getTranslations();
-		$watermark = apply_filters( $this->_slug( "_templateVars_watermark" ), '' );
-		$skinActions = $this->_doSkinActions();
 
 
 		$templateVars = array(
@@ -109,8 +107,6 @@ class lavaSkinsCallback extends lavaSettingsCallback
 			"plugin_vars" => $pluginVars,
 			"plugin_translation" => $pluginTranslation,
 			"settings" => $skinSettings,
-			'watermark' => $watermark,
-			'skin_actions' => $skinActions
 		);
 
 		return $templateVars;
@@ -135,22 +131,6 @@ class lavaSkinsCallback extends lavaSettingsCallback
 			}
 		}
 		return $current;
-	}
-
-	function _doSkinActions() {
-		$skinActions = $this->_skins()->getSkinActions();
-		$defaultSkinActions = array(
-			'head'
-		);
-		$skinActions = array_merge( $skinActions, $defaultSkinActions );
-
-		$content = array();
-
-		foreach( $skinActions as $skinAction ) {
-			$content[$skinAction] = $this->applyFilters( "skinActions/skinAction:{$skinAction}" );
-		}
-
-		return $content;
 	}
 
 	function _templateVars_skinSettings() {

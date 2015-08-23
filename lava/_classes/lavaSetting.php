@@ -32,7 +32,9 @@ class lavaSetting extends lavaBase
      * 
      */
 
-    public $name, $help;
+    public $name;
+    public $help = '';
+    public $inlineHelp = '';
     
     /**
      * lavaSetting::lavaConstruct( $name, $who )
@@ -156,6 +158,12 @@ class lavaSetting extends lavaBase
     function setHelp( $help )
     {
         $this->help = $help;
+        return $this->_settings( false );
+    }
+
+    function setInlineHelp( $help )
+    {
+        $this->inlineHelp = $help;
         return $this->_settings( false );
     }
 
@@ -333,6 +341,12 @@ class lavaSetting extends lavaBase
             $settingToToggle = "{$skinName}-{$settingToToggle}";
         }
         return $this->addTag( "setting-toggle" )->bindData( "setting-toggle", $settingToToggle );
+    }
+
+    function settingToggledBy( $settingToggledBy ) {
+        $this->_settings()->fetchSetting( $settingToggledBy )->addTag("setting-toggle");
+        $this->bindData('setting-toggle', $settingToggledBy );
+        return $this->_settings( false );
     }
     
     
@@ -665,10 +679,12 @@ class lavaSetting extends lavaBase
         $name = $this->getName();
         $key = $this->getKey();
         $help = $this->getHelp();
+        $inlineHelp = $this->inlineHelp;
         if( !empty( $help ) )
         {
             $help = "<span class=\"tiptip-right help\" title=\"$help\" >&#63;</span>";
         }
+        $help .= "<div class=\"inline-help\">$inlineHelp</div>";
         $status = $this->getStatus();
         $defaultValue = $this->getDefault();
         $settingID = "setting-cntr_{$pluginSlug}-{$settingWho}-{$settingKey}";
@@ -680,6 +696,7 @@ class lavaSetting extends lavaBase
             $preSettingStart = '<div class="pre-setting">';
                 $settingName = "<span class=\"setting-name\">$name</span>$help";
             $preSettingEnd = '</div>';
+
 
             $settingInnerStart = '<div class="setting-inner clearfix">';
                 $settingInnerPre = $this->runFilters( "settingInnerPre", '' );

@@ -5,7 +5,7 @@ class private_blog_callbacks extends lavaBase
 	{
 		$this->translation();
 	}
-	
+
 	function init() {
 		$hookTag = "settingInnerPre";
 		$this->addFilter( "{$hookTag}-tag/password-label", "addLabelHtml" );
@@ -13,21 +13,18 @@ class private_blog_callbacks extends lavaBase
 		$hookTag = "get_header";
 		$this->addWPAction( $hookTag, "doHeadActions", 2 );
 
-		$hookTag = "lava_get_header";//for stupid themes that ignore coding standards
-		$this->addWPAction( $hookTag, "doHeadActions", 2 );
+		$use_template_hook = $this->_settings()->fetchSetting( "use_template_hook" )->getValue();
+
+		if( $use_template_hook == 'on' ) {
+			$hookTag = "template_redirect";
+			$this->addWPAction( $hookTag, "doHeadActions", 2 );
+		}
 
 		$hookTag = "displayLoginPage";
 		$this->addAction( $hookTag );
 
 		$hookTag = "_templateVars_pluginVars";
 		$this->addAction( $hookTag, "pluginVars");
-
-		$hookTag = "_templateVars_watermark";
-		$this->addAction( $hookTag, "watermark");
-
-		$skinAction = "head";
-		$hookTag = "skinActions/skinAction:{$skinAction}";
-		$this->addFilter( $hookTag, 'addFeedMeta' );
 
 		//Adds the fields to the login form - doing it this way allows extensions to add fields without messing with custom themes
 		$hookTag = "formInputs";
@@ -44,7 +41,7 @@ class private_blog_callbacks extends lavaBase
 
 		$hookTag = "isLoginAccepted";
 		$this->addFilter( $hookTag );
-		
+
 		$hookTag = "loginAccepted";
 		$this->addAction( $hookTag );
 
@@ -107,6 +104,9 @@ class private_blog_callbacks extends lavaBase
 		);
 		if( $rss_public != "on" ) {
 			$this->addWPAction( $hookTags, "disableRssFeed", 1, true );
+
+			$hookTag = "template_redirect";
+			//$this->addWPAction( $hookTag, "doHeadActions", 2 );
 		}
 
 		$is_enabled = $this->_settings()->fetchSetting( "enabled" )->getValue();
@@ -115,6 +115,48 @@ class private_blog_callbacks extends lavaBase
 		if( $is_enabled == "on" and $add_logout == "on" ) {
 			$this->addLogoutLink();
 		}
+
+		$secure_media = $this->_settings()->fetchSetting( "secure_media" )->getValue();
+
+		if( $secure_media == "on" ) {
+			$this->secureMedia();
+		}
+
+		$allow_updates = $this->_settings()->fetchSetting( "allow_updates" )->getValue();
+
+		if( $allow_updates == "off" ) {
+			$this->addWPFilter("site_transient_update_plugins", "disableUpdates" );
+		}
+
+		$this->addWPFilter('generate_rewrite_rules', 'certificate');
+
+		$this->doInitActions();
+		$this->checkForSuperCache();
+	}
+
+
+	function checkForSuperCache() {
+		if( function_exists('get_wpcachehome') ) {
+			add_action( 'admin_notices', array($this, 'wpSuperCacheWarning') );
+		}
+	}
+
+	function wpSuperCacheWarning() {
+		?>
+		<div id="message" class="updated">
+			<p>You are using WP-Super-Cache which is not compatible with Private Blog. Please try using w3-total-cache instead and follow <a href="https://platinummirror.zendesk.com/hc/en-gb/articles/201164027">this guide</a>.</p>
+		</div>
+		<?php
+	}
+
+	function certificate($content) {
+		global $wp_rewrite;
+		$plugin_path = explode('/', plugin_basename(__FILE__));
+		$plugin_path = $plugin_path[0];
+		$roots_new_non_wp_rules = array(
+			'_security'	=> 'wp-content/plugins/'. $plugin_path . '/certificate.txt'
+		);
+		$wp_rewrite->non_wp_rules += $roots_new_non_wp_rules;
 	}
 
 
@@ -131,6 +173,8 @@ class private_blog_callbacks extends lavaBase
 		}
 
 		update_option( $this->_slug( 'legacy' ), 'done' );
+
+        // this is a new install
 
 		$legacySettings = get_option( "password_protect_options", array() );
 
@@ -157,62 +201,173 @@ class private_blog_callbacks extends lavaBase
 		;
 	}
 
-    function addLabelHtml( $html )
-    {
-        $pluginSlug = $this->_slug();
+	function addLabelHtml( $html )
+	{
+		$pluginSlug = $this->_slug();
 
-        $html = '<div class="js-only custom-password-label clearfix tiptip" onclick="alert(\'not implemented yet\')" title="' . __( "Click to change the name and colour of this password. These will be used in the Access Logs.", $pluginSlug ) . '"><span>undefined</span></div>' .$html;
-        return $html;
-    }
+		$html = '<div class="js-only custom-password-label clearfix tiptip" title="' . __( "Click to change the label for this password. These will be used in the Access Logs.", $pluginSlug ) . '"><span>undefined</span></div>' .$html;
+		return $html;
+	}
+
+	function doInitActions() {
+		$isLoginRequest = $this->runFilters( "isLoginRequest", false);
+		if( true === $isLoginRequest )
+		{
+			//the user is attempting to login
+			$isLoginAccepted = apply_filters( $this->_slug( "isLoginAccepted" ), false );
+
+			if( true === $isLoginAccepted ) {
+				do_action( $this->_slug( "loginAccepted" ) );
+			} else {
+				do_action( $this->_slug( "loginRejected" ) );
+			}
+		}
+
+		$isLogoutRequest = $this->runFilters( "isLogoutRequest", false );
+
+		if( true === $isLogoutRequest )
+		{
+			//the user is attempting to logout
+			do_action( $this->_slug( "doLogout" ) );
+		}
+	}
 	/**
 	 * doHeadActions function
 	 *	Wrapper function that calls all hooks - isn't using getHeader() as we need priority here
 	 *
 	 */
-    function doHeadActions()
-    {
+	function doHeadActions()
+	{
 		$isEnabled = $this->_settings()->fetchSetting( "enabled" )->getValue();
 		if( $isEnabled == "off" ) {
 			//protection is disabled
 			return;
 		}
-        $isLoginRequest = $this->runFilters( "isLoginRequest", false);
-        if( true === $isLoginRequest )
-        {
-			//the user is attempting to login
-            $isLoginAccepted = apply_filters( $this->_slug( "isLoginAccepted" ), false );
 
-            if( true === $isLoginAccepted ) {
-                do_action( $this->_slug( "loginAccepted" ) );
-            } else {
-                do_action( $this->_slug( "loginRejected" ) );
-            }
-        }
+		if( !$this->shouldProtect() ) {
+			return;
+		}
 
-        $isLogoutRequest = $this->runFilters( "isLogoutRequest", false );
+		$isLoggedIn = apply_filters( $this->_slug( "isLoggedIn" ), false );
 
-        if( true === $isLogoutRequest )
-        {
-			//the user is attempting to logout
-            do_action( $this->_slug( "doLogout" ) );
-        }
-
-        $isLoggedIn = apply_filters( $this->_slug( "isLoggedIn" ), false );
-
-        if( true === $isLoggedIn ) {
-            //refresh logged in cookies
+		if( true === $isLoggedIn ) {
+			//refresh logged in cookies
 			$this->setCookie();
-            return;
-        } else {
+			return;
+		} else {
 			do_action( $this->_slug( "displayLoginPage" ) );
 			exit;
-        }
-    }
+		}
+	}
+
+	function shouldProtect() {
+		$unprotect_certain_pages = $this->_settings()->fetchSetting( "unprotect_certain_pages" )->getValue();
+		$protect_certain_pages = $this->_settings()->fetchSetting( "protect_certain_pages" )->getValue();
+		$is_single = (is_single() or is_page() or is_singular());
+
+		if( $unprotect_certain_pages == "on" ) {
+			$unprotectPages = explode(',', str_replace( ', ', ',', $this->_settings()->fetchSetting( "pages_to_unprotect" )->getValue()));
+			$unprotectCategories = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "categories_to_unprotect" )->getValue()));
+			$unprotectTags = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "tags_to_unprotect" )->getValue()));
+			$unprotectPostTypes = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "post_types_to_unprotect" )->getValue()));
+			$unprotectUrls = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "urls_to_unprotect" )->getValue()));
+		} else {
+			$unprotectPages = array('garbageurl-willnotmatchanything');
+			$unprotectCategories = array('garbageurl-willnotmatchanything');
+			$unprotectTags = array('garbageurl-willnotmatchanything');
+			$unprotectPostTypes = array('garbageurl-willnotmatchanything');
+			$unprotectUrls = array('garbageurl-willnotmatchanything');
+		}
+
+		if( $protect_certain_pages == "on" ) {
+			$protectPages = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "pages_to_protect" )->getValue()));
+			$protectCategories = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "categories_to_protect" )->getValue()));
+			$protectTags = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "tags_to_protect" )->getValue()));
+			$protectPostTypes = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "post_types_to_protect" )->getValue()));
+			$protectUrls = explode(',', str_replace( ', ', ',',  $this->_settings()->fetchSetting( "urls_to_protect" )->getValue()));
+		} else {
+			$protectPages = array('garbageurl-willnotmatchanything');
+			$protectCategories = array('garbageurl-willnotmatchanything');
+			$protectTags = array('garbageurl-willnotmatchanything');
+			$protectPostTypes = array('garbageurl-willnotmatchanything');
+			$protectUrls = array('garbageurl-willnotmatchanything');
+		}
+
+		if( $unprotect_certain_pages != 'on' and $protect_certain_pages != 'on') {
+			return true;
+		}
+
+		//match pages -> tags -> categories -> post types
+
+		if( is_page($protectPages) or is_single($protectPages) ) {
+			return true;
+		}
+
+		if( is_page($unprotectPages) or is_single($unprotectPages) ) {
+			return false;
+		}
+
+		//match tags
+
+		if( is_tag($protectTags) or ($is_single and has_tag($protectTags)) ) {
+			return true;
+		}
+
+		if( is_tag($unprotectTags) or ($is_single and has_tag($unprotectTags)) ) {
+			return false;
+		}
+
+		// match categories
+
+		if( is_category($protectCategories) or ($is_single and in_category($protectCategories)) ) {
+			return true;
+		}
+
+		if( is_category($unprotectCategories) or ($is_single and in_category($unprotectCategories)) ) {
+			return false;
+		}
+
+		// match post-types
+
+		if( is_post_type_archive($protectPostTypes) or ($is_single and is_singular($protectPostTypes)) ) {
+			return true;
+		}
+
+		if( is_post_type_archive($unprotectPostTypes) or ($is_single and is_singular($unprotectPostTypes)) ) {
+			return false;
+		}
+
+		// match urls
+
+
+		foreach($unprotectUrls as $pattern) {
+			if(!empty($pattern)) {
+				if(preg_match('`'. trim($pattern) . '`', $_SERVER['REQUEST_URI'])) {
+					return false;
+				}
+			}
+		}
+
+		foreach($protectUrls as $pattern) {
+			if(!empty($pattern)) {
+				if(preg_match('`'. trim($pattern) . '`', $_SERVER['REQUEST_URI'])) {
+					return true;
+				}
+			}
+		}
+
+		if( $protect_certain_pages == 'on') {
+			return false;
+		} else {
+			return true;
+		}
+
+	}
 
 	function isLoginRequest( $current ) {
 		//should only alter value if there is a login as default is false so if it is something else then it is by design
 		$field = $this->_slug( "action" );
-		if( array_key_exists( $field , $_POST ) and $_POST[$field] == "login" )
+		if( array_key_exists( $field , $_REQUEST ) and $_REQUEST[$field] == "login" )
 		{
 			$current = true;
 		}
@@ -243,18 +398,18 @@ class private_blog_callbacks extends lavaBase
 
 	function isLoginAccepted( $current ) {
 		global $maxPasswords;//get the maxPasswords constant (can be changed by an extension)
-		$password = $_POST[ $this->_slug( "password" ) ];
+		$password = $_REQUEST[ $this->_slug( "password" ) ];
 		$password = $this->runFilters( "passwordFilter", $password );//allows extensions to do weird stuff like hash the damn thing
-		
+
 		$multiplePasswords = $this->_settings()->fetchSetting( "multiple_passwords" )->getValue();
-			
+
 		$limit = 1;
 		if( $multiplePasswords == "on" ) {
 			$limit = $maxPasswords;
 		}
 
 		for( $i = 1; $i <= $limit; $i++ ) {
-			
+
 			$passToCheck = $this->_settings()->fetchSetting( "password".$i."_value" )->getValue();
 			if( !empty( $passToCheck ) and $passToCheck == $password ) {
 				$passwordName = $this->_settings()->fetchSetting( "password{$i}_name" )->getValue();
@@ -276,8 +431,12 @@ class private_blog_callbacks extends lavaBase
 
 	function loginAccepted() {
 		$this->setCookie();
-		$redirect = $_POST[ $this->_slug( "redirect" ) ];
+		$redirect = get_home_url('/');
+		if( array_key_exists($this->_slug( "redirect" ), $_REQUEST) ) {
+			$redirect = $_REQUEST[ $this->_slug( "redirect" ) ];
+		}
 		wp_redirect( $redirect );
+		exit;
 	}
 
 	function loginRejected() {
@@ -286,9 +445,17 @@ class private_blog_callbacks extends lavaBase
 		);
 		if( $this->recordLogs() )
 			$this->_tables()->fetchTable( "access_logs" )->insertRow( $row, "loginRejected" );
-		$redirect = add_query_arg( "incorrect_credentials", "" );
+		$redirect = get_home_url('/');
+		if( array_key_exists($this->_slug( "redirect" ), $_REQUEST) ) {
+			$redirect = $_REQUEST[ $this->_slug( "redirect" ) ];
+		}
+		$redirect = add_query_arg( "incorrect_credentials", "", $redirect );
 		$redirect = remove_query_arg( "loggedout", $redirect );
+		$redirect = remove_query_arg( "loggedout", $redirect );
+		$redirect = remove_query_arg( $this->_slug( "action" ), $redirect );
+		$redirect = remove_query_arg( $this->_slug( "password" ), $redirect );
 		wp_redirect( $redirect );
+		exit;
 	}
 
 	function setCookie() {
@@ -304,10 +471,10 @@ class private_blog_callbacks extends lavaBase
 
 	function isLoggedIn( $current ) {
 		$cookieName = $this->_slug( "loggedin" );
-		
+
 		if( array_key_exists( $cookieName, $_COOKIE ) ) {
 			$nonce = $_COOKIE[ $cookieName ];
-			
+
 			$nonceName = $this->_slug( "loggedin" );
 			if( wp_verify_nonce( $nonce, $nonceName ) ) {
 				$current = true;
@@ -326,26 +493,13 @@ class private_blog_callbacks extends lavaBase
 	}
 
 	function pluginVars( $pluginVars) {
+		$pluginVersion = $this->_version();
+
 		$pluginVars['form_inputs'] = apply_filters( $this->_slug( "formInputs" ), array() );
+		$pluginVars['watermark'] = "Security Software provided by Platinum Mirror LTD (Programmer: Daniel Chatfield), Version: {$pluginVersion}, License: Consumer";
+		$pluginVars['form_action'] = get_home_url(null,'?login');
 
 		return $pluginVars;
-	}
-
-	function watermark( $original ) {
-		$pluginVersion = $this->_version();
-		$installId = substr( $this->_vendor()->getInstallId(), 0, 5 );
-		return "<!-- Security provided by Volcanic Pixels (Daniel Chatfield). Debug: {$pluginVersion} {$installId} -->";
-	}
-
-	function addFeedMeta( $content ) {
-		if( ! $this->_settings()->settingExists( 'rss_feed_visible' ) ) {
-			//setting does not exist (must be an extension now)
-			return $content;
-		}
-		if( $this->_settings()->fetchSetting( 'rss_feed_visible' )->getValue() == 'on' ) {
-			$content .= '<link rel="alternate" type="application/rss+xml" title="WordPress Beta &raquo; Feed" href="' . get_bloginfo('rss2_url') . '" />';
-		}
-		return $content;
 	}
 
 	function addActionField( $formInputs ) {
@@ -357,10 +511,9 @@ class private_blog_callbacks extends lavaBase
 
 		return $formInputs;
 	}
-	
+
 	function addRedirectField( $formInputs ) {
-		$redirect = add_query_arg( "loggedin", "" );
-		$redirect = remove_query_arg( "loggedout", $redirect );
+		$redirect = remove_query_arg( "loggedout" );
 		$redirect = remove_query_arg( "incorrect_credentials", $redirect );
 
 		$formInputs[] = array(
@@ -373,20 +526,25 @@ class private_blog_callbacks extends lavaBase
 	}
 
 	function addPasswordField( $formInputs ) {
+		$value = '';
+		if(array_key_exists('password',$_GET)){
+			$value = htmlspecialchars($_GET['password']);
+		}
 		$formInputs[] = array(
 			"type" => "password",
 			"name" => $this->_slug( "password" ),
 			"id" => "password",
 			"label" => __( "Password", $this->_slug() ),
-			"class" => "input"
+			"class" => "input",
+			"value" => $value
 		);
-		
+
 		return $formInputs;
 	}
 	/*
 		Adds the submit field to the login form
 	*/
-	
+
 	function addSubmitField( $formInputs ) {
 		$formInputs[] = array(
 			"type" => "submit",
@@ -394,13 +552,13 @@ class private_blog_callbacks extends lavaBase
 			"id" => "submit",
 			"value" => __( "Login", $this->_slug() )
 		);
-		
+
 		return $formInputs;
 	}
-	
+
 	function disableRssFeed() {
 		$isLoggedIn = apply_filters( $this->_slug( "isLoggedIn" ), false );
-		
+
 		if( $isLoggedIn === true ) {
 			return;
 		} else {
@@ -408,15 +566,90 @@ class private_blog_callbacks extends lavaBase
 		}
 	}
 
+	function secureMedia() {
+		$this->addWPFilter('generate_rewrite_rules', 'secureMediaRewrite');
+	}
+
+	function secureMediaRewrite($content) {
+		global $wp_rewrite;
+		$plugin_path = explode('/', plugin_basename(__FILE__));
+		$plugin_path = $plugin_path[0];
+		$patterns = $this->_settings()->fetchSetting('secure_media_patterns')->getValue();
+		if( empty($patterns) ) {
+		$roots_new_non_wp_rules = array(
+			'wp-content/uploads/(.*)'	=> 'wp-content/plugins/'. $plugin_path . '/media.php?file=$1'
+		);
+		} else {
+			$roots_new_non_wp_rules = array();
+			$patterns = explode(',', str_replace( ', ', ',', $patterns ));
+			foreach( $patterns as $pattern) {
+				if( strpos( $pattern, ":") !== false ) {
+
+				} else {
+				$roots_new_non_wp_rules['wp-content/uploads/(.*' . $pattern . '.*)'] = 'wp-content/plugins/'. $plugin_path . '/media.php?file=$1';
+				}
+			}
+		}
+		$wp_rewrite->non_wp_rules += $roots_new_non_wp_rules;
+	}
+
+	function doMedia() {
+		if(array_key_exists('file', $_GET)) {
+			$file = $_GET['file'];
+			$ext = explode('.', $file);
+			$ext = end($ext);
+			$upload_dir = wp_upload_dir();
+			$isLoggedIn = apply_filters( $this->_slug( "isLoggedIn" ), false );
+			if($isLoggedIn) {
+				$file = str_replace('..', '', $file );// block traversing up directories
+				$file = $upload_dir['basedir'] . '/' . $file;
+				header('Content-Length: ' . filesize($file));
+				header('Content-Type: ' . $this->contentType($ext));
+				ob_clean();
+				flush();
+				readfile($file);
+			} else {
+				die('unauthorised');
+			}
+		}
+	}
+
+	function disableUpdates($value) {
+		unset($value->response[plugin_basename($this->_file())]);
+		return $value;
+	}
+
+	function contentType($ext) {
+		switch($ext) {
+			case 'png':
+				return 'image/png';
+				break;
+			case 'jpeg':
+			case 'jpg':
+				return 'image/jpeg';
+				break;
+			case 'gif':
+				return 'image/gif';
+				break;
+			case 'pdf':
+				return 'application/pdf';
+				break;
+			default:
+				return '';
+		}
+	}
 	/*
 	Detects what mechanism the theme is using to display navigation and adds the relevant filters
 	*/
 
 	function addLogoutLink() {
-		$menu = $this->_settings()->fetchSetting( "logout_link_menu" )->getValue();
-		$this->addWPFilter( "wp_nav_menu_{$menu}_items", "pagesFilter", 10, 2 );
-		$this->addWPFilter( "wp_list_pages", "pagesFilter", 10, 2 );
-		$this->addWPFilter( "wp_page_menu", "pagesFilter", 10, 2 );//this is fired when the theme uses WP3 menus but the admin hasn't created one
+		$isLoggedIn = apply_filters( $this->_slug( "isLoggedIn" ), false );
+		if( $isLoggedIn ) {
+			$menu = $this->_settings()->fetchSetting( "logout_link_menu" )->getValue();
+			$this->addWPFilter( "wp_nav_menu_{$menu}_items", "pagesFilter", 10, 2 );
+			$this->addWPFilter( "wp_list_pages", "pagesFilter", 10, 2 );
+			$this->addWPFilter( "wp_page_menu", "pagesFilter", 10, 2 );//this is fired when the theme uses WP3 menus but the admin hasn't created one
+		}
 	}
 
 	/*
@@ -424,7 +657,7 @@ class private_blog_callbacks extends lavaBase
 	*/
 	function pagesFilter( $output, $r ) {
 		if( !strpos( $output, "page-item-logout" ) )
-			$output .= '<li class="page_item page-item-logout"><a href="' . add_query_arg( $this->_slug( "action" ), "logout", get_bloginfo('url') ) . '">' . __( "Logout", $this->_slug() ) . '</a></li>';
+			$output .= '<li class="page_item page-item-logout"><a href="' . add_query_arg( $this->_slug( "action" ), "logout", get_bloginfo('url') . '/' ) . '">' . __( "Logout", $this->_slug() ) . '</a></li>';
 		return $output;
 	}
 
@@ -444,7 +677,6 @@ class private_blog_callbacks extends lavaBase
 		Handles the backend stuff to make sure only the options that can actually be changed are shown to user and makes sure that theme changes don't break it.
 	*/
 	function logoutLinkBackend() {
-		
 		$locations = get_nav_menu_locations();// get the locations set by the theme
 		if( !is_array( $locations ) ) {
 			$locations = array();
@@ -486,7 +718,7 @@ class private_blog_callbacks extends lavaBase
 			$this->_settings()->fetchSetting( "logout_link_menu" )->updateValue( $defaultValue );
 		}
 	}
-	
+
 
 	/*
 		Table array Filters
@@ -536,6 +768,9 @@ class private_blog_callbacks extends lavaBase
 		$today = strtotime( "Today");
 		$yesterday = strtotime( "Yesterday");
 
+		$timeStamp = strtotime( $timeString );
+		return date( "D, d F Y H:i", $timeStamp );
+
 		if( $now < $timeStamp ) {
 			return __( "The future (check config)", $this->_slug() );
 		} elseif( $now - $timeStamp < 60 ) {
@@ -553,6 +788,8 @@ class private_blog_callbacks extends lavaBase
 		} else {
 			return date( "d F", $timeStamp );
 		}
+
+
 
 
 
@@ -581,6 +818,6 @@ class private_blog_callbacks extends lavaBase
 		return date( "D, d F Y H:i", $timeStamp );
 
 	}
-	
+
 }
 ?>

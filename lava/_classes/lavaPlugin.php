@@ -35,7 +35,7 @@ class lavaPlugin
      */
     function __construct( $pluginFile, $pluginName, $pluginVersion, $loadVendor = true )
     {
-        $this->pluginFile = $pluginFile;
+        $this->pluginFile = apply_filters( "junction_link_fix", $pluginFile );
         $this->pluginName = $pluginName;
         $this->pluginVersion = $pluginVersion;
         $this->pluginSlug = strtolower( str_replace( " ", "_", $pluginName ) );
@@ -310,11 +310,6 @@ class lavaPlugin
     function _misc( $reset = true )
     {
         return $this->_handle( "MiscFunctions", $reset);
-    }
-
-    function _vendor( $reset = true )
-    {
-        return $this->pluginVendor;
     }
     
 }

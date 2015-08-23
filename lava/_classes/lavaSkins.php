@@ -43,7 +43,7 @@ class lavaSkins extends lavaBase
             ->addSetting( 'skin', 'skins' )
                 ->setType( 'skin' )
                 ->setName( __( 'Select a skin', $this->_framework() ) )
-				->setDefault( 'default' );
+				->setDefault( 'defaultcustom' );
     }
 
     function init() {
@@ -204,13 +204,6 @@ class lavaSkins extends lavaBase
 
 	function getTranslations() {
 		return $this->translations;
-	}
-
-	function getSkinActions() {
-		$default = array(
-			'head'
-		);
-		return $this->recall( 'skin_actions', $default );
 	}
 }
 ?>

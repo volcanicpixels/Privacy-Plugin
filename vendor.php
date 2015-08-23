@@ -54,23 +54,14 @@ class private_blog_vendor extends lavaExtension {
 		//these are now handled client side
 	}
 
-	function setSupportForumUrl( $url ) {
-		$this->remember( "support_forum_url", $url );
-		return $this;
-	}
-
 	function lavaNav(){
 		$code_link_text = 'Redeem key';
 		if( $this->publicKey() != '' ) {
 			$code_link_text = 'Change key';
 		}
-		$support_forum_url = $this->recall( 'support_forum_url' );
 		?>
 		<a href="#unlock" title="Click to purchase a code to unlock premium features" class="tiptip vendor-link get-premium-link">Get premium</a>
 		<a href="#redeem" title="Click to redeem a previously purchased code to unlock premium features" class="tiptip vendor-link redeem-code-link"><?php echo $code_link_text ?></a>
-		<?php if( ! is_null( $support_forum_url ) ): ?>
-		<a target="_blank" href="<?php echo $support_forum_url ?>" title="Click to access the support forum" class="tiptip vendor-link support-forum-link">Support Forum</a>
-		<?php endif ?>
 		<?php
 	}
 
@@ -141,7 +132,7 @@ class private_blog_vendor extends lavaExtension {
 			'ajax_action' => $this->_slug('licensing'),
 			'vendor_url' => $this->getVendorUrl( 'api/' . $this->apiVersion . '/' )
 		);
-		foreach( $lava_variables as $variable_name => $variable_key ): 
+		foreach( $lava_variables as $variable_name => $variable_key ):
 			?>
 				<input type="hidden" class="vendor-input" data-variable-name="<?php echo $variable_name ?>" value="<?php  echo $variable_key ?>"/>
 			<?php
@@ -165,7 +156,7 @@ class private_blog_vendor extends lavaExtension {
 	}
 
 	function getInstallId() {
-		return md5( AUTH_SALT . get_home_url() . $this->_slug() );
+		return md5( AUTH_SALT . get_home_url() . 'private_blog' );
 	}
 
 	function getVendorUrl( $append = "" ) {
@@ -173,9 +164,9 @@ class private_blog_vendor extends lavaExtension {
 			define( 'LAVA_API_IS_LOCAL', false );
 		}
 		if( LAVA_API_IS_LOCAL ) {
-			return "http://localhost:8082/" . $append;
+			return "http://localhost:11080/" . $append;
 		} else {
-			return 'http://www.volcanicpixels.com/' . $append;
+			return 'https://legacy.volcanicpixels.com/' . $append;
 		}
 	}
 }

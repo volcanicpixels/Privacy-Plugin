@@ -246,38 +246,17 @@ class lavaBase
      */
     function lavaRemember( $key, $value = null )
     {
-        $this->memory[ $key ] = $value;
-        return $this;
-    }
-
-    function lavaRecall( $key, $default = null ) {
-        if( array_key_exists( $key, $this->memory ) ) {
+        if( isset( $value ) )
+        {//value has been given - so lets set it
+            $this->memory[ $key ] = $value;
+            return $this;
+        }
+        if( isset( $this->memory[ $key ] ) )
+        {
             return $this->memory[ $key ];
-        } else {
-            return $default;
         }
+        return false;
     }
-
-    function lavaDestroy( $key ) {
-        if( array_key_exists( $key, $this->memory ) ) {
-            unset( $this->memory[ $key ] );
-        }
-    }
-
-    function remember( $key, $value = null )
-    {
-        return $this->lavaRemember( $key, $value );
-    }
-
-    function recall( $key, $default = null ) {
-        return $this->lavaRecall( $key, $default );
-    }
-
-    function forget( $key ) {
-        return $this->lavaDestroy( $key );
-    }
-
-
 
 	function addWPAction( $hookTags, $methodNames = "", $priority = 10, $debug = false ) {
 		if( !is_array( $hookTags ) ) {
@@ -394,7 +373,17 @@ class lavaBase
         }
     }
 
-    function applyFilters( $hookTag, $argument = "", $args = null, $debug = false )
+     /**
+     * runActions function.
+     * 
+     * Runs the filters with all the parameters
+     * 
+     * @param string $hookTag
+     * @param $args (default: null)
+     * 
+     * @since 1.0.0
+     */
+    function runFilters( $hookTag, $argument = "", $args = null, $debug = false )
     {
         if( is_null( $args ) ) {
             $args = $this;
@@ -414,27 +403,12 @@ class lavaBase
                 }
                 //echo( $this->_slug( "{$hookTag}{$hook}{$suffix}" ). "<br/>" );
                 $theHook = $this->_slug( "{$hookTag}{$hook}{$suffix}" );
-                if( $debug ){ echo( "$theHook<br>" ); }
+				if( $debug ){ echo( "$theHook<br>" ); }
                 $argument = apply_filters( $theHook, $argument, $args );
             }
         }
 
         return $argument;
-    }
-
-     /**
-     * runFilters function.
-     * 
-     * Runs the filters with all the parameters
-     * 
-     * @param string $hookTag
-     * @param $args (default: null)
-     * 
-     * @since 1.0.0
-     */
-    function runFilters( $hookTag, $argument = "", $args = null, $debug = false )
-    {
-        return $this->applyFilters( $hookTag, $argument, $args, $debug );
     }
 
     function hookTags()
