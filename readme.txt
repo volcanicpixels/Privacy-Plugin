@@ -2,8 +2,8 @@
 Contributors: volcanicpixels, danielchatfield
 Tags: password,protect,password protect,wordpress,blog, security
 Requires at least: 3.3.1
-Tested up to: 4.4
-Stable tag:  5.0.6
+Tested up to: 4.6.1
+Stable tag:  5.1.1
 
 This plugin password protects your WordPress blog with a single password.
 
@@ -59,6 +59,10 @@ This section describes how to install the plugin and get it working.
 2. Change the CSS styles for the login page to get the look and feel right
 
 == Changelog ==
+
+= 5.1.0 =
+
+* WordPress 4.6 compatibility
 
 = 5.0.6 =
 
