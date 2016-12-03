@@ -1,0 +1,10 @@
+_code/.svn/
+_code/_lava/.svn/
+_code/_lava/_assets/codemirror/.svn/
+*.svn-base
+Thumbs.db
+thumbs.db
+*/.svn/*
+*.svn/*
+*.svn/
+lava/_cache/*
